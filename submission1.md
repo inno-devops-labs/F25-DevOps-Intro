@@ -1,3 +1,3 @@
 # Text
 
-Another intereting info for commit
+Boring info
