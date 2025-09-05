@@ -1,8 +1,8 @@
-## Goal
-## Changes
-## Testing
+## Goal:
+## Changes:
+## Testing:
 
-### Checklit
--[ ] Clear title
--[ ] Docs/README updated if needed
--[ ] No secrets/large temp files 
+### Checklist:
+- [ ] Task 1 done
+- [ ] Task 2 done
+- [ ] Screenshots attached (if applicable)
