@@ -9,4 +9,4 @@ Signed commits provide cryptographic proof of authorship. This ensures that the 
 - **Compliance**: Some organizations require signed commits for audit and regulatory purposes.  
 
 SSH commit signature verification strengthens security by using secure keys already managed for repository access, reducing reliance on weaker authentication methods.
-Also, helpful in deployment: when you work in terminal of server with private repository.
+Also, helpful in deployment: when you work in terminal of server with private repository. 
