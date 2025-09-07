@@ -12,6 +12,6 @@ Describe the purpose of this PR and what it aims to achieve.
 - Include steps for manual verification or automated tests.
 
 ## Checklist
-- [ ] PR has a clear, descriptive title
-- [ ] Documentation / README updated if needed
-- [ ] No secrets or large temporary files included
+- [x] PR has a clear, descriptive title
+- [x] Documentation / README updated if needed
+- [x] No secrets or large temporary files included
