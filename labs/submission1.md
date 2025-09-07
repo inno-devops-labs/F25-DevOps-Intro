@@ -1,0 +1,1 @@
+Commit signing is useful for verifying the source of the commits. If the commit was signed with the source owner's key, then the commit will be verified. If the commit is verified, then one can be sure that that commit came from the original (trusted) source.
