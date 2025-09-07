@@ -1,4 +1,4 @@
-git config user.name# Pull Request Template
+# Pull Request Template
 
 ## Goal
 Describe the purpose of this PR and what it aims to achieve.
