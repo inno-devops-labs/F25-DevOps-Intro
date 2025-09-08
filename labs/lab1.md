@@ -30,7 +30,7 @@ These are the foundation of collaboration and trust in DevOps teams.
    - Resources:  
      - [GitHub Docs on SSH Commit Verification](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)  
      - [Atlassian Guide to SSH and Git](https://confluence.atlassian.com/bitbucketserver/sign-commits-and-tags-with-ssh-keys-1305971205.html)  
-   - Create a file `submission1.md` with a short summary explaining the benefits of signing commits.
+   - Create a file `labs/submission1.md` with a short summary explaining the benefits of signing commits.
 
 2. **Set Up SSH Commit Signing**  
    - **Option 1:** Use an existing SSH key and add it to GitHub.  
@@ -76,7 +76,7 @@ These are the foundation of collaboration and trust in DevOps teams.
 2. **Create your lab branch and open a PR**  
    ```bash
    git checkout -b feature/lab1
-   # make a change (add submission1.md)
+   # make a change (add labs/submission1.md)
    git add .
    git commit -m "docs: add lab1 submission stub"
    git push -u origin feature/lab1
