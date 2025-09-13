@@ -27,7 +27,7 @@ A blob stores the raw file contents without metadata such as filename or permiss
 
 ### Tree object 
 Command:
-```console
+```
 git cat-file -p e7eae0fda04b129164a49683809b1a321c12779a
 ```
 
