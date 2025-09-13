@@ -5,12 +5,12 @@
 ### Blob object
 
 Command:
-```console
+```bash
 git cat-file -p d329320010da9e34850f76bf7c2954aac19d9377
 ```
 
 Output:
-```console
+```
 Signing commits (with GPG, SSH, or S/MIME) helps to:
 
 1. **Prove authorship** – ensures the commit truly comes from the person who owns the signing key.
@@ -32,7 +32,7 @@ git cat-file -p e7eae0fda04b129164a49683809b1a321c12779a
 ```
 
 Output:
-```console
+```bash
 100644 blob 4db373667a50f14a411bb5c7e879690fd08aacc1    README.md
 040000 tree 33cd41e211a69f89ca99df6bbf00fda169f2f0da    labs
 040000 tree 1c31e5c1fc7c98b6fd92659e55e0c03a46229c75    lectures
@@ -45,12 +45,12 @@ A tree represents a directory: it links filenames to their corresponding blobs (
 ### Commit object
 
 Command:
-```console
+```bash
 git cat-file -p 37c84dcc3d1e14c0473996fa48fb97a79b07b3d7
 ```
 
 Output:
-```console
+```bash
 tree e7eae0fda04b129164a49683809b1a321c12779a
 parent 6c9d08c2101c1ecbe4a03ccd7aaa65d73d5cb78f
 author belyakova-anna <belyakova.anna.st@yandex.ru> 1757775358 +0300
@@ -70,7 +70,7 @@ A commit points to a tree (project snapshot) and contains metadata like parent c
 ## Task 2 — Reset and Reflog Recovery
 
 ### Commands and Purpose
-```
+```bash
 # Create a practice branch for reset experiments
 git switch -c git-reset-practice
 
@@ -108,34 +108,34 @@ git status
 
 After creating three commits:
 
-```
+```bash
 f452dbe (HEAD -> git-reset-practice) Third commit
 6761636 Second commit
 b4a1b11 First commit
 ```
 
 After soft reset (HEAD~1):
-```
+```bash
 6761636 (HEAD -> git-reset-practice) Second commit
 b4a1b11 First commit
 ```
 
 After hard reset to reflog (HEAD@{1}):
-```
+```bash
 f452dbe (HEAD -> git-reset-practice) Third commit
 6761636 Second commit
 b4a1b11 First commit
 ```
 
 After hard reset to specific commit (37c84dc):
-```
+```bash
 37c84dc (HEAD -> git-reset-practice, origin/feature/lab2, feature/lab2) feat: delete Task 1.txt
 6c9d08c feat: add Task 1.txt
 b4a1b11 First commit
 ```
 
 ### Snippet of git reflog
-```
+```bash
 6761636 (HEAD -> git-reset-practice) HEAD@{0}: reset: moving to HEAD~1
 f452dbe HEAD@{1}: reset: moving to HEAD@{1}
 6761636 HEAD@{2}: reset: moving to HEAD~1
@@ -159,7 +159,7 @@ b4a1b11 HEAD@{5}: commit: First commit
 
 ### A snippet of the graph.
 
-```console
+```bash
 * 1913eaa (side-branch) Side branch commit
 * 56b3b04 (HEAD -> main, origin/main, origin/HEAD) docs: add PR template
 | * 37c84dc (origin/feature/lab2, git-reset-practice, feature/lab2) feat: delete Task 1.txt
@@ -223,7 +223,7 @@ Tags are used to mark specific points in history as releases. They are important
 
 ### Branch Switching with `git switch`
 Command:
-```
+```bash
 git switch feature/lab2
 ```
 Output:
@@ -235,7 +235,7 @@ Your branch is up to date with 'origin/feature/lab2'.
 - Switches to the feature/lab2 branch (already on it).
 
 Command:
-```
+```bash
 git switch -c cmd-compare
 ```
 Output:
@@ -246,7 +246,7 @@ Switched to a new branch 'cmd-compare'
 - Creates a new branch cmd-compare and switches to it.
 
 Command:
-```
+```bash
 git switch -
 ```
 Output:
@@ -258,11 +258,11 @@ Your branch is up to date with 'origin/feature/lab2'.
 - Switches back to the previous branch (feature/lab2).
 
 Command:
-```
+```bash
 git branch
 ```
 Output:
-```
+```bash
   cmd-compare
   feature/lab1
 * feature/lab2
@@ -276,7 +276,7 @@ Output:
 ### Branch Creation with Legacy `git checkout`
 
 Command:
-```
+```bash
 git checkout -b cmd-compare-2
 ```
 Output:
@@ -287,11 +287,11 @@ Switched to a new branch 'cmd-compare-2'
 - Creates and switches to a new branch (cmd-compare-2) using the legacy git checkout command.
 
 Command:
-```
+```bash
 git branch
 ```
 Output:
-```
+```bash
   cmd-compare
 * cmd-compare-2
   feature/lab1
@@ -305,7 +305,7 @@ Output:
 
 ### Working with Files Using `git restore`
 Command:
-```
+```bash
 git add demo.txt
 echo "scratch" >> demo.txt
 git status
@@ -323,7 +323,7 @@ Changes not staged for commit:
 - Adds demo.txt to staging, then appends text to it. Status shows staged changes (new file) and unstaged modifications (new content).
 
 Command:
-```
+```bash
 git restore demo.txt
 git status
 ```
@@ -337,7 +337,7 @@ Changes to be committed:
 - Discards changes in the working directory (unstaged changes). Staging area remains unchanged.
 
 Command:
-```
+```bash
 git restore --staged demo.txt
 git status
 ```
@@ -351,7 +351,7 @@ Untracked files:
 - Removes the file from staging area. The file is now untracked.
 
 Command:
-```
+```bash
 git add demo.txt
 git restore --source=HEAD~1 demo.txt
 git status
