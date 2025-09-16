@@ -326,12 +326,65 @@ Publish README.md
 The git log --graph --oneline --all view makes branch divergence (parallel lines) and merge points (a commit with two parents) obvious, so I can see which commits belong to each branch and where they were combined.
 
 ## Task 4 — Tags
-- Tag names, commit hashes:
-- Why tags matter:
+- **Tag names, commit hashes:**
+```text
+v1.0.0 -> fe64344ca6b63415b634accb46a35bddb8c46030
+```
+
+- **Why tags matter:**
+Tags mark important points in history (like releases). They’re stable, human-friendly references that don’t move, so teams/CI can build, deploy, and compare versions reliable.
 
 ## Task 5 — switch vs checkout vs restore
-- Commands and `git status`/`git branch` snippets:
-- Summary of when to use each:
 
-## Bonus (optional)
-- Stars/follows: notes
+- **Commands and `git status` / `git branch` snippets:**
+```bash
+git switch -c cmd-compare
+git switch -
+git branch
+git status
+git checkout -b cmd-compare-2
+git checkout -
+git branch
+git status
+echo "scratch" >> demo.txt
+git status
+# (tried restore on an untracked file; see notes below)
+git restore demo.txt
+git restore --staged demo.txt
+git restore --source=HEAD~1 demo.txt
+```
+
+**`git branch` output**
+```text
+  cmd-compare
+  cmd-compare-2
+  feature/lab1
+* feature/lab2
+  git-reset-practice
+  main
+  side-branch
+```
+
+**`git status` output (after creating demo.txt)**
+```text
+On branch feature/lab2
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   labs/submission2.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        demo.txt
+```
+
+- **Summary of when to use each:**
+  - **`git switch`** — branch operations only (modern, clear):
+    - `git switch -c cmd-compare` (create & switch), `git switch -` (jump back), `git switch feature/lab2`.
+  - **`git checkout`** — legacy multi-purpose (still works, but prefer `switch`/`restore`):
+    - You used `git checkout -b cmd-compare-2` and `git checkout -` to hop back.
+  - **`git restore`** — file content & staging:
+    - `git restore <file>` → discard **working tree** changes (to match `HEAD`).
+    - `git restore --staged <file>` → **unstage** changes (keep them in the working tree).
+    - `git restore --source=<commit> <file>` → take the version from another commit.
+    - Note: operates on **tracked** files; remove untracked files with `rm` or `git clean -fd`.
