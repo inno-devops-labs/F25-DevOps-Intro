@@ -1,3 +1,0 @@
-This is a test file for Git object exploration
-Additional content for object demo
-Additional content for v1.1.0
