@@ -231,4 +231,236 @@ commit for task 1
 **Explanation**: This **Сommit Object** represents a complete project snapshot that links the file system state (via tree reference), historical continuity (via parent reference), authorship metadata, SSH signature, and context (via commit message).
 
 ---
+### Task 2 — Reset and Reflog Recovery (3 pts)
+Create a practice branch and several commits:
+
+```sh
+    git switch -c git-reset-practice
+    echo "First commit" > file.txt && git add file.txt && git commit -m "First commit"
+    echo "Second commit" >> file.txt && git add file.txt && git commit -m "Second commit"
+    echo "Third commit"  >> file.txt && git add file.txt && git commit -m "Third commit"
+```
+
+Before starting, let's see the current status:
+```bash
+# git log --oneline
+
+2614ef1 (HEAD -> git-reset-practice) Third commit
+a031e42 Second commit
+c02040b First commit
+851ad92 (feature/lab2) task 1 - done and described in submission2
+8ca7625 commit for task 1
+
+# git status
+
+On branch git-reset-practice
+nothing to commit, working tree clean
+
+# cat file.txt
+
+First commit
+Second commit
+Third commit
+```
+
+
+### git reset --soft HEAD~1   # move HEAD; keep index & working tree
+
+```bash
+# git status
+On branch git-reset-practice
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        modified:   file.txt
+# cat file.txt
+First commit
+Second commit
+Third commit
+# git log --oneline
+a031e42 (HEAD -> git-reset-practice) Second commit
+c02040b First commit
+851ad92 (feature/lab2) task 1 - done and described in submission2
+8ca7625 commit for task 1
+
+```
+
+**Changes observed:**  `git reset --soft` moved the branch history  back 1 commit (from "Third commit" to "Second commit"), but working tree unchanged and all file changes from the removed commit were kept and now staged and ready to be recommitted.
+
+### git reset --hard HEAD~1   # move HEAD; discard index & working tree
+**Command**: `git reset --hard HEAD~1`
+
+**Output**: HEAD is now at c02040b First commit
+```bash
+# git status
+On branch git-reset-practice
+nothing to commit, working tree clean
+# cat file.txt
+First commit
+# git log --oneline
+c02040b (HEAD -> git-reset-practice) First commit
+851ad92 (feature/lab2) task 1 - done and described in submission2
+8ca7625 commit for task 1
+```
+**Changes observed:**  `git reset --hard` moved history back to "First commit" and completely discarded all subsequent changes from both staging area and working tree. File content reverted to only "First commit".
+
+
+### View HEAD movement
+
+**Command**: `git reflog`
+
+**Output**:
+```bash
+c02040b (HEAD -> git-reset-practice) HEAD@{0}: reset: moving to HEAD~1
+a031e42 HEAD@{1}: reset: moving to HEAD~1
+2614ef1 HEAD@{2}: commit: Third commit
+a031e42 HEAD@{3}: commit: Second commit
+c02040b (HEAD -> git-reset-practice) HEAD@{4}: commit: First commit
+```
+**Summary:** `reflog` shows full history of HEAD movements, including both commits made **and** reset operations performed, allowing recovery of any previous state
+
+### git reset --hard <reflog_hash>  # recover a previous state
+
+Recover to the "Third commit" state: `git reset --hard 2614ef1`
+
+**Output**:
+HEAD is now at 2614ef1 Third commit
+
+
+```bash
+# git status
+On branch git-reset-practice
+nothing to commit, working tree clean
+# cat file.txt
+First commit
+Second commit
+Third commit
+# git log --oneline
+2614ef1 (HEAD -> git-reset-practice) Third commit
+a031e42 Second commit
+c02040b First commit
+851ad92 (feature/lab2) task 1 - done and described in submission2
+8ca7625 commit for task 1
+```
+**Summary:** Working tree, staging area, and commit history were fully restored to the exact same state as before any reset operations.
+
+---
+
+
 ### Task 3 — Visualize Commit History (2 pts)
+
+```bash
+* 3db6099 (side-branch) Side branch commit
+* 2614ef1 (HEAD -> git-reset-practice) Third commit
+* a031e42 Second commit
+* c02040b First commit
+* 851ad92 (feature/lab2) task 1 - done and described in submission2
+* 8ca7625 commit for task 1
+* a7e4bcc (origin/feature/lab1, feature/lab1) docs: add lab1 submission stub
+* 435f288 docs: add commit signing summary
+| * 8f2325c (origin/main, origin/HEAD, main) docs: add PR template
+|/  
+* 82d1989 feat: publish lab3 and lec3
+* 3f80c83 feat: publish lec2
+* 499f2ba feat: publish lab2
+* af0da89 feat: update lab1
+* 74a8c27 Publish lab1
+* f0485c0 Publish lec1
+* 31dd11b Publish README.md
+```
+
+**Summary:** The commit history graph visualization shows an overview of the entire repository structure n helps quickly identify how branches relate to each other.
+
+---
+
+### Task 4 — Tagging Commits (1 pt)
+
+**Commands used:**
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+
+echo "New feature" >> feature.txt
+git add feature.txt 
+git commit -m "Add commit ffor tag v1.1.0"
+git tag v1.1.0
+git push origin v1.1.0
+```
+Associated commit hashes:
+```bash
+# git ls-remote --tags origin
+2614ef1cbe26d0df2c32743b0552ecc8d2364863        refs/tags/v1.0.0
+79e8ac2d28abc97c45a26ad14855600373333a74        refs/tags/v1.1.0
+```
+**A short note on why tags matter:** Git tags like v1.0.0 and v1.1.0 provide clear version control by marking specific project releases. They trigger CI/CD pipelines to automate building, testing, and deployment of the tagged version. The associated commit hashes ensure reproducibility allowing teams to reliably return to the exact code state of any release.
+
+---
+
+### Task 5 — git switch vs git checkout vs git restore (2 pts)
+
+1.  **Creating and switching branches with `git switch`:**
+    ```bash
+    git switch -c cmd-compare
+    git branch
+    ```
+    **Output:**
+    ```
+    * cmd-compare
+      feature/lab1
+      feature/lab2
+      git-reset-practice
+      main
+      side-branch
+    ```
+    Back:
+    ```bash
+    git switch -
+    git branch
+    ```
+    **Output:**
+    ```
+      cmd-compare
+      feature/lab1
+      feature/lab2
+    * git-reset-practice
+      main
+      side-branch
+    ```
+2.  **Comparison with legacy `git checkout`:**
+    **Command**:
+    ```bash
+    git checkout -b cmd-compare-2
+    git branch
+    ```
+    **Output:**
+    ```
+      cmd-compare
+    * cmd-compare-2
+      feature/lab1
+      feature/lab2
+      git-reset-practice
+      main
+      side-branch
+    ```
+
+**Summary:** Both commands successfully create and switch branches. The difference is semantic: git switch is a modern, dedicated command for branch operations, while git checkout is a legacy, overloaded command that handles both branch switching and file operations, creating potential confusion. Use git switch for branches and git restore for files.
+
+3.  **Restoring files with `git restore`:**
+    ```sh
+    echo "scratch" >> demo.txt
+    git restore demo.txt                 # discard working tree changes
+    git restore --staged demo.txt        # unstage (keep working tree)
+    git restore --source=HEAD~1 demo.txt # restore from another commit
+    ```
+**Summary:** The `git restore demo.txt` command  discards uncommitted changes in the working directory, restoring the file to the state of the last commit. The `git restore --staged demo.txt` command only works with files previously added to the index (`git add`) and removes them from the index while preserving changes in the working directory. The `git restore --source=HEAD~1 demo.txt` command restores the file from a specific commit.
+
+---
+
+### Task 6 — Bonus — GitHub Social Interactions (optional)
+
+
+**Actions completed:**
+- ⭐ Starred the course repository
+- 👥 Followed professor and TAs
+- 👥 Followed at least 3 classmates
+
+**Why stars/follows matter:** Starring the repository is a signal of quality and appreciation, which increases the project's visibility in GitHub ratings and helps others learn more about it. Following  teachers, classmates, or just people whose projects interest you creates a vital collaboration network that makes it easy to track each other's contributions, stay up-to-date with project changes, and build a learning community.
