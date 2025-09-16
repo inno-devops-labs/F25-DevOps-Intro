@@ -1,1 +1,1 @@
-test.
+Signed commits are needed so that you can be sure the changes were actually made by the person shown in the git history. This helps the team and everyone working on the project trust that nobody faked a commit or secretly added malicious code. For big or open-source projects, this really matters for security and trust in the repo.
