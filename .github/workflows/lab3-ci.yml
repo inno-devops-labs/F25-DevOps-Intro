@@ -1,0 +1,32 @@
+name: Lab 3 CI Pipeline
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  explore-github-actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run a one-line script
+        run: echo "Hello, World! This job is running on a ${{ runner.os }} server powered by GitHub Actions!"
+
+      - name: Debug Information
+        run: |
+          echo "This job is running on: ${{ runner.os }}"
+          echo "The GitHub Actor who triggered it is: ${{ github.actor }}"
+          echo "The GitHub SHA of the commit is: ${{ github.sha }}"
+
+      - name: Gather System Information
+        run: |
+          echo "--- OS Information ---"
+          uname -a
+          echo "--- CPU Information ---"
+          lscpu
+          echo "--- Memory Information ---"
+          free -h
+          echo "--- Disk Usage ---"
+          df -h
