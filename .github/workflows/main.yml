@@ -1,0 +1,20 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main  # Рабочий процесс запускается при пуше в main
+      - feature/lab3
+
+jobs:
+  run_on_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Print basic info
+        run: |
+          echo "Operating System: $(uname -a)"
+          echo "CPU Info: $(lscpu)"
+          echo "Memory Info: $(free -h)"
