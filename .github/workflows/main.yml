@@ -5,6 +5,7 @@ on:
     branches:
       - main  # Рабочий процесс запускается при пуше в main
       - feature/lab3
+  workflow_dispatch:
 
 jobs:
   run_on_push:
