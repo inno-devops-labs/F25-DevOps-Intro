@@ -60,4 +60,4 @@ The run was automatically triggered by a **push event** when I committed and pus
    - Checked out the repository code with `actions/checkout`.
    - Listed repository files using `ls`.
 3. Each step was logged and could be expanded to see detailed output.
-4. The workflow finished successfully, confirming the workflow configuration works as expected.
+4. The workflow finished successfully, confirming the workflow configuration works as expected
