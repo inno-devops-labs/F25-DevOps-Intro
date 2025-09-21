@@ -1,0 +1,2 @@
+Hello Git Objects
+Second line
