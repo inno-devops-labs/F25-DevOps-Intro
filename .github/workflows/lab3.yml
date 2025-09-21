@@ -1,0 +1,25 @@
+name: Lab 3 CI/CD Quickstart
+
+on:
+  push:
+    branches:
+      - feature/lab3
+  workflow_dispatch:
+
+jobs:
+  info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Print Hello
+        run: echo "Hello from GitHub Actions!"
+
+      - name: Show Runner Info
+        run: |
+          echo "OS: $RUNNER_OS"
+          echo "CPU cores: $(nproc)"
+          echo "Memory: $(free -h)"
+          echo "GitHub Job: $GITHUB_JOB"
+          echo "Workflow triggered by: $GITHUB_EVENT_NAME"
