@@ -32,21 +32,121 @@ Practical modules designed for incremental skill development:
 
 ---
 
-## 🖼 Module Flow Diagram
+## 🗺️ DevOps Learning Journey
 
+### 🌳 Skill Tree Structure
 ```mermaid
-flowchart TD
-    A[Intro to DevOps] --> B[Version Control]
-    B --> C[CI/CD]
-    C --> D[Networking & OS]
-    D --> E[Virtualization]
-    E --> F[Containers]
-    F --> G[GitOps & Progressive Delivery]
-    G --> H[SRE & Resilience]
-    H --> I[Security in DevOps]
-    I --> J[Cloud Fundamentals]
-    J --> K[Bonus: Web3 Infrastructure]
-````
+graph TB
+    ROOT[🚀 DevOps Mastery] 
+    
+    %% Foundation Branch
+    ROOT --- FOUND[🏗️ Foundation]
+    FOUND --- A[📚 DevOps Intro<br/>• Principles<br/>• Culture<br/>• Tools Overview]
+    FOUND --- B[🔄 Version Control<br/>• Git Workflows<br/>• Collaboration<br/>• PR/MR Process]
+    
+    %% Development Branch  
+    ROOT --- DEV[👨‍💻 Development]
+    DEV --- C[⚙️ CI/CD<br/>• GitHub Actions<br/>• Pipelines<br/>• Automation]
+    DEV --- D[🖥️ Networking & OS<br/>• Linux Fundamentals<br/>• DNS/TCP/IP<br/>• System Analysis]
+    
+    %% Infrastructure Branch
+    ROOT --- INFRA[🏗️ Infrastructure]
+    INFRA --- E[💻 Virtualization<br/>• Hypervisors<br/>• VMs<br/>• Resource Management]
+    INFRA --- F[📦 Containers<br/>• Docker<br/>• Kubernetes<br/>• Orchestration]
+    
+    %% Advanced Branch
+    ROOT --- ADV[🎯 Advanced]
+    ADV --- G[🚀 GitOps<br/>• ArgoCD<br/>• Progressive Delivery<br/>• Rollback Strategies]
+    ADV --- H[🛡️ SRE<br/>• SLOs/SLIs<br/>• Incident Management<br/>• Chaos Engineering]
+    
+    %% Production Branch
+    ROOT --- PROD[🌐 Production]
+    PROD --- I[🔐 DevSecOps<br/>• Security Scanning<br/>• SAST/DAST<br/>• Secret Management]
+    PROD --- J[☁️ Cloud<br/>• AWS/Azure/GCP<br/>• IaaS/PaaS/SaaS<br/>• Cloud-Native]
+    
+    %% Bonus Branch
+    ROOT --- BONUS[⭐ Bonus]
+    BONUS --- K[🌐 Web3<br/>• IPFS<br/>• Decentralized Storage<br/>• Fleek]
+    
+    %% Styling
+    classDef rootStyle fill:#1a1a1a,stroke:#ffffff,stroke-width:3px,color:#ffffff
+    classDef branchStyle fill:#2c3e50,stroke:#3498db,stroke-width:2px,color:#ffffff
+    classDef foundationModule fill:#e8f8f5,stroke:#16a085,stroke-width:2px,color:#2c3e50
+    classDef devModule fill:#fdf2e9,stroke:#e67e22,stroke-width:2px,color:#2c3e50
+    classDef infraModule fill:#eaf2f8,stroke:#3498db,stroke-width:2px,color:#2c3e50
+    classDef advModule fill:#f4ecf7,stroke:#9b59b6,stroke-width:2px,color:#2c3e50
+    classDef prodModule fill:#fdedec,stroke:#e74c3c,stroke-width:2px,color:#2c3e50
+    classDef bonusModule fill:#f0f3bd,stroke:#f1c40f,stroke-width:2px,color:#2c3e50
+    
+    class ROOT rootStyle
+    class FOUND,DEV,INFRA,ADV,PROD,BONUS branchStyle
+    class A,B foundationModule
+    class C,D devModule
+    class E,F infraModule
+    class G,H advModule
+    class I,J prodModule
+    class K bonusModule
+```
+
+### 🏗️ Technology Stack Layers
+```mermaid
+flowchart LR
+    subgraph "🌐 Production & Cloud"
+        direction LR
+        I[🔐 DevSecOps<br/>Security Integration]
+        J[☁️ Cloud Platforms<br/>AWS/Azure/GCP]
+        K[⭐ Web3 Technologies<br/>IPFS & Decentralized]
+    end
+    
+    subgraph "🎯 Advanced DevOps"
+        direction LR
+        G[🚀 GitOps<br/>Progressive Delivery]
+        H[🛡️ SRE<br/>Reliability Engineering]
+    end
+    
+    subgraph "🏗️ Infrastructure Layer"
+        direction LR
+        E[💻 Virtualization<br/>VMs & Hypervisors]
+        F[📦 Containers<br/>Docker & Kubernetes]
+    end
+    
+    subgraph "🔧 Development Layer"
+        direction LR
+        C[⚙️ CI/CD<br/>Automation Pipelines]
+        D[🖥️ Systems & Network<br/>Linux Fundamentals]
+    end
+    
+    subgraph "🏗️ Foundation Layer"
+        direction LR
+        A[📚 DevOps Principles<br/>Culture & Mindset]
+        B[🔄 Version Control<br/>Git & Collaboration]
+    end
+    
+    A --> C
+    B --> C
+    C --> E
+    D --> E
+    D --> F
+    E --> F
+    F --> G
+    F --> H
+    G --> I
+    H --> I
+    I --> J
+    J --> K
+    
+    classDef foundation fill:#e8f6f3,stroke:#1abc9c,stroke-width:3px,color:#2c3e50
+    classDef development fill:#fef9e7,stroke:#f39c12,stroke-width:3px,color:#2c3e50
+    classDef infrastructure fill:#eaf2f8,stroke:#3498db,stroke-width:3px,color:#2c3e50
+    classDef advanced fill:#f4ecf7,stroke:#9b59b6,stroke-width:3px,color:#2c3e50
+    classDef production fill:#fdedec,stroke:#e74c3c,stroke-width:3px,color:#2c3e50
+    
+    class A,B foundation
+    class C,D development
+    class E,F infrastructure
+    class G,H advanced
+    class I,J,K production
+```
 
 ---
 
@@ -62,13 +162,35 @@ flowchart TD
 2. **Submission Workflow**
 
    * Fork course repository → Create lab branch → Complete tasks
-   * Push to fork → Open Pull Request → Receive feedback & evaluation
+   * Push to fork → Open PR to **course repo main branch** → Copy PR URL
+   * **Submit PR link via Moodle before deadline** → Receive feedback & evaluation
 
 3. **Grading Advantage**
 
    * **Perfect Lab Submissions (10/10)**: Exam exemption + bonus points
    * **On-Time Submissions (≥6/10)**: Guaranteed pass (C or higher)
    * **Late Submissions**: Maximum 6/10
+
+4. **Detailed Submission Process**
+
+   ```bash
+   # 1. Fork the course repository to your GitHub account
+   # 2. Clone your fork locally
+   git clone https://github.com/YOUR_USERNAME/REPO_NAME.git
+   cd REPO_NAME
+   
+   # 3. Create and work on your lab branch
+   git switch -c feature/labX
+   # Complete lab tasks, create submission files
+   git add labs/submissionX.md
+   git commit -m "docs: add labX submission"
+   git push -u origin feature/labX
+   
+   # 4. Open PR from your fork → course repository main branch
+   # 5. Copy the PR URL and submit via Moodle before deadline
+   ```
+
+   **Important:** PRs must target the **course repository's main branch**, not your fork's main branch.
 
 ---
 
