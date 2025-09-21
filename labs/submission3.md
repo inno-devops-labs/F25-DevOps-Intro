@@ -6,8 +6,10 @@
 - [Successful workflow run](https://github.com/belyakova-anna/F25-DevOps-Intro/actions/runs/17896049687)
 
 ### Screenshots
-- ![Workflow run list](https://github.com/user-attachments/assets/74d5d767-a089-4d07-8b43-be28e29427d4)
-- ![Step log output](https://github.com/user-attachments/assets/73e61527-119c-4b73-8fb1-f22274437aef)
+- Workflow run list
+![Workflow run list](https://github.com/user-attachments/assets/74d5d767-a089-4d07-8b43-be28e29427d4)
+- Step log output
+![Step log output](https://github.com/user-attachments/assets/73e61527-119c-4b73-8fb1-f22274437aef)
 
 ### Steps I followed
 
