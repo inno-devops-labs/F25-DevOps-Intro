@@ -53,3 +53,55 @@ jobs:
 - **`uses: actions/checkout@v5`**: Pre-built action to download repository code
 - **Context variables**: `${{ github.actor }}`, `${{ runner.os }}`, etc. provides runtime information
 
+### Analysis of [workflow](https://github.com/RailSAB/F25-DevOps-Intro/actions/runs/17894182583/job/50878574885) run
+
+```bash
+echo "🎉 The job was automatically triggered by a push event."
+echo "🐧 This job is now running on a Linux server hosted by GitHub!"
+echo "🔎 The name of your branch is refs/heads/feature/lab3 and your repository is RailSAB/F25-DevOps-Intro."
+
+Run actions/checkout@v5
+Syncing repository: RailSAB/F25-DevOps-Intro
+Getting Git version info
+  Working directory is '/home/runner/work/F25-DevOps-Intro/F25-DevOps-Intro'
+  /usr/bin/git version
+  git version 2.51.0
+Temporarily overriding HOME='/home/runner/work/_temp/83770cb5-32d0-46c6-b20e-9439be2054cd' before making global git config changes
+Adding repository directory to the temporary git global config as a safe directory
+/usr/bin/git config --global --add safe.directory /home/runner/work/F25-DevOps-Intro/F25-DevOps-Intro
+Deleting the contents of '/home/runner/work/F25-DevOps-Intro/F25-DevOps-Intro'
+Initializing the repository
+Disabling automatic garbage collection
+Setting up auth
+Fetching the repository
+Determining the checkout info
+/usr/bin/git sparse-checkout disable
+/usr/bin/git config --local --unset-all extensions.worktreeConfig
+Checking out the ref
+/usr/bin/git log -1 --format=%H
+b6b118df3f3fbbd991621f42f6c9e16830eff714
+
+echo "💡 The RailSAB/F25-DevOps-Intro repository has been cloned to the runner."
+echo "🖥️ The workflow is now ready to test your code on the runner."
+ls /home/runner/work/F25-DevOps-Intro/F25-DevOps-Intro
+README.md
+labs
+lectures
+
+echo "🍏 This job's status is success."
+Post job cleanup.
+```
+
+1. **Trigger**: Push event initiates workflow
+2. **Runner Allocation**: GitHub provisions fresh Ubuntu vm
+3. **Job Execution**: Single job "Explore-GitHub-Actions" starts
+4. **Step Execution**: Each step runs sequentially:
+   - Environment information gathering
+   - Repository checkout using `actions/checkout@v5`
+   - File system exploration
+   - Status reporting
+5. **Cleanup**: Runner is destroyed after job completion
+
+## Task 2
+
+
