@@ -18,3 +18,13 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: System info
+        run: |
+          echo "OS Info"
+          uname -a
+          echo "Disk Info"
+          df
+          echo "RAM Info"
+          free
+          echo "CPU Info"
+          lscpu
