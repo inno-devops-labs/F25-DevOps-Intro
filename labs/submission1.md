@@ -8,3 +8,6 @@
   
 Signed commits help secure code, prove authenticity, and build confidence in collaborative development.
 This concise summary fits well for the submission task on commit signing benefits.
+
+## PR autofill
+![PR autofill](./assets1/image.png)
