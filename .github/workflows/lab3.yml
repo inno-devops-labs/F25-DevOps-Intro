@@ -23,3 +23,8 @@ jobs:
           echo "Memory: $(free -h)"
           echo "GitHub Job: $GITHUB_JOB"
           echo "Workflow triggered by: $GITHUB_EVENT_NAME"
+          echo "User: $(whoami)"
+          echo "Disk usage:"
+          df -h
+          echo "Environment variables:"
+          printenv | sort
