@@ -1,6 +1,23 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on: 
+  push:
+    branches: [ main, feature/lab3 ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to run in'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+        - staging
+        - production
+      debug:
+        description: 'Enable debug mode'
+        required: false
+        type: boolean
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
@@ -16,34 +33,3 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-  workflow_dispatch:
-    inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-        type: choice
-        options:
-          - info
-          - warning
-          - debug
-      print_tags:
-        description: 'True to print to STDOUT'
-        required: true
-        type: boolean
-      tags:
-        description: 'Test scenario tags'
-        required: true
-        type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
-
-jobs:
-  print-tag:
-    runs-on: ubuntu-latest
-    if: ${{ inputs.print_tags }} 
-    steps:
-      - name: Print the input tag to STDOUT
-        run: echo  The tags are ${{ inputs.tags }} 
