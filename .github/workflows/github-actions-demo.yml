@@ -18,3 +18,9 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
+  
+  Print-System-Info:
+    runs-on: ubuntu-latest
+    steps:
+    - run: echo "System info:"
+    - run: uname -a
