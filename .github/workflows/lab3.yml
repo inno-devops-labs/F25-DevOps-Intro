@@ -1,0 +1,11 @@
+name: Lab3 workflow
+
+on: 
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello
+        run: echo "Hello from GitHub Actions!"
