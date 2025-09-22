@@ -1,0 +1,21 @@
+name: Lab3 workflow
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello
+        run: echo "Hello from GitHub Actions!"
+
+      - name: Show system info
+        run: |
+          echo "OS"
+          uname -a
+          echo "CPU"
+          lscpu
+          echo "Memory"
+          free -h
