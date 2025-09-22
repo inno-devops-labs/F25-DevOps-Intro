@@ -4,8 +4,8 @@
 ![topic](https://img.shields.io/badge/topic-Git%20%26%20Version%20Control-blue)
 ![points](https://img.shields.io/badge/points-10-orange)
 
-> Goal: Deepen Git fundamentals: object model, reset/reflog, history visualization, tagging, and modern commands (`git switch`/`git restore`).  
-> Deliverable: A PR from `feature/lab2` with `labs/submission2.md` including outputs and brief explanations for each task.
+> **Goal:** Deepen Git fundamentals: object model, reset/reflog, history visualization, tagging, and modern commands (`git switch`/`git restore`).  
+> **Deliverable:** A PR from `feature/lab2` to the course repo with `labs/submission2.md` including outputs and brief explanations for each task. Submit the PR link via Moodle.
 
 ---
 
@@ -24,48 +24,69 @@ In this lab you will practice:
 
 ### Task 1 — Git Object Model Exploration (2 pts)
 
-**Objective**: Understand how Git stores data as blobs, trees, and commits.
+**Objective:** Understand how Git stores data as blobs, trees, and commits.
 
-1. Make a few commits in this repo.  
-2. Inspect objects with `git cat-file`:
+#### 1.1: Create Sample Commits
 
-    ```sh
-    # Replace with real object IDs from your repo
-    git cat-file -p <blob_hash>
-    git cat-file -p <tree_hash>
-    git cat-file -p <commit_hash>
-    ```
+1. **Make Sample Commits:**
 
-3. In `labs/submission2.md`, include the outputs and a 1–2 sentence explanation of what each object type represents.
+   ```sh
+   # Create a few test commits for analysis
+   echo "Test content" > test.txt
+   git add test.txt
+   git commit -m "Add test file"
+   ```
+
+#### 1.2: Inspect Git Objects
+
+1. **Examine Git Objects:**
+
+   ```sh
+   # Replace with real object IDs from your repo
+   git cat-file -p <blob_hash>
+   git cat-file -p <tree_hash>
+   git cat-file -p <commit_hash>
+   ```
+
+In `labs/submission2.md`, document:
+- All command outputs for object inspection.
+- A 1–2 sentence explanation of what each object type represents.
+- Analysis of how Git stores repository data.
+- Example of blob, tree, and commit object content.
 
 ---
 
 ### Task 2 — Reset and Reflog Recovery (3 pts)
 
-**Objective**: Practice using `git reset` variants and `git reflog` to navigate history.
+**Objective:** Practice using `git reset` variants and `git reflog` to navigate history.
 
-1. Create a practice branch and several commits:
+#### 2.1: Create Practice Branch
 
-    ```sh
-    git switch -c git-reset-practice
-    echo "First commit" > file.txt && git add file.txt && git commit -m "First commit"
-    echo "Second commit" >> file.txt && git add file.txt && git commit -m "Second commit"
-    echo "Third commit"  >> file.txt && git add file.txt && git commit -m "Third commit"
-    ```
+1. **Set Up Practice Environment:**
 
-2. Explore reset modes and reflog:
+   ```sh
+   git switch -c git-reset-practice
+   echo "First commit" > file.txt && git add file.txt && git commit -m "First commit"
+   echo "Second commit" >> file.txt && git add file.txt && git commit -m "Second commit"
+   echo "Third commit"  >> file.txt && git add file.txt && git commit -m "Third commit"
+   ```
 
-    ```sh
-    git reset --soft HEAD~1   # move HEAD; keep index & working tree
-    git reset --hard HEAD~1   # move HEAD; discard index & working tree
-    git reflog                # view HEAD movement
-    git reset --hard <reflog_hash>  # recover a previous state
-    ```
+#### 2.2: Explore Reset Modes
 
-3. In `labs/submission2.md`, document:
-- The exact commands you ran and why.  
-- Snippets of `git log --oneline` and `git reflog`.  
+1. **Test Different Reset Options:**
+
+   ```sh
+   git reset --soft HEAD~1   # move HEAD; keep index & working tree
+   git reset --hard HEAD~1   # move HEAD; discard index & working tree
+   git reflog                # view HEAD movement
+   git reset --hard <reflog_hash>  # recover a previous state
+   ```
+
+In `labs/submission2.md`, document:
+- The exact commands you ran and why.
+- Snippets of `git log --oneline` and `git reflog`.
 - What changed in the working tree, index, and history for each reset.
+- Analysis of recovery process using reflog.
 
 ---
 
@@ -162,7 +183,7 @@ Include the commands you ran, `git status`/`git branch` outputs, and 2–3 sente
     git push -u origin feature/lab2
     ```
 
-2. Open a PR from `feature/lab2` → `main` in your fork.  
+2. Open a PR from your fork's `feature/lab2` branch → **course repository's main branch**.  
 3. In the PR description, include:
 
     ```text
@@ -173,14 +194,17 @@ Include the commands you ran, `git status`/`git branch` outputs, and 2–3 sente
     - [x] Task 5 done
     ```
 
+4. **Copy the PR URL** and submit it via **Moodle before the deadline**.
+
 ---
 
 ## Acceptance Criteria
 
-- Branch `feature/lab2` exists with commits for each task.  
-- File `labs/submission2.md` contains required outputs/explanations for Tasks 1–5.  
-- A tag (e.g., `v1.0.0`) is created locally and pushed to origin.  
-- PR from `feature/lab2` → `main` is open in your fork.
+- ✅ Branch `feature/lab2` exists with commits for each task.
+- ✅ File `labs/submission2.md` contains required outputs/explanations for Tasks 1–5.
+- ✅ A tag (e.g., `v1.0.0`) is created locally and pushed to origin.
+- ✅ PR from `feature/lab2` → **course repo main branch** is open.
+- ✅ PR link submitted via Moodle before the deadline.
 
 ---
 
@@ -203,10 +227,16 @@ Include the commands you ran, `git status`/`git branch` outputs, and 2–3 sente
 
 ---
 
-### Guidelines
+## Guidelines
 
-- Use clear commit messages and keep screenshots/snippets concise.  
-- Organize files under `labs/` and name them predictably.  
-- Prefer `git switch`/`git restore` over legacy `git checkout` for clarity.
+- Use clear Markdown headers to organize sections in `submission2.md`.
+- Include both command outputs and written analysis for each task.
+- Use clear commit messages and keep screenshots/snippets concise.
+- Organize files under `labs/` and name them predictably.
+
+> **Git Command Notes**  
+> 1. Prefer `git switch`/`git restore` over legacy `git checkout` for clarity.  
+> 2. Always check `git status` after reset operations to understand the state.  
+> 3. Use `git reflog` for recovery when commits seem lost.
 
 > Note: Actively explore and document your findings to gain hands-on experience with Git.
