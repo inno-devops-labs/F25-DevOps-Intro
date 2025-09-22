@@ -1,0 +1,21 @@
+name: Lab 3 — Quickstart
+
+on:
+  push:
+    branches:
+      - '**'   # run on any branch push
+
+jobs:
+  quickstart:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Print context
+        run: |
+          echo "👋 Hello from ${{ github.workflow }}"
+          echo "Triggered by: ${{ github.event_name }}"
+          echo "Actor: ${{ github.actor }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "SHA: ${{ github.sha }}"
