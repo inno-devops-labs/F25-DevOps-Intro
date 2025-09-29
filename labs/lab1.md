@@ -25,6 +25,7 @@ These are the foundation of collaboration and trust in DevOps teams.
 
 **Objective:** Understand the importance of signed commits and set up SSH commit signature verification.
 
+
 #### 1.1: Explore the Importance of Signed Commits
 
 1. **Research Commit Signing Benefits:**
@@ -75,6 +76,7 @@ In `labs/submission1.md`, document:
 **Objective:** Standardize pull requests with a reusable template so reviewers see the same sections and a clear checklist every time.
 
 > ⚠️ **One-time bootstrap:** GitHub loads PR templates from the **default branch of the base repo** (your fork’s `main`). Add the template to `main` first, then open your lab PR from `feature/lab1`.
+
 
 #### 2.1: Create PR Template
 
@@ -148,6 +150,8 @@ In `labs/submission1.md`, document:
    ```text
    - [x] Task 1 done
    - [x] Task 2 done
+   - [x] Screenshots attached (if applicable)
+   ```
    ```
 
 4. **Copy the PR URL** and submit it via **Moodle before the deadline**.
@@ -164,6 +168,11 @@ In `labs/submission1.md`, document:
 
 ---
 
+## Hints
+
+> 🔐 **Signed commit not showing “Verified”?** Ensure the email on your commits matches your GitHub account and that `gpg.format` is set to `ssh`.
+> 📝 **Template didn’t load?** Confirm the path is `.github/pull_request_template.md` **on `main`** before opening the PR; re-open the PR description after adding it.
+> ✂️ **Keep it short:** Reviewers read many PRs—concise templates get filled, long ones get ignored.
 ## Guidelines
 
 - Use clear Markdown headers to organize sections in `submission1.md`.
