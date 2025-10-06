@@ -44,6 +44,8 @@ In `labs/submission5.md`, document:
 - VirtualBox version number
 - Any installation issues encountered
 
+---
+
 ### Task 2 — Ubuntu VM and System Analysis (5 pts)
 
 **Objective:** Deploy Ubuntu 24.04 LTS in VirtualBox and discover tools to analyze system information.
@@ -71,6 +73,17 @@ In `labs/submission5.md`, document:
    - **Operating System**: Ubuntu version, kernel information
    - **Virtualization Detection**: Confirmation system is running in a VM
 
+   <details>
+   <summary>💡 Where to start your research</summary>
+
+   - Check `/proc` filesystem for hardware information
+   - Explore standard Linux system commands
+   - Look for commands starting with `ls`, `ip`, `df`, `free`, `uname`
+   - Search for tools that can detect virtualization
+   - Use `man` pages and `--help` flags to understand commands
+
+   </details>
+
 In `labs/submission5.md`, document:
 - VM configuration specifications used (RAM, storage, CPU cores)
 - For each information type above:
@@ -78,18 +91,6 @@ In `labs/submission5.md`, document:
   - Command(s) used
   - Complete command output
 - Brief reflection on which tools were most useful and why
-
----
-
-## Acceptance Criteria
-
-- ✅ Branch `feature/lab5` exists with commits for each task.
-- ✅ File `labs/submission5.md` contains required outputs and analysis for Tasks 1-2.
-- ✅ VirtualBox is successfully installed and verified.
-- ✅ Ubuntu 24.04 LTS VM is deployed and documented.
-- ✅ System analysis shows comprehensive hardware and OS information.
-- ✅ PR from `feature/lab5` → **course repo main branch** is open.
-- ✅ PR link submitted via Moodle before the deadline.
 
 ---
 
@@ -118,6 +119,18 @@ In `labs/submission5.md`, document:
 
 ---
 
+## Acceptance Criteria
+
+- ✅ Branch `feature/lab5` exists with commits for each task.
+- ✅ File `labs/submission5.md` contains required outputs and analysis for Tasks 1-2.
+- ✅ VirtualBox is successfully installed and verified.
+- ✅ Ubuntu 24.04 LTS VM is deployed and documented.
+- ✅ System analysis shows comprehensive hardware and OS information.
+- ✅ PR from `feature/lab5` → **course repo main branch** is open.
+- ✅ PR link submitted via Moodle before the deadline.
+
+---
+
 ## Rubric (10 pts)
 
 | Criterion                                      | Points |
@@ -134,13 +147,31 @@ In `labs/submission5.md`, document:
 - Include complete command outputs with proper formatting.
 - Document your tool discovery process and reasoning.
 
-> **Installation Notes**  
-> 1. Download software only from official websites.  
-> 2. Use default installation settings unless you have specific requirements.  
-> 3. Ensure your host system has sufficient resources before creating VMs.
+<details>
+<summary>📚 Helpful Resources</summary>
 
-> **Tool Discovery Tips**  
-> 1. Start with built-in Linux commands before installing additional packages.  
-> 2. Use package managers (apt) to search for system information tools.  
-> 3. Test multiple tools and compare their outputs.  
-> 4. Document which tools provide the most useful information.
+- [VirtualBox Documentation](https://www.virtualbox.org/wiki/Documentation)
+- [Ubuntu Server Guide](https://ubuntu.com/server/docs)
+- [Linux Command Line Basics](https://ubuntu.com/tutorials/command-line-for-beginners)
+
+</details>
+
+<details>
+<summary>💡 Installation Tips</summary>
+
+1. Download software only from official websites.
+2. Use default installation settings unless you have specific requirements.
+3. Ensure your host system has sufficient resources before creating VMs.
+4. Enable virtualization in BIOS/UEFI if VM performance is poor.
+
+</details>
+
+<details>
+<summary>🔍 Tool Discovery Tips</summary>
+
+1. Start with built-in Linux commands before installing additional packages.
+2. Use package managers (apt) to search for system information tools.
+3. Test multiple tools and compare their outputs.
+4. Document which tools provide the most useful information.
+
+</details>

@@ -30,29 +30,44 @@ These are the foundation of collaboration and trust in DevOps teams.
 1. **Research Commit Signing Benefits:**
 
    - Research why commit signing is crucial for verifying the integrity and authenticity of commits.
-   - Resources:
-     - [GitHub Docs on SSH Commit Verification](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
-     - [Atlassian Guide to SSH and Git](https://confluence.atlassian.com/bitbucketserver/sign-commits-and-tags-with-ssh-keys-1305971205.html)
+   
+   <details>
+   <summary>📚 Recommended Resources</summary>
+   
+   - [GitHub Docs on SSH Commit Verification](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
+   - [Atlassian Guide to SSH and Git](https://confluence.atlassian.com/bitbucketserver/sign-commits-and-tags-with-ssh-keys-1305971205.html)
+   
+   </details>
 
 #### 1.2: Set Up SSH Commit Signing
 
-1. **Generate SSH Key (Option A - Recommended):**
+<details>
+<summary>🔑 Option A: Generate New SSH Key (Recommended)</summary>
 
-   ```sh
-   ssh-keygen -t ed25519 -C "your_email@example.com"
-   ```
+```sh
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
 
-2. **Use Existing SSH Key (Option B):**
+Follow the prompts to save the key (default location is fine) and optionally set a passphrase.
 
-   - Use an existing SSH key and add it to GitHub.
+</details>
 
-3. **Configure Git for SSH Signing:**
+<details>
+<summary>🔑 Option B: Use Existing SSH Key</summary>
+
+If you already have an SSH key for GitHub authentication, you can reuse it for commit signing. Just ensure it's added to your GitHub account under **Settings → SSH and GPG keys**.
+
+</details>
+
+1. **Configure Git for SSH Signing:**
 
    ```sh
    git config --global user.signingkey <YOUR_SSH_KEY>
    git config --global commit.gpgSign true
    git config --global gpg.format ssh
    ```
+
+   Replace `<YOUR_SSH_KEY>` with your public key path (e.g., `~/.ssh/id_ed25519.pub`).
 
 #### 1.3: Make a Signed Commit
 
@@ -80,29 +95,54 @@ In `labs/submission1.md`, document:
 
 1. **Template Location and Setup:**
 
-   ```bash
-   # Path: .github/pull_request_template.md
-   # Commit message: docs: add PR template
-   ```
+   Create a file at `.github/pull_request_template.md` in your repository.
 
-2. **Template Options:**
+2. **Choose Your Approach:**
 
-   - **Option A (discover):** Find a concise PR template from a reputable open-source project or GitHub docs and adapt it.
-   - **Option B (write your own):** Create a minimal template with these sections and a 3-item checklist:
-     - Sections: **Goal**, **Changes**, **Testing**
-     - Checklist (3 items): clear title, docs/README updated if needed, no secrets/large temp files
-   - Keep it short and practical (aim for ≤ 30 lines).
+   <details>
+   <summary>📝 Option A: Discover and Adapt</summary>
+   
+   Find a concise PR template from a reputable open-source project or GitHub docs and adapt it to your needs. Look for templates that include:
+   - Clear sections (Goal/Purpose, Changes, Testing)
+   - A practical checklist
+   - Concise format (≤ 30 lines)
+   
+   </details>
+
+   <details>
+   <summary>📝 Option B: Write Your Own</summary>
+   
+   Create a minimal template with these sections:
+   
+   **Sections:**
+   - **Goal** — What does this PR accomplish?
+   - **Changes** — What was modified?
+   - **Testing** — How was it verified?
+   
+   **Checklist** (3 items):
+   - [ ] Clear, descriptive PR title
+   - [ ] Documentation/README updated (if needed)
+   - [ ] No secrets or large temporary files committed
+   
+   Keep it short and practical (≤ 30 lines).
+   
+   </details>
 
 #### 2.2: Create Lab Branch and Open PR
 
 1. **Branch Creation:**
 
+   <details>
+   <summary>💻 Commands</summary>
+   
    ```bash
    git checkout -b feature/lab1
    git add .
    git commit -m "docs: add lab1 submission stub"
    git push -u origin feature/lab1
    ```
+   
+   </details>
 
 #### 2.3: Verify Template Application
 
@@ -117,15 +157,6 @@ In `labs/submission1.md`, document:
 - Evidence that `.github/pull_request_template.md` exists on main branch.
 - Analysis of how PR templates improve collaboration.
 - Note any challenges encountered during setup.
-
-## Acceptance Criteria
-
-- ✅ Branch `feature/lab1` exists with commits for each task.
-- ✅ File `labs/submission1.md` contains required outputs and analysis for Tasks 1-2.
-- ✅ At least one commit shows **"Verified"** (signed via SSH) on GitHub.
-- ✅ File `.github/pull_request_template.md` exists on the **main** branch.
-- ✅ PR from `feature/lab1` → **course repo main branch** is open.
-- ✅ PR link submitted via Moodle before the deadline.
 
 ---
 
@@ -154,6 +185,17 @@ In `labs/submission1.md`, document:
 
 ---
 
+## Acceptance Criteria
+
+- ✅ Branch `feature/lab1` exists with commits for each task.
+- ✅ File `labs/submission1.md` contains required outputs and analysis for Tasks 1-2.
+- ✅ At least one commit shows **"Verified"** (signed via SSH) on GitHub.
+- ✅ File `.github/pull_request_template.md` exists on the **main** branch.
+- ✅ PR from `feature/lab1` → **course repo main branch** is open.
+- ✅ PR link submitted via Moodle before the deadline.
+
+---
+
 ## Rubric (10 pts)
 
 | Criterion                                   | Points |
@@ -171,12 +213,22 @@ In `labs/submission1.md`, document:
 - Document template setup process and verification steps.
 - Ensure commit signing is working correctly with verification screenshots.
 
-> **Security Notes**  
-> 1. Ensure the email on your commits matches your GitHub account for proper verification.  
-> 2. Keep SSH keys secure and never commit private keys to repositories.  
-> 3. Verify `gpg.format` is set to `ssh` for proper signing configuration.
+<details>
+<summary>🔒 Security Notes</summary>
 
-> **Template Notes**  
-> 1. Confirm the path is `.github/pull_request_template.md` **on `main`** before opening the PR.  
-> 2. Re-open the PR description after adding the template if it didn't auto-fill.  
-> 3. Keep templates short—reviewers read many PRs, concise templates get filled, long ones get ignored.
+1. Ensure the email on your commits matches your GitHub account for proper verification.
+2. Keep SSH keys secure and never commit private keys to repositories.
+3. Verify `gpg.format` is set to `ssh` for proper signing configuration.
+4. Use a passphrase for your SSH keys in production environments.
+
+</details>
+
+<details>
+<summary>📋 Template Best Practices</summary>
+
+1. Confirm the path is `.github/pull_request_template.md` **on `main`** before opening the PR.
+2. Re-open the PR description editor after adding the template if it didn't auto-fill.
+3. Keep templates short—reviewers read many PRs, concise templates get filled, long ones get ignored.
+4. Test your template by opening a test PR before submitting the lab.
+
+</details>
