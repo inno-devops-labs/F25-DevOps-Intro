@@ -9,6 +9,7 @@
 **Note:** Running on macOS (Darwin), systemd commands not available. Using macOS equivalents.
 
 **Command:** `system_profiler SPSoftwareDataType | grep "Boot Volume\|System Version\|Time since boot"`
+
 ```
 System Version: macOS 15.6.1 (24G90)
 Boot Volume: Macintosh HD
@@ -20,11 +21,13 @@ Time since boot: 16 days, 7 hours
 #### System Load Check
 
 **Command:** `uptime`
+
 ```
 0:59  up 16 days, 7 hrs, 1 user, load averages: 5.31 4.67 4.10
 ```
 
 **Command:** `w`
+
 ```
 0:59  up 16 days, 7 hrs, 1 user, load averages: 5.21 4.66 4.10
 USER       TTY      FROM    LOGIN@  IDLE WHAT
@@ -38,6 +41,7 @@ theother_a console  -      21Sep25 16days -
 #### Memory-Intensive Processes
 
 **Command:** `ps -eo pid,ppid,comm,%mem,%cpu | sort -k4 -nr | head -n 6`
+
 ```
 45156     1 /Applications/Te  5.2  14.6
 45462 45451 /Applications/Cu  4.2  37.9
@@ -50,6 +54,7 @@ theother_a console  -      21Sep25 16days -
 #### CPU-Intensive Processes
 
 **Command:** `ps -eo pid,ppid,comm,%mem,%cpu | sort -k5 -nr | head -n 6`
+
 ```
 45462 45451 /Applications/Cu  4.2 191.9
 30819     1 /System/Library/  0.3  65.2
@@ -59,7 +64,8 @@ theother_a console  -      21Sep25 16days -
   805     1 /System/Library/  0.5   7.3
 ```
 
-**Analysis:** 
+**Analysis:**
+
 - Top memory consumer: Process 45156 (Application) using 5.2% memory
 - Top CPU consumer: Process 45462 (Application) using 191.9% CPU (multi-core usage)
 - Several system processes and applications are actively running
@@ -71,6 +77,7 @@ theother_a console  -      21Sep25 16days -
 **Note:** macOS uses launchd instead of systemd. Using launchctl to list services.
 
 **Command:** `launchctl list | head -10`
+
 ```
 PID	Status	Label
 -	0	com.apple.SafariHistoryServiceAgent
@@ -87,6 +94,7 @@ PID	Status	Label
 #### Apple System Services
 
 **Command:** `launchctl list | grep -E "com.apple" | head -8`
+
 ```
 -	0	com.apple.SafariHistoryServiceAgent
 -	-9	com.apple.progressd
@@ -98,7 +106,8 @@ PID	Status	Label
 -	0	com.apple.quicklook
 ```
 
-**Analysis:** 
+**Analysis:**
+
 - Status -9 indicates services that have exited
 - Status 0 indicates successfully running services
 - PID shows process ID for running services
@@ -109,6 +118,7 @@ PID	Status	Label
 #### Current Login Activity
 
 **Command:** `who -a`
+
 ```
                  system boot  Sep 21 17:59 
 theother_archee  console      Sep 21 18:00 
@@ -119,6 +129,7 @@ theother_archee  ttys015      Sep 23 23:08 	term=0 exit=0
 #### Recent Login History
 
 **Command:** `last -n 5`
+
 ```
 theother_archee ttys015                         Tue Sep 23 23:08 - 23:08  (00:00)
 theother_archee console                         Sun Sep 21 18:00   still logged in
@@ -128,6 +139,7 @@ reboot time                                Wed Sep 17 00:25
 ```
 
 **Analysis:**
+
 - User theother_archee logged in via console since Sep 21 18:00 (still active)
 - Brief terminal session on Sep 23 23:08 (lasted 0 minutes)
 - System rebooted on Sep 21 17:59
@@ -140,6 +152,7 @@ reboot time                                Wed Sep 17 00:25
 **Note:** macOS doesn't have `free` command. Using `vm_stat` and `system_profiler` instead.
 
 **Command:** `system_profiler SPHardwareDataType | grep "Memory:"`
+
 ```
 Memory: 16 GB
 ```
@@ -147,6 +160,7 @@ Memory: 16 GB
 #### Detailed Memory Information
 
 **Command:** `vm_stat`
+
 ```
 Mach Virtual Memory Statistics: (page size of 16384 bytes)
 Pages free:                                8401.
@@ -174,6 +188,7 @@ Swapouts:                             154221794.
 ```
 
 **Memory Analysis:**
+
 - Total Memory: 16 GB
 - Page size: 16,384 bytes (16 KB)
 - Free pages: 8,401 (≈ 137.6 MB free)
@@ -189,6 +204,7 @@ Swapouts:                             154221794.
 #### Traceroute to GitHub
 
 **Command:** `traceroute github.com`
+
 ```
 traceroute to github.com (140.82.121.3), 64 hops max, 40 byte packets
  1  * * *
@@ -215,6 +231,7 @@ traceroute to github.com (140.82.121.3), 64 hops max, 40 byte packets
 #### DNS Resolution Check
 
 **Command:** `dig github.com`
+
 ```
 ; <<>> DiG 9.10.6 <<>> github.com
 ;; global options: +cmd
@@ -237,6 +254,7 @@ github.com.		47	IN	A	140.82.121.3
 ```
 
 **Analysis:**
+
 - Traceroute shows timeouts (*) at all hops - likely due to ICMP filtering by routers
 - DNS resolution successful: github.com resolves to 140.82.121.3
 - Using Cloudflare DNS server (1.1.1.1)
@@ -251,12 +269,14 @@ github.com.		47	IN	A	140.82.121.3
 
 **Alternative approach - DNS query generation:**
 **Command:** `dig google.com +short`
+
 ```
 forcesafesearch.google.com.
 216.239.38.XXX
 ```
 
 **Analysis:** Generated DNS traffic by performing lookup. In a real tcpdump capture, we would see:
+
 - UDP packets on port 53
 - Query packets (client → DNS server)
 - Response packets (DNS server → client)
@@ -267,6 +287,7 @@ forcesafesearch.google.com.
 #### PTR Lookup for 8.8.4.4
 
 **Command:** `dig -x 8.8.4.4`
+
 ```
 ; <<>> DiG 9.10.6 <<>> -x 8.8.4.4
 ;; global options: +cmd
@@ -291,6 +312,7 @@ forcesafesearch.google.com.
 #### PTR Lookup for 1.1.2.2
 
 **Command:** `dig -x 1.1.2.2`
+
 ```
 ; <<>> DiG 9.10.6 <<>> -x 1.1.2.2
 ;; global options: +cmd
@@ -313,6 +335,7 @@ forcesafesearch.google.com.
 ```
 
 **Reverse DNS Analysis:**
+
 - 8.8.4.4 successfully resolves to dns.google. (Google's public DNS)
 - 1.1.2.2 returns NXDOMAIN (no PTR record exists)
 - Query times: 37ms vs 424ms (successful vs failed lookup)
@@ -329,17 +352,20 @@ forcesafesearch.google.com.
 
 ### Resource Utilization Patterns
 
-**System Load:**
-- High CPU load averages (5.31, 4.67, 4.10) indicating heavy system usage
-- Memory pressure evident from compression/decompression statistics
-- Multiple applications consuming significant resources
+**System Load:
+
+* CPU is basically on fire (averages: 5.31, 4.67, 4.10).
+* Memory’s struggling — lots of compress/decompress going on.
+* A bunch of apps are hogging resources like it’s their full-time job.
 
 **Network Behavior:**
-- DNS resolution functional despite network security restrictions
-- Reverse DNS inconsistent (some IPs have PTR records, others don't)
-- Network path tracing blocked by security policies (common in corporate/secure environments)
+
+* DNS works fine, even with security rules in place.
+* Reverse DNS is a bit hit-or-miss (some IPs answer, some don’t bother).
+* Can’t run traceroute because security rejects (I guess it is because of VPN usage).
 
 **Security Observations:**
+
 - ICMP filtering prevents traceroute visibility
 - System services properly managed by launchd
 - Long-running stable system (16+ days uptime)
@@ -347,6 +373,7 @@ forcesafesearch.google.com.
 ### Security Considerations
 
 All sensitive information has been sanitized according to security best practices:
+
 - IP addresses have last octet replaced with XXX where appropriate
 - Sensitive process names have been generalized
 - Internal network topology details have been omitted
