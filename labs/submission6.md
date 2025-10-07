@@ -368,3 +368,212 @@ All listed differences shows `C` predicate, indicating that this files/directori
 
 - More time-consuming for simple changes
 - Need to understand layer optimization
+
+## Task 3 — Container Networking & Service Discovery
+
+### 3.1: Create Custom Network
+
+**Create Bridge Network:**
+
+Commands:
+
+```bash
+docker network create lab_network
+docker network ls
+```
+
+Output:
+
+```bash
+> 40d06cefd2ce2afbd8e561fde72791200c1821e090cc90c6c05fda946549333d
+> NETWORK ID     NAME          DRIVER    SCOPE
+17368f681773   bridge        bridge    local
+07b957ec2fdf   host          host      local
+40d06cefd2ce   lab_network   bridge    local
+5b40e4ab87be   none          null      local
+```
+
+**Deploy Connected Containers:**
+
+Commands:
+
+```bash
+docker run -dit --network lab_network --name container1 alpine ash
+docker run -dit --network lab_network --name container2 alpine ash
+```
+
+Output:
+
+```bash
+> 7092eca639c548e268748297959877aa95907803606626e3d9eb664890dc9049 # id of cont1
+> 52004a3a51a3730ac75ab83644aeb2547b4a32ef6e560ef106d72b82a12b7525 # id of cont2
+```
+
+### 3.2: Test Connectivity and DNS
+
+**Test Container-to-Container Communication:**
+
+Command:
+
+```bash
+docker exec container1 ping -c 3 container2
+```
+
+Output:
+
+```bash
+PING container2 (172.18.0.3): 56 data bytes
+64 bytes from 172.18.0.3: seq=0 ttl=64 time=0.097 ms
+64 bytes from 172.18.0.3: seq=1 ttl=64 time=0.164 ms
+64 bytes from 172.18.0.3: seq=2 ttl=64 time=0.180 ms
+
+--- container2 ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max = 0.097/0.147/0.180 ms
+```
+
+**Inspect Network Details:**
+
+Command:
+
+```bash
+docker network inspect lab_network
+```
+
+Output:
+
+```bash
+[
+    {
+        "Name": "lab_network",
+        "Id": "40d06cefd2ce2afbd8e561fde72791200c1821e090cc90c6c05fda946549333d",
+        "Created": "2025-10-07T19:34:56.133096421Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "52004a3a51a3730ac75ab83644aeb2547b4a32ef6e560ef106d72b82a12b7525": {
+                "Name": "container2",
+                "EndpointID": "11bfc21aa8734d49a657515231467b412ff69fb9f276e8046b526245b2f468a8",
+                "MacAddress": "76:1d:76:c6:f6:e3",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            },
+            "7092eca639c548e268748297959877aa95907803606626e3d9eb664890dc9049": {
+                "Name": "container1",
+                "EndpointID": "cc7d4412dabe917fbec8e36bfcc3c0ce11d63fea9370ed35b9ceea31873762cc",
+                "MacAddress": "7e:73:6b:31:1b:c4",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {
+            "com.docker.network.enable_ipv4": "true",
+            "com.docker.network.enable_ipv6": "false"
+        },
+        "Labels": {}
+    }
+]
+```
+
+**Check DNS Resolution:**
+
+Command:
+
+```bash
+docker exec container1 nslookup container2
+```
+
+Output:
+
+```bash
+Server:         127.0.0.11
+Address:        127.0.0.11:53
+
+Non-authoritative answer:
+
+Non-authoritative answer:
+Name:   container2
+Address: 172.18.0.3
+```
+
+### Task 3 Analysis
+
+#### Output of ping command showing successful connectivity
+
+Output provided above.
+The ping command successfully connected container1 to container2:
+
+- **Target**: container2 resolved to IP address 172.18.0.3
+- **Response times**: 0.097ms, 0.164ms, 0.180ms (average: 0.147ms)
+- **Success rate**: 100% (3 packets transmitted, 3 received, 0% packet loss)
+- **Network performance**: Very low latency, indicating containers are on same host
+
+#### Network inspection output showing both containers' IP addresses
+
+Output provided above.
+
+From the network inspection JSON output:
+
+- **container1**: 172.18.0.2/16 (MAC: 7e:73:6b:31:1b:c4)
+- **container2**: 172.18.0.3/16 (MAC: 76:1d:76:c6:f6:e3)
+- **Network subnet**: 172.18.0.0/16
+- **Gateway**: 172.18.0.1
+- **Network ID**: 40d06cefd2ce2afbd8e561fde72791200c1821e090cc90c6c05fda946549333d
+
+#### DNS resolution output
+
+Output provided above.
+The nslookup command showed:
+
+- **DNS Server**: 127.0.0.11:53 (Docker's embedded DNS server)
+- **Resolution**: container2 → 172.18.0.3
+- **Response type**: Non-authoritative answer
+
+#### Analysis: How does Docker's internal DNS enable container-to-container communication by name?
+
+Docker's internal DNS service provides automatic service discovery within user-defined networks by:
+
+- **Embedded DNS Server**: Docker runs an internal DNS server (typically at 127.0.0.11) within each container
+- **Name Resolution**: Container names are automatically registered as DNS entries in the network
+- **Dynamic Updates**: When containers join or leave the network, DNS records are updated automatically
+- **Network Isolation**: DNS resolution is scoped to the specific network, preventing cross-network name conflicts
+- **Backward Compatibility**: Works with standard networking tools and applications expecting DNS resolution
+
+#### Comparison: What advantages does user-defined bridge networks provide over the default bridge network?
+
+**User-Defined Bridge Network Advantages:**
+
+1. **Automatic DNS Resolution**: Container names automatically resolve to IP addresses
+2. **Better Isolation**: Network-level isolation between different applications
+3. **Configurable**: Can specify subnet, IP range, and gateway
+4. **Hot-pluggable**: Containers can be connected/disconnected without stopping
+5. **Advanced Configuration**: Support for custom bridge settings and options
+
+**Default Bridge Network Limitations:**
+
+1. **No Automatic DNS**: Must use `--link` (deprecated) or IP addresses for communication
+2. **Single Network**: All containers share the same network space
+3. **Limited Isolation**: Less secure separation between containers
+4. **Legacy Design**: Based on older Docker networking concepts
+5. **Manual IP Management**: Requires manual tracking of container IP addresses
+
+User-defined networks provide a more modern, scalable, and secure approach to container networking.
