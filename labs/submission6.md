@@ -132,7 +132,7 @@ Untagged: ubuntu:latest
 Deleted: sha256:728785b59223d755e3e5c5af178fab1be7031f3522c5ccd7a0b32b80d8248123
 ```
 
-### Analysis
+### Task 1 Analysis
 
 ### Output of docker ps -a and docker images, same as Error message from the first removal attempt, provided above
 
@@ -166,3 +166,205 @@ The exported tar file contains:
 - The complete image structure needed to recreate the image on another system
 
 The tar file is typically larger than the reported image size because it includes uncompressed layers and metadata overhead.
+
+## Task 2 — Custom Image Creation & Analysis
+
+### 2.1: Deploy and Customize Nginx
+
+**Deploy Nginx Container:**
+
+Commands:
+
+```bash
+docker run -d -p 80:80 --name nginx_container nginx
+curl http://localhost
+```
+
+Output:
+
+```bash
+> Unable to find image 'nginx:latest' locally
+latest: Pulling from library/nginx
+5f648e62e9ca: Pull complete 
+bb2e7b5dc9bc: Pull complete 
+f0838cc8bade: Pull complete 
+08b278be6f74: Pull complete 
+f4e51325a7cb: Pull complete 
+4c5dff34614b: Pull complete 
+e2a2ff429ed9: Pull complete 
+Digest: sha256:8adbdcb969e2676478ee2c7ad333956f0c8e0e4c5a7463f4611d7a2e7a7ff5dc
+Status: Downloaded newer image for nginx:latest
+c8ae211a51e94edd5911cedd9abafa68c7594d9c5cdb812fb9c4728175e51a0f
+
+> <!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+**Create Custom HTML:**
+
+Created file `index.html` with content:
+
+```html
+<html>
+<head>
+<title>The best</title>
+</head>
+<body>
+<h1>website</h1>
+</body>
+</html>
+```
+
+**Copy Custom Content:**
+
+Commands:
+
+```bash
+docker cp index.html nginx_container:/usr/share/nginx/html/
+curl http://localhost
+```
+
+Output:
+
+```bash
+> Successfully copied 2.05kB to nginx_container:/usr/share/nginx/html/
+> <html>
+<head>
+<title>The best</title>
+</head>
+<body>
+<h1>website</h1>
+</body>
+</html>%  
+```
+
+### 2.2: Create and Test Custom Image
+
+**Commit Container to Image:**
+
+Commands:
+
+```bash
+docker commit nginx_container my_website:latest
+docker images my_website
+```
+
+Output:
+
+```bash
+> sha256:42f8d80c0d9216839d02b812853392bfd804e8acd4d79eb32082d92a55cd08cc
+> REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
+my_website   latest    42f8d80c0d92   10 seconds ago   281MB
+```
+
+**Remove Original and Deploy from Custom Image:**
+
+Commands:
+
+```bash
+docker rm -f nginx_container
+docker run -d -p 80:80 --name my_website_container my_website:latest
+curl http://localhost
+```
+
+Output:
+
+```bash
+> nginx_container
+> 9337c00f50349d9e6285839a2dc7ce5802469ea6274647f0f82484b00d5ef78c
+> <html>
+<head>
+<title>The best</title>
+</head>
+<body>
+<h1>website</h1>
+</body>
+</html>% 
+```
+
+**Analyze Filesystem Changes:**
+
+Command:
+
+```bash
+docker diff my_website_container
+```
+
+Output:
+
+```bash
+C /run
+C /run/nginx.pid
+C /etc
+C /etc/nginx
+C /etc/nginx/conf.d
+C /etc/nginx/conf.d/default.conf
+```
+
+### Task 2 Analysis
+
+#### Screenshot or output of original Nginx welcome page
+
+Provided above
+
+#### Custom HTML content and verification
+
+The custom `index.html` file contains a simple HTML structure with "The best" as the title and "website" as the main heading. After copying to the container and testing with curl, the output showed this custom content instead of the default Nginx welcome page. Output of `curl http://localhost` command provided above.
+
+#### Output of docker diff analysis
+
+Result of `docker diff my_website_container` also provided above.
+
+#### Analysis: Explain the diff output (A=Added, C=Changed, D=Deleted)
+
+All listed differences shows `C` predicate, indicating that this files/directories were changed.
+
+#### Reflection: Advantages and disadvantages of docker commit vs Dockerfile
+
+**Docker Commit Advantages:**
+
+- Quick and easy for one-off customizations
+- Captures exact current state of container
+- Useful for debugging and experimentation
+- No need to write Dockerfile syntax
+
+**Docker Commit Disadvantages:**
+
+- Not reproducible or version-controlled
+- No documentation of what changes were made
+- Creates larger images with unnecessary layers
+- Not suitable for production workflows
+- Difficult to maintain and update
+
+**Dockerfile Advantages:**
+
+- Reproducible and version-controlled
+- Shows exactly what was done
+- Optimized layer caching and smaller images
+- Easy to modify and rebuild
+
+**Dockerfile Disadvantages:**
+
+- More time-consuming for simple changes
+- Need to understand layer optimization
