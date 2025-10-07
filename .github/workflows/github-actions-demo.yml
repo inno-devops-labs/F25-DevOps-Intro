@@ -12,7 +12,12 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Print GitHub context
-        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "🎉 The job was manually triggered using workflow_dispatch"
+          else
+            echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+          fi
       
       - name: List files in the repository
         run: |
