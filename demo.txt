@@ -1,3 +1,0 @@
-scratch
-staged changes
-New line
