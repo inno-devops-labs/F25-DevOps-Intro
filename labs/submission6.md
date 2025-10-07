@@ -577,3 +577,176 @@ Docker's internal DNS service provides automatic service discovery within user-d
 5. **Manual IP Management**: Requires manual tracking of container IP addresses
 
 User-defined networks provide a more modern, scalable, and secure approach to container networking.
+
+## Task 4 — Data Persistence with Volumes
+
+### 4.1: Create and Use Volume
+
+**Create Named Volume:**
+
+Commands:
+
+```bash
+docker volume create app_data
+docker volume ls
+```
+
+Output:
+
+```bash
+> app_data
+> DRIVER    VOLUME NAME
+local     app_data
+local     datasetpreparing_weaviate_data
+```
+
+**Deploy Container with Volume:**
+
+Command:
+
+```bash
+docker run -d -p 80:80 -v app_data:/usr/share/nginx/html --name web nginx
+```
+
+Output:
+
+```bash
+c4cb32981f0eb4daf908b07b2fb2ac33dc8bc4cdab43ee0df7228120e3c0a766
+```
+
+**Add Custom Content:**
+
+Updated file `index.html` with content:
+
+```html
+<html><body><h1>Persistent Data</h1></body></html>
+```
+
+Commands:
+
+```bash
+docker cp index.html web:/usr/share/nginx/html/
+curl http://localhost
+```
+
+Output:
+
+```bash
+> Successfully copied 2.05kB to web:/usr/share/nginx/html/
+> <html><body><h1>Persistent Data</h1></body></html>%  
+```
+
+### 4.2: Verify Persistence
+
+**Destroy and Recreate Container:**
+
+Commands:
+
+```bash
+docker stop web && docker rm web
+docker run -d -p 80:80 -v app_data:/usr/share/nginx/html --name web_new nginx
+curl http://localhost
+```
+
+Output:
+
+```bash
+> web
+> web
+> efc0021e99cc479beb77de5fa3cdd336ec72cf21df1c52f21c9744332042bfd4
+> <html><body><h1>Persistent Data</h1></body></html>%   
+```
+
+**Inspect Volume:**
+
+Command:
+
+```bash
+docker volume inspect app_data
+```
+
+Output:
+
+```bash
+[
+    {
+        "CreatedAt": "2025-10-07T19:47:04Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/app_data/_data",
+        "Name": "app_data",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+```
+
+### Task 4 Analysis
+
+#### Custom HTML content used
+
+Provided above
+
+#### Output of curl showing content persists after container recreation
+
+Provided above
+
+#### Volume inspection output showing mount point
+
+Provided above
+
+#### Analysis: Why is data persistence important in containerized applications?
+
+Data persistence is crucial in containerized applications for several reasons:
+
+1. **Stateful Applications**: Many applications need to maintain state (databases, user uploads, configuration files) that must survive container restarts
+2. **Container Lifecycle Independence**: Containers are ephemeral by design - they can be stopped, removed, and recreated at any time
+3. **Data Safety**: Without persistence, all data created inside a container is lost when the container is removed
+4. **Scalability**: Enables horizontal scaling where multiple container instances can share the same persistent data
+5. **Backup and Recovery**: Persistent volumes can be backed up and restored independently of containers
+6. **Development Workflow**: Allows developers to update container images while preserving application data
+7. **Production Reliability**: Critical for production systems where data loss is unacceptable
+
+#### Comparison: Explain the differences between volumes, bind mounts, and container storage. When would you use each?
+
+**Docker Volumes:**
+
+- **Management**: Fully managed by Docker
+- **Location**: Stored in Docker's internal directory structure
+- **Portability**: Work across different Docker hosts and platforms
+- **Performance**: Optimized for container workloads
+- **Use Cases**:
+  - Database storage
+  - Application data that needs to persist
+  - Sharing data between containers
+  - Production deployments
+
+**Bind Mounts:**
+
+- **Management**: Direct mapping to host filesystem paths
+- **Location**: Any directory on the host system
+- **Portability**: Host-dependent (paths must exist on target host)
+- **Performance**: Direct filesystem access (can be faster)
+- **Use Cases**:
+  - Development environments (live code editing)
+  - Configuration files from host
+  - Logs that need host access
+  - Integration with host-based tools
+
+**Container Storage:**
+
+- **Management**: Part of container's writable layer
+- **Location**: Inside container filesystem
+- **Portability**: Lost when container is removed
+- **Performance**: Varies by storage driver
+- **Use Cases**:
+  - Temporary files and caches
+  - Application logs (if externally collected)
+  - Stateless applications
+  - Processing temporary data
+
+**Usage:**
+
+- **Use Volumes**: When you need persistent, portable data storage managed by Docker
+- **Use Bind Mounts**: When you need direct host filesystem access or development workflows
+- **Use Container Storage**: When data is temporary or the application is truly stateless
