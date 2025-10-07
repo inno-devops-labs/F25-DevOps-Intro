@@ -57,6 +57,16 @@ on:
   workflow_dispatch:
 ```
 
+**Important Discovery**: Initially, the "Run workflow" button was not visible in the GitHub Actions UI. After researching the issue, I discovered that **workflow_dispatch can only be triggered manually from the UI when the workflow file exists in the default branch (main)**.
+
+To resolve this:
+
+1. I copied the workflow file from `feature/lab3` to the `main` branch
+2. After pushing to main, the "Run workflow" button appeared in the Actions UI
+3. I was then able to select the `feature/lab3` branch and trigger the workflow manually
+
+This is a key limitation of GitHub Actions: manual triggers via UI require the workflow definition to be present in the repository's default branch, even if you want to run it on a different branch. Or I understood it not correctly, but I really tried to do it without changing main.
+
 ### 2.2: System Information Collection
 
 Added a step to gather system information:
