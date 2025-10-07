@@ -110,31 +110,77 @@ PID	Status	Label
 
 **Command:** `who -a`
 ```
-[Output will be added here]
+                 system boot  Sep 21 17:59 
+theother_archee  console      Sep 21 18:00 
+theother_archee  ttys015      Sep 23 23:08 	term=0 exit=0
+   .       run-level 3
 ```
 
 #### Recent Login History
 
 **Command:** `last -n 5`
 ```
-[Output will be added here]
+theother_archee ttys015                         Tue Sep 23 23:08 - 23:08  (00:00)
+theother_archee console                         Sun Sep 21 18:00   still logged in
+reboot time                                Sun Sep 21 17:59
+theother_archee console                         Wed Sep 17 00:27 - 17:59 (4+17:32)
+reboot time                                Wed Sep 17 00:25
 ```
+
+**Analysis:**
+- User theother_archee logged in via console since Sep 21 18:00 (still active)
+- Brief terminal session on Sep 23 23:08 (lasted 0 minutes)
+- System rebooted on Sep 21 17:59
+- Previous session lasted over 4 days before reboot
 
 ### 1.5: Memory Analysis
 
 #### Memory Allocation Overview
 
-**Command:** `free -h`
+**Note:** macOS doesn't have `free` command. Using `vm_stat` and `system_profiler` instead.
+
+**Command:** `system_profiler SPHardwareDataType | grep "Memory:"`
 ```
-[Output will be added here]
+Memory: 16 GB
 ```
 
 #### Detailed Memory Information
 
-**Command:** `cat /proc/meminfo | grep -e MemTotal -e SwapTotal -e MemAvailable`
+**Command:** `vm_stat`
 ```
-[Output will be added here]
+Mach Virtual Memory Statistics: (page size of 16384 bytes)
+Pages free:                                8401.
+Pages active:                            279841.
+Pages inactive:                          276594.
+Pages speculative:                         3164.
+Pages throttled:                              0.
+Pages wired down:                        173043.
+Pages purgeable:                           3279.
+"Translation faults":                3655954495.
+Pages copy-on-write:                  112203228.
+Pages zero filled:                   1502194173.
+Pages reactivated:                    666925788.
+Pages purged:                          79590776.
+File-backed pages:                       163066.
+Anonymous pages:                         396533.
+Pages stored in compressor:              982146.
+Pages occupied by compressor:            266330.
+Decompressions:                      1866502411.
+Compressions:                        2056482764.
+Pageins:                              122005821.
+Pageouts:                               1775048.
+Swapins:                              142043743.
+Swapouts:                             154221794.
 ```
+
+**Memory Analysis:**
+- Total Memory: 16 GB
+- Page size: 16,384 bytes (16 KB)
+- Free pages: 8,401 (≈ 137.6 MB free)
+- Active pages: 279,841 (≈ 4.6 GB active)
+- Inactive pages: 276,594 (≈ 4.5 GB inactive)
+- Wired pages: 173,043 (≈ 2.8 GB wired/kernel)
+- Memory pressure indicated by high compression/decompression activity
 
 ## Task 2 — Networking Analysis
 
@@ -144,24 +190,77 @@ PID	Status	Label
 
 **Command:** `traceroute github.com`
 ```
-[Output will be added here]
+traceroute to github.com (140.82.121.3), 64 hops max, 40 byte packets
+ 1  * * *
+ 2  * * *
+ 3  * * *
+ 4  * * *
+ 5  * * *
+ 6  * * *
+ 7  * * *
+ 8  * * *
+ 9  * * *
+10  * * *
+11  * * *
+12  * * *
+13  * * *
+14  * * *
+15  * * *
+16  * * *
+17  * * *
+18  * * *
+[Truncated - all hops showed timeouts]
 ```
 
 #### DNS Resolution Check
 
 **Command:** `dig github.com`
 ```
-[Output will be added here]
+; <<>> DiG 9.10.6 <<>> github.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 51290
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;github.com.			IN	A
+
+;; ANSWER SECTION:
+github.com.		47	IN	A	140.82.121.3
+
+;; Query time: 134 msec
+;; SERVER: 1.1.1.1#53(1.1.1.1)
+;; WHEN: Wed Oct 08 01:08:07 MSK 2025
+;; MSG SIZE  rcvd: 55
 ```
+
+**Analysis:**
+- Traceroute shows timeouts (*) at all hops - likely due to ICMP filtering by routers
+- DNS resolution successful: github.com resolves to 140.82.121.3
+- Using Cloudflare DNS server (1.1.1.1)
+- Query time: 134ms (reasonable response time)
+- TTL: 47 seconds for the A record
 
 ### 2.2: Packet Capture
 
 #### DNS Traffic Capture
 
-**Command:** `sudo timeout 10 tcpdump -c 5 -i any 'port 53' -nn`
+**Note:** tcpdump requires sudo privileges which are not available in this environment.
+
+**Alternative approach - DNS query generation:**
+**Command:** `dig google.com +short`
 ```
-[Output will be added here]
+forcesafesearch.google.com.
+216.239.38.XXX
 ```
+
+**Analysis:** Generated DNS traffic by performing lookup. In a real tcpdump capture, we would see:
+- UDP packets on port 53
+- Query packets (client → DNS server)
+- Response packets (DNS server → client)
+- Packet structure with DNS headers and payload
 
 ### 2.3: Reverse DNS
 
@@ -169,28 +268,81 @@ PID	Status	Label
 
 **Command:** `dig -x 8.8.4.4`
 ```
-[Output will be added here]
+; <<>> DiG 9.10.6 <<>> -x 8.8.4.4
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 61687
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;4.4.8.8.in-addr.arpa.		IN	PTR
+
+;; ANSWER SECTION:
+4.4.8.8.in-addr.arpa.	5917	IN	PTR	dns.google.
+
+;; Query time: 37 msec
+;; SERVER: 1.1.1.1#53(1.1.1.1)
+;; WHEN: Wed Oct 08 01:08:56 MSK 2025
+;; MSG SIZE  rcvd: 73
 ```
 
 #### PTR Lookup for 1.1.2.2
 
 **Command:** `dig -x 1.1.2.2`
 ```
-[Output will be added here]
+; <<>> DiG 9.10.6 <<>> -x 1.1.2.2
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NXDOMAIN, id: 46941
+;; flags: qr rd ra ad; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;2.2.1.1.in-addr.arpa.		IN	PTR
+
+;; AUTHORITY SECTION:
+1.in-addr.arpa.		1748	IN	SOA	ns.apnic.net. read-txt-record-of-zone-first-dns-admin.apnic.net. 22966 7200 1800 604800 3600
+
+;; Query time: 424 msec
+;; SERVER: 1.1.1.1#53(1.1.1.1)
+;; WHEN: Wed Oct 08 01:09:03 MSK 2025
+;; MSG SIZE  rcvd: 137
 ```
+
+**Reverse DNS Analysis:**
+- 8.8.4.4 successfully resolves to dns.google. (Google's public DNS)
+- 1.1.2.2 returns NXDOMAIN (no PTR record exists)
+- Query times: 37ms vs 424ms (successful vs failed lookup)
+- Different response sizes: 73 bytes vs 137 bytes
 
 ## Analysis and Observations
 
 ### Key Findings
 
-- **Top Memory-Consuming Process:** [To be determined]
-- **Boot Performance:** [To be analyzed]
-- **Network Path Insights:** [To be documented]
-- **DNS Patterns:** [To be analyzed]
+- **Top Memory-Consuming Process:** Process 45156 (Application) using 5.2% memory
+- **Boot Performance:** System uptime 16 days, 7 hours - excellent stability
+- **Network Path Insights:** Traceroute blocked by firewalls, but DNS resolution working properly
+- **DNS Patterns:** Using Cloudflare DNS (1.1.1.1), query times 37-424ms depending on record availability
 
 ### Resource Utilization Patterns
 
-[Analysis will be added after collecting all data]
+**System Load:**
+- High CPU load averages (5.31, 4.67, 4.10) indicating heavy system usage
+- Memory pressure evident from compression/decompression statistics
+- Multiple applications consuming significant resources
+
+**Network Behavior:**
+- DNS resolution functional despite network security restrictions
+- Reverse DNS inconsistent (some IPs have PTR records, others don't)
+- Network path tracing blocked by security policies (common in corporate/secure environments)
+
+**Security Observations:**
+- ICMP filtering prevents traceroute visibility
+- System services properly managed by launchd
+- Long-running stable system (16+ days uptime)
 
 ### Security Considerations
 
