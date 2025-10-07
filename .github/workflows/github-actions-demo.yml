@@ -1,0 +1,30 @@
+name: GitHub Actions Demo
+
+on:
+  push:
+    branches: [ "feature/lab3" ]
+  workflow_dispatch:
+
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Print GitHub context
+        run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      
+      - name: System Information
+        run: |
+          echo "🖥️ Runner Environment Information:"
+          echo "OS: $(uname -a)"
+          echo "CPU Info:"
+          lscpu
+          echo "Memory Info:"
+          free -h
+          echo "Disk Info:"
+          df -h
