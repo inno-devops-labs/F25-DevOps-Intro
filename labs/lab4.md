@@ -1,4 +1,3 @@
-
 # Lab 4 — Operating Systems & Networking
 
 ![difficulty](https://img.shields.io/badge/difficulty-beginner-success)
@@ -111,6 +110,16 @@ In `labs/submission4.md`, document:
    sudo timeout 10 tcpdump -c 5 -i any 'port 53' -nn
    ```
 
+   <details>
+   <summary>🔍 Understanding tcpdump flags</summary>
+
+   - `-c 5`: Capture 5 packets
+   - `-i any`: Listen on all interfaces
+   - `port 53`: Filter for DNS traffic
+   - `-nn`: Don't resolve hostnames/ports (faster)
+
+   </details>
+
 #### 2.3: Reverse DNS
 
 1. **Perform PTR Lookups:**
@@ -126,16 +135,6 @@ In `labs/submission4.md`, document:
 - Analysis of DNS query/response patterns.
 - Comparison of reverse lookup results.
 - One example DNS query from packet capture (sanitize IPs if needed).
-
----
-
-## Acceptance Criteria
-
-- ✅ Branch `feature/lab4` exists with commits for each task.
-- ✅ File `labs/submission4.md` contains required outputs and analysis for Tasks 1-2.
-- ✅ All sensitive information (IPs, process names) is properly sanitized in documentation.
-- ✅ PR from `feature/lab4` → **course repo main branch** is open.
-- ✅ PR link submitted via Moodle before the deadline.
 
 ---
 
@@ -164,6 +163,16 @@ In `labs/submission4.md`, document:
 
 ---
 
+## Acceptance Criteria
+
+- ✅ Branch `feature/lab4` exists with commits for each task.
+- ✅ File `labs/submission4.md` contains required outputs and analysis for Tasks 1-2.
+- ✅ All sensitive information (IPs, process names) is properly sanitized in documentation.
+- ✅ PR from `feature/lab4` → **course repo main branch** is open.
+- ✅ PR link submitted via Moodle before the deadline.
+
+---
+
 ## Rubric (10 pts)
 
 | Criterion                                    | Points |
@@ -181,6 +190,20 @@ In `labs/submission4.md`, document:
 - For packet capture, document at least one DNS query example.
 - Sanitize sensitive information: replace last octet of IPs with XXX, avoid sensitive process names.
 
-> **Security Notes**  
-> 1. Sanitize IPs in packet capture outputs (replace last octet with XXX).  
-> 2. Avoid including sensitive process names in documentation.
+<details>
+<summary>🔒 Security Best Practices</summary>
+
+1. Sanitize IPs in packet capture outputs (replace last octet with XXX).
+2. Avoid including sensitive process names in documentation.
+3. Do not expose internal network topology details publicly.
+
+</details>
+
+<details>
+<summary>📚 Helpful Resources</summary>
+
+- [systemd-analyze man page](https://www.freedesktop.org/software/systemd/man/systemd-analyze.html)
+- [tcpdump tutorial](https://danielmiessler.com/study/tcpdump/)
+- [dig command examples](https://linux.die.net/man/1/dig)
+
+</details>
