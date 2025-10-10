@@ -141,3 +141,217 @@ The exported tar file contains:
 
 This tar file can be used to **restore the exact image** on another Docker host using `docker load -i ubuntu_image.tar`.
 
+
+
+## Task 2 — Custom Image Creation & Analysis
+
+### 2.1: Deploy and Customize Nginx
+
+```bash
+> docker run -d -p 80:80 --name nginx_container nginx
+Unable to find image 'nginx:latest' locally
+latest: Pulling from library/nginx
+e363695fcb93: Pull complete 
+f3ff5b8e6cee: Pull complete 
+edd736256ac6: Pull complete 
+348644581cc5: Pull complete 
+e3e8c796c790: Pull complete 
+54959f07be7f: Pull complete 
+3766556f3395: Pull complete 
+Digest: sha256:3b7732505933ca591ce4a6d860cb713ad96a3176b82f7979a8dfa9973486a0d6
+Status: Downloaded newer image for nginx:latest
+134f2067691fe5f1603ef0d318004e06aa3d4fb8ef660be9c4e50b4e1b897658
+```
+
+```bash
+> curl http://localhost
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+**Create Custom HTML:**
+
+Created file `index.html` with content:
+
+```html
+<html>
+<head>
+<title>The best</title>
+</head>
+<body>
+<h1>website</h1>
+</body>
+</html>
+```
+
+
+**Copy Custom Content:**
+
+```bash
+> docker cp index.html nginx_container:/usr/share/nginx/html/
+Successfully copied 2.05kB to nginx_container:/usr/share/nginx/html/
+```
+
+```bash
+> curl http://localhost
+<html>
+<head>
+<title>The best</title>
+</head>
+<body>
+<h1>website</h1>
+</body>
+</html>%      
+```
+
+
+### 2.2: Create and Test Custom Image
+
+**Commit Container to Image:**
+
+```bash
+> docker commit nginx_container my_website:latest
+sha256:b14eae5ef16a25ca01656c29aee9ec227f0c5e10b12d5547b2844a4e63a85107
+```
+
+
+```bash
+> docker images my_website
+REPOSITORY   TAG       IMAGE ID       CREATED          SIZE
+my_website   latest    b14eae5ef16a   31 seconds ago   180MB
+```
+
+**Remove Original and Deploy from Custom Image:**
+
+```bash
+> docker rm -f nginx_container
+nginx_container
+```
+
+```bash
+> docker run -d -p 80:80 --name my_website_container my_website:latest
+946791727e41ba69b810c96576c13e32c124b78ec9e21a0cc7d59a79795f8526
+```
+
+```bash
+> curl http://localhost
+<html>
+<head>
+<title>The best</title>
+</head>
+<body>
+<h1>website</h1>
+</body>
+</html>%  
+```
+
+
+**Analyze Filesystem Changes:**
+
+```bash
+> docker diff my_website_container
+C /etc
+C /etc/nginx
+C /etc/nginx/conf.d
+C /etc/nginx/conf.d/default.conf
+C /run
+C /run/nginx.pid
+```
+
+
+### Analysis
+
+#### Screenshot or output of original Nginx welcome page
+
+Demonstrated above
+
+#### Custom HTML content and verification
+
+**Custom HTML Content:**
+```html
+<html>
+<head>
+<title>The best</title>
+</head>
+<body>
+<h1>website</h1>
+</body>
+</html>
+```
+
+**Verification:** Successfully copied to container and verified via curl showing the custom content replaced the default Nginx welcome page.
+
+#### Output of docker diff analysis
+
+Demonstrated above
+
+#### Analysis: Explain the diff output (A=Added, C=Changed, D=Deleted)
+
+The `docker diff` output shows:
+
+- **C /etc**: Changed directory - likely configuration modifications
+- **C /etc/nginx**: Changed nginx configuration directory
+- **C /etc/nginx/conf.d**: Changed nginx configuration files directory
+- **C /etc/nginx/conf.d/default.conf**: Changed the default nginx configuration file
+- **C /run**: Changed runtime directory - nginx creates PID files here
+- **C /run/nginx.pid**: Changed nginx process ID file
+
+**Key Observations:**
+- **No "A" (Added) entries**: The custom HTML file wasn't detected as added because it replaced an existing file
+- **No "D" (Deleted) entries**: No files were deleted during the customization
+- **All "C" (Changed) entries**: All changes are modifications to existing files/directories
+- **Nginx-specific changes**: The diff shows nginx configuration and runtime files being modified
+
+#### Reflection: Advantages and disadvantages of ```docker commit``` vs Dockerfile for image creation
+
+**Advantages of `docker commit`:**
+- **Quick and simple**: Fast way to create images from running containers
+- **Interactive development**: Can test changes in real-time before committing
+- **No Dockerfile knowledge required**: Easy for beginners to create custom images
+- **Immediate results**: Can see changes instantly and commit when satisfied
+
+**Disadvantages of `docker commit`:**
+- **No version control**: Changes aren't documented or tracked
+- **Not reproducible**: Can't recreate the exact same image on another system
+- **Larger image size**: Includes all intermediate changes and temporary files
+- **No audit trail**: Can't see what changes were made or when
+- **Hard to maintain**: Difficult to update or modify the image later
+- **Security concerns**: May include sensitive data or unnecessary files
+
+**Advantages of Dockerfile:**
+- **Version control**: Changes are documented and trackable
+- **Reproducible**: Can create identical images on any system
+- **Layered approach**: Each instruction creates a new layer for optimization
+- **Automated builds**: Can be integrated into CI/CD pipelines
+- **Best practices**: Enforces proper image building practices
+- **Smaller images**: Can optimize layers and remove unnecessary files
+
+**Disadvantages of Dockerfile:**
+- **Learning curve**: Requires understanding Dockerfile syntax and best practices
+- **Less interactive**: Can't test changes in real-time during development
+- **More complex**: Requires planning and understanding of the build process
+
+**When to use each:**
+- **Use `docker commit`**: For quick prototyping, testing, or one-off customizations
+- **Use Dockerfile**: For production images, team development, or when reproducibility is important
