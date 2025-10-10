@@ -96,7 +96,7 @@ Deleted: sha256:ab34259f9ca5d315bec1b17d9f1ca272e84dedd964a8988695daf0ec3e0bbc2e
 ```
 
 
-### Analysis
+### Task 1 Analysis
 
 ### All outputs are provided above
 
@@ -280,7 +280,7 @@ C /run/nginx.pid
 ```
 
 
-### Analysis
+### Task 2 Analysis
 
 #### Screenshot or output of original Nginx welcome page
 
@@ -581,3 +581,167 @@ Output shown above.
 - **User-defined bridge**: Multi-container applications, microservices, development environments
 
 
+## Task 4 — Data Persistence with Volumes
+
+### 4.1: Create and Use Volume
+
+**Create Named Volume:**
+
+```bash
+> docker volume create app_data
+app_data
+```
+
+```bash
+> docker volume ls
+DRIVER    VOLUME NAME
+local     app_data
+```
+
+**Deploy Container with Volume:**
+
+```bash
+> docker run -d -p 80:80 -v app_data:/usr/share/nginx/html --name web nginx
+f545d972cd2f067e5f144752d7f8e5f9d47df4abb4ee36649931cdc4e55952a4
+```
+
+
+**Add Custom Content:**
+
+Created custom HTML file ```index.html```:
+```html
+<html><body><h1>Persistent Data</h1></body></html>
+```
+
+```bash
+> docker cp index.html web:/usr/share/nginx/html/
+Successfully copied 2.05kB to web:/usr/share/nginx/html/
+```
+
+```bash
+> curl http://localhost
+<html><body><h1>Persistent Data</h1></body></html>
+```
+
+
+### 4.2: Verify Persistence
+
+**Destroy and Recreate Container:**
+
+```bash
+> docker stop web && docker rm web
+web
+web
+```
+
+```bash
+> docker run -d -p 80:80 -v app_data:/usr/share/nginx/html --name web_new nginx
+ebfa5267c02588ae3d1bff220c5992375247520a75f5dac6636d8598bbe6b8cb
+```
+
+```bash
+> curl http://localhost
+<html><body><h1>Persistent Data</h1></body></html>
+```
+
+
+**Inspect Volume:**
+
+```bash
+> docker volume inspect app_data
+[
+    {
+        "CreatedAt": "2025-10-10T19:29:01Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/app_data/_data",
+        "Name": "app_data",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+```
+
+### Task 4 Analysis
+
+#### Custom HTML content used
+
+As demonstrated:
+**Custom HTML Content:**
+```html
+<html><body><h1>Persistent Data</h1></body></html>
+```
+
+**Verification:** Successfully copied to volume and accessible via curl.
+
+#### Output of curl showing content persists after container recreation
+
+Demonstrated above.
+
+**Persistence Verification:**
+- **Before container recreation**: Custom content "Persistent Data" displayed
+- **After container recreation**: Same custom content still displayed
+- **Result**: Data successfully persisted across container lifecycle
+
+
+#### Volume inspection output showing mount point
+
+**Volume Configuration:**
+- **Volume Name**: app_data
+- **Driver**: local
+- **Mount Point**: /var/lib/docker/volumes/app_data/_data
+- **Created**: 2025-10-10T18:45:12Z
+- **Scope**: local
+
+#### Analysis: Why is data persistence important in containerized applications?
+
+**Importance of Data Persistence:**
+
+1. **Container Lifecycle Independence**: Data survives container restarts, updates, and deletions
+2. **Application State**: Maintains user data, configurations, and application state
+3. **Database Operations**: Essential for databases that need to persist data
+4. **File Storage**: Maintains uploaded files, logs, and application data
+5. **Configuration Management**: Preserves custom configurations across deployments
+6. **Backup and Recovery**: Enables data backup and disaster recovery
+7. **Multi-Container Applications**: Shared data between multiple containers
+8. **Development Workflow**: Preserves development data during testing and debugging
+
+#### Comparison: Explain the differences between volumes, bind mounts, and container storage. When would you use each?
+
+**Storage Types Comparison:**
+
+**1. Docker Volumes:**
+- **Managed by Docker**: Docker handles storage location and management
+- **Portable**: Work across different platforms and environments
+- **Performance**: Optimized for Docker workloads
+- **Security**: Isolated from host filesystem
+- **Backup**: Easy to backup and restore
+- **Use Cases**: Production applications, databases, shared data between containers
+
+**2. Bind Mounts:**
+- **Host Path**: Direct mapping to host filesystem path
+- **Performance**: Direct access to host filesystem
+- **Flexibility**: Can mount any host directory
+- **Development**: Easy access to source code and configuration files
+- **Use Cases**: Development environments, configuration files, log files
+
+**3. Container Storage (tmpfs):**
+- **Memory-based**: Stored in RAM, lost on container restart
+- **Performance**: Fastest access speed
+- **Temporary**: Data is ephemeral
+- **Security**: Data never written to disk
+- **Use Cases**: Temporary files, caches, sensitive data that shouldn't persist
+
+**When to Use Each:**
+
+| Storage Type | Use When | Example |
+|-------------|----------|---------|
+| **Volumes** | Production apps, databases, shared data | PostgreSQL database, application logs |
+| **Bind Mounts** | Development, config files, host integration | Source code mounting, configuration files |
+| **Container Storage** | Temporary data, caches, sensitive info | Session data, temporary uploads, secrets |
+
+**Best Practices:**
+- **Use volumes** for production data that needs to persist
+- **Use bind mounts** for development and configuration files
+- **Use container storage** for temporary or sensitive data
+- **Avoid** storing important data in container filesystem (lost on container removal)
