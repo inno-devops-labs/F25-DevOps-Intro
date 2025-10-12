@@ -22,7 +22,7 @@ In this lab you will practice:
 
 ## Tasks
 
-### Task 1 — First GitHub Actions Workflow (4 pts)
+### Task 1 — First GitHub Actions Workflow (6 pts)
 
 **Objective:** Set up a basic workflow that runs on push and prints basic info.
 
@@ -56,8 +56,14 @@ In `labs/submission3.md`, document:
 
 1. **Extend Workflow with Manual Trigger:**
 
-   - Extend your existing GitHub Actions workflow to include a [manual trigger](https://docs.github.com/en/actions/using-workflows/triggering-a-workflow#defining-inputs-for-manually-triggered-workflows).
-   - Inputs for manually triggered workflows are not needed, so you can skip them.
+   <details>
+   <summary>📚 Where to find manual trigger documentation</summary>
+
+   - [Triggering a workflow - GitHub Docs](https://docs.github.com/en/actions/using-workflows/triggering-a-workflow#defining-inputs-for-manually-triggered-workflows)
+   - Look for `workflow_dispatch` event in the documentation
+   - Inputs for manually triggered workflows are not needed, so you can skip them
+
+   </details>
 
 #### 2.2: Test Manual Dispatch
 
@@ -77,16 +83,6 @@ In `labs/submission3.md`, document:
 - The gathered system information from runner.
 - Comparison of manual vs automatic workflow triggers.
 - Analysis of runner environment and capabilities.
-
----
-
-## Acceptance Criteria
-
-- ✅ Branch `feature/lab3` exists with commits for each task.
-- ✅ File `labs/submission3.md` contains required outputs and analysis for Tasks 1-2.
-- ✅ Workflow runs successfully on `push` and via `workflow_dispatch`.
-- ✅ PR from `feature/lab3` → **course repo main branch** is open.
-- ✅ PR link submitted via Moodle before the deadline.
 
 ---
 
@@ -115,6 +111,16 @@ In `labs/submission3.md`, document:
 
 ---
 
+## Acceptance Criteria
+
+- ✅ Branch `feature/lab3` exists with commits for each task.
+- ✅ File `labs/submission3.md` contains required outputs and analysis for Tasks 1-2.
+- ✅ Workflow runs successfully on `push` and via `workflow_dispatch`.
+- ✅ PR from `feature/lab3` → **course repo main branch** is open.
+- ✅ PR link submitted via Moodle before the deadline.
+
+---
+
 ## Rubric (10 pts)
 
 | Criterion                                      | Points |
@@ -132,7 +138,21 @@ In `labs/submission3.md`, document:
 - Document workflow setup process and system information gathering.
 - Include links to successful workflow runs or screenshots as evidence.
 
-> **GitHub Actions Notes**  
-> 1. Ensure workflow files are placed in `.github/workflows/` directory.  
-> 2. Verify workflow syntax using GitHub's built-in validator.  
-> 3. Monitor workflow runs in the Actions tab for debugging.
+<details>
+<summary>📚 Helpful Resources</summary>
+
+- [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [Workflow Syntax Reference](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions)
+- [Understanding GitHub Actions](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions)
+
+</details>
+
+<details>
+<summary>💡 GitHub Actions Tips</summary>
+
+1. Ensure workflow files are placed in `.github/workflows/` directory.
+2. Verify workflow syntax using GitHub's built-in validator.
+3. Monitor workflow runs in the Actions tab for debugging.
+4. Check the Actions tab immediately after pushing to see if the workflow triggered.
+
+</details>
