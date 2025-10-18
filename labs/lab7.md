@@ -27,25 +27,17 @@ These simulations mirror how real GitOps tools (ArgoCD, Flux) work, helping you 
 
 **Objective:** Simulate how GitOps operators continuously synchronize cluster state with Git as the source of truth.
 
-#### 1.1: Initialize Git Repository and Desired State
+#### 1.1: Setup Desired State Configuration
 
-1. **Initialize Repository:**
-
-   ```bash
-   mkdir gitops-lab && cd gitops-lab
-   git init
-   ```
-
-2. **Create Desired State (Source of Truth):**
+1. **Create Desired State (Source of Truth):**
 
    ```bash
    echo "version: 1.0" > desired-state.txt
    echo "app: myapp" >> desired-state.txt
    echo "replicas: 3" >> desired-state.txt
-   git add . && git commit -m "feat: initial desired state"
    ```
 
-3. **Simulate Current Cluster State:**
+2. **Simulate Current Cluster State:**
 
    ```bash
    cp desired-state.txt current-state.txt
@@ -168,8 +160,6 @@ In `labs/submission7.md`, document:
    fi
    ```
 
-2. **Make Script Executable:**
-
    ```bash
    chmod +x healthcheck.sh
    ```
@@ -252,15 +242,7 @@ In `labs/submission7.md`, document:
 
 ## How to Submit
 
-1. Create a branch for this lab and work on your tasks:
-
-   ```bash
-   git switch -c feature/lab7
-   # Complete all tasks, scripts in gitops-lab/, document in labs/submission7.md
-   git add labs/submission7.md
-   git commit -m "docs: add lab7 submission"
-   git push -u origin feature/lab7
-   ```
+1. Complete all tasks and document your work in `labs/submission7.md`
 
 2. Open a PR from your fork's `feature/lab7` branch → **course repository's main branch**.
 
