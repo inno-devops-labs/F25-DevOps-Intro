@@ -77,7 +77,7 @@ replicas: 3
 ```
 Tue Oct 21 10:19:33 AM UTC 2025 - ✅ States synchronized
 ```
-![alt text](image-1.png)
+![alt text](labs/img/image-1.png)
 
 
 **Drift command executed:**
@@ -86,7 +86,7 @@ echo "replicas: 10" >> current-state.txt
 ```
 
 **Current state after creating drift:**
-![alt text](image.png)
+![alt text](labs/img/image.png)
 
 
 
@@ -104,9 +104,9 @@ replicas: 3
 
 Screenshots:
 
-![alt text](<Снимок экрана 2025-10-21 164720.png>) ![alt text](<Снимок экрана 2025-10-21 164730.png>) ![alt text](<Снимок экрана 2025-10-21 164733.png>)
+![alt text](labs/img/image11.png)
 
-![alt text](image-2.png)
+![alt text](labs/img/image-2.png)
 
 
 
@@ -133,7 +133,7 @@ Created Executable skript named `healthcheck.sh` following instractions.
 
 1. **Test Healthy State:**
 
-    ![alt text](image-3.png)
+    ![alt text](labs/img/image-3.png)
 
 2. **Simulate Configuration Drift + 3. Run Health Check on Drifted State:**
 
@@ -144,7 +144,7 @@ Created Executable skript named `healthcheck.sh` following instractions.
    ```
     **Output showing "CRITICAL" status when drift is detected:**
 
-    ![alt text](image-5.png)
+    ![alt text](labs/img/image-5.png)
 
 4. **Fix Drift and Verify:**
 
@@ -161,11 +161,11 @@ Created Executable skript named `healthcheck.sh` following instractions.
     Tue Oct 21 02:37:01 PM UTC 2025 - ✅ Reconciliation complete
     Tue Oct 21 02:37:01 PM UTC 2025 - ✅ OK: States synchronized
     ```
-    ![alt text](image-6.png)
+    ![alt text](labs/img/image-6.png)
 
 #### 2.3: Continuous Health Monitoring
 
-![alt text](image-7.png)
+![alt text](labs/img/image-7.png)
 
 **Output from monitor.sh:** 
 10 consecutive monitoring cycles running every 3 seconds, each performing health check + reconciliation.
@@ -187,3 +187,7 @@ Even small changes produce different hashes, ensuring drift detection without co
 **Comparison: How does this relate to GitOps tools like ArgoCD's "Sync Status"?**
 
 Our `healthcheck.sh` with **MD5** checks works like **ArgoCD's** sync status monitoring - both find configuration **mismatches** and provide health status visibility. The `monitor.sh` script acts like ArgoCD's continuous checks, and our `health.log` gives the same visibility as ArgoCD's dashboard. This shows the main GitOps principle of continuous state verification
+
+---
+
+for pic fix
