@@ -10,22 +10,25 @@
 
 **Screenshot:**
 
-![htop screenshot](https://github.com/user-attachments/assets/a95e51c4-54c0-4c4f-bead-d24d8b72b20a)
+![htop cpu screenshot](https://github.com/user-attachments/assets/d31317ac-2010-4899-bca0-d47d62c886e2)
 
 **Top 3 CPU-consuming processes:**
-1. `htop` — 10.7%  
-2. `/usr/lib/xorg/Xorg` — 1.3%  
-3. `/snap/firefox/usr/lib/firefox/firefox` — 1.3%
+1. `/usr/bin/gnome-shell` — 10.2%  
+2. `/usr/lib/xorg/Xorg` — 5.1%
+3. `jetbrains-toolbox` — 5.1%
+
+![htop memory screenshot](https://github.com/user-attachments/assets/be7451dd-6ef2-4b08-80a8-42bd53098341)
 
 **Top 3 memory-consuming processes:**
-1. `jetbrains-toolbox` — 1.7%  
-2. `firefox` — 1.3%  
-3. `Xorg` — 0.7%
+1. `firefox/...` — 3.7%  
+2. `firefox/...` — 3.7%  
+3. `firefox/...` — 3.7%
 
 **Analysis:**
 
-Overall CPU and memory utilization are very low, with only lightweight desktop applications active.
-No single process shows excessive resource usage. The system is mostly idle and stable.
+CPU load is moderate, mostly coming from the graphical environment (gnome-shell, Xorg) and background apps like JetBrains Toolbox.
+Memory usage is dominated by several Firefox processes, each handling separate browser components such as tabs or rendering.
+All active processes operate within normal limits, and the system remains stable and responsive.
 
 #### 2. Disk I/O Monitoring (iostat -x 1 5)
 
@@ -247,6 +250,8 @@ Notification Channel — Email
 - SSL expiry notifications prevent loss of trust and service interruptions.
 
 ### Analysis & Reflection
+
+![Created checks](https://github.com/user-attachments/assets/09b013bb-a47e-49e7-825a-a338653e7a7b)
 
 **Why these checks were chosen**
 
