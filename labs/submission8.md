@@ -211,18 +211,22 @@ test('Check Innopolis University apply link', async ({ page, context }) => {
 
 **Browser Check Results**
 
-- Availability: 100%
-- Median load (P50): 10.85 s
-- P95: 11.78 s
-- Errors: 0
-- Location: Frankfurt 🇩🇪
+- **Availability:** 100%
+- **Median load (P50):** 10.85 s
+- **P95:** 11.78 s
+- **Errors:** 0
+- **Location:** Frankfurt 🇩🇪
 
-Screenshot — Dashboard
-
-![Browser Check Dashboard](https://github.com/user-attachments/assets/36b55467-5bb0-46ff-a9d7-067734f5f213)
+![Browser Check](https://github.com/user-attachments/assets/36b55467-5bb0-46ff-a9d7-067734f5f213)
 
 **Analysis**
+
 The browser check simulates a real user path. It verifies that navigation works correctly and that content loads within acceptable latency limits.
+
+#### Screenshot — Dashboard
+
+![Dashboard](https://github.com/user-attachments/assets/09b013bb-a47e-49e7-825a-a338653e7a7b)
+
 
 ### 2.4 Alerts — Configuration and Reasoning
 
@@ -250,8 +254,6 @@ Notification Channel — Email
 - SSL expiry notifications prevent loss of trust and service interruptions.
 
 ### Analysis & Reflection
-
-![Created checks](https://github.com/user-attachments/assets/09b013bb-a47e-49e7-825a-a338653e7a7b)
 
 **Why these checks were chosen**
 
