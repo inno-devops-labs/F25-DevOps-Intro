@@ -1,0 +1,3 @@
+132M	/var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap
+132M	/var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap
+92M	/var/lib/snapd/snaps/gtk-common-themes_1535.snap

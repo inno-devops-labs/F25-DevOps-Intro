@@ -1,0 +1,300 @@
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    TID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      1 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+      2 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+      8 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init [Interop]
+      6 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+      7 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+     46 be/3 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-journald
+     67 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-udevd
+     83 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     85 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     86 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     88 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     89 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     90 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     91 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     92 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     93 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    353 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    355 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    515 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     94 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     95 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     97 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     99 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    100 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    101 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    106 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    107 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    108 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    265 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    266 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    269 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    270 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    272 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    273 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    299 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    111 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    112 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    113 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    114 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    115 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    116 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    361 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    362 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    166 be/4 systemd-    0.00 B/s    0.00 B/s  ?unavailable?  systemd-resolved
+    199 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  cron -f -P
+    203 be/4 messageb    0.00 B/s    0.00 B/s  ?unavailable?  @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+    213 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+    214 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE
+    222 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [in:imuxsock]
+    224 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [in:imklog]
+    225 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [rs:main Q:Reg]
+    219 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    291 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    294 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    295 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    297 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    298 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    327 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    328 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    339 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    348 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    349 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    363 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    386 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    388 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    220 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-logind
+    253 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  bash /snap/ubuntu-desktop-installer/1286/bin/subiquity-server
+    255 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+    281 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal [gmain]
+    263 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  agetty -o -p -- \u --noclear --keep-baud console 115200,38400,9600 vt220
+    267 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  agetty -o -p -- \u --noclear tty1 linux
+    282 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres -D /var/lib/postgresql/14/main -c config_file=/etc/postgresql/14/main/postgresql.conf
+    329 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: checkpointer
+    330 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: background writer
+    331 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: walwriter
+    332 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: autovacuum launcher
+    333 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: stats collector
+    334 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: logical replication launcher
+    347 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3.10 -m subiquity.cmd.server --use-os-prober --storage-version=2 --postinst-hooks-dir=/snap/ubuntu-desktop-installer/1286/etc/subiquity/postinst.d
+    520 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3.10 -m subiquity.cmd.server --use-os-prober --storage-version=2 --postinst-hooks-dir=/snap/ubuntu-desktop-installer/1286/etc/subiquity/postinst.d
+    422 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+    424 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+    429 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  -bash
+    432 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  login -f
+    473 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd --user
+    474 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  (sd-pam)
+    484 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  -bash
+    519 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /snap/ubuntu-desktop-installer/1286/usr/bin/cloud-init status --wait
+   2886 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd
+   2887 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd [gmain]
+   2888 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd [gdbus]
+   2890 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug
+   2891 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug [gmain]
+   2893 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug [gdbus]
+   3015 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  sudo iotop -b -n 3
+   3016 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  sudo iotop -b -n 3
+   3017 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/sbin/iotop -b -n 3
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:     609.96 K/s
+    TID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      1 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+      2 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+      8 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init [Interop]
+      6 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+      7 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+     46 be/3 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-journald
+     67 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-udevd
+     83 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     85 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     86 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     88 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     89 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     90 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     91 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     92 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     93 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    353 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    355 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    515 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     94 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     95 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     97 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     99 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    100 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    101 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    106 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    107 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    108 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    265 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    266 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    269 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    270 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    272 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    273 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    299 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    111 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    112 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    113 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    114 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    115 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    116 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    361 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    362 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    166 be/4 systemd-    0.00 B/s    0.00 B/s  ?unavailable?  systemd-resolved
+    199 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  cron -f -P
+    203 be/4 messageb    0.00 B/s    0.00 B/s  ?unavailable?  @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+    213 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+    214 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE
+    222 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [in:imuxsock]
+    224 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [in:imklog]
+    225 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [rs:main Q:Reg]
+    219 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    291 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    294 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    295 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    297 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    298 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    327 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    328 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    339 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    348 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    349 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    363 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    386 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    388 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    220 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-logind
+    253 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  bash /snap/ubuntu-desktop-installer/1286/bin/subiquity-server
+    255 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+    281 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal [gmain]
+    263 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  agetty -o -p -- \u --noclear --keep-baud console 115200,38400,9600 vt220
+    267 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  agetty -o -p -- \u --noclear tty1 linux
+    282 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres -D /var/lib/postgresql/14/main -c config_file=/etc/postgresql/14/main/postgresql.conf
+    329 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: checkpointer
+    330 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: background writer
+    331 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: walwriter
+    332 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: autovacuum launcher
+    333 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: stats collector
+    334 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: logical replication launcher
+    347 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3.10 -m subiquity.cmd.server --use-os-prober --storage-version=2 --postinst-hooks-dir=/snap/ubuntu-desktop-installer/1286/etc/subiquity/postinst.d
+    520 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3.10 -m subiquity.cmd.server --use-os-prober --storage-version=2 --postinst-hooks-dir=/snap/ubuntu-desktop-installer/1286/etc/subiquity/postinst.d
+    422 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+    424 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+    429 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  -bash
+    432 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  login -f
+    473 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd --user
+    474 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  (sd-pam)
+    484 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  -bash
+    519 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /snap/ubuntu-desktop-installer/1286/usr/bin/cloud-init status --wait
+   2886 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd
+   2887 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd [gmain]
+   2888 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd [gdbus]
+   2890 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug
+   2891 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug [gmain]
+   2893 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug [gdbus]
+   3015 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  sudo iotop -b -n 3
+   3016 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  sudo iotop -b -n 3
+   3017 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/sbin/iotop -b -n 3
+Total DISK READ:         0.00 B/s | Total DISK WRITE:         0.00 B/s
+Current DISK READ:       0.00 B/s | Current DISK WRITE:       0.00 B/s
+    TID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN      IO    COMMAND
+      1 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+      2 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+      8 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init [Interop]
+      6 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+      7 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  plan9 --control-socket 7 --log-level 4 --server-fd 8 --pipe-fd 10 --log-truncate
+     46 be/3 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-journald
+     67 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-udevd
+     83 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     85 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     86 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/bare_5.snap /snap/bare/5 -o ro,nodev,allow_other,suid
+     88 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     89 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     90 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2133.snap /snap/core22/2133 -o ro,nodev,allow_other,suid
+     91 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     92 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     93 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    353 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    355 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+    515 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/core22_2139.snap /snap/core22/2139 -o ro,nodev,allow_other,suid
+     94 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     95 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     97 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/gtk-common-themes_1535.snap /snap/gtk-common-themes/1535 -o ro,nodev,allow_other,suid
+     99 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    100 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    101 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_24505.snap /snap/snapd/24505 -o ro,nodev,allow_other,suid
+    106 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    107 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    108 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    265 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    266 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    269 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    270 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    272 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    273 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    299 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/snapd_25202.snap /snap/snapd/25202 -o ro,nodev,allow_other,suid
+    111 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    112 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    113 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1276.snap /snap/ubuntu-desktop-installer/1276 -o ro,nodev,allow_other,suid
+    114 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    115 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    116 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    361 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    362 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapfuse /var/lib/snapd/snaps/ubuntu-desktop-installer_1286.snap /snap/ubuntu-desktop-installer/1286 -o ro,nodev,allow_other,suid
+    166 be/4 systemd-    0.00 B/s    0.00 B/s  ?unavailable?  systemd-resolved
+    199 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  cron -f -P
+    203 be/4 messageb    0.00 B/s    0.00 B/s  ?unavailable?  @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+    213 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+    214 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE
+    222 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [in:imuxsock]
+    224 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [in:imklog]
+    225 be/4 syslog      0.00 B/s    0.00 B/s  ?unavailable?  rsyslogd -n -iNONE [rs:main Q:Reg]
+    219 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    291 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    294 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    295 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    297 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    298 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    327 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    328 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    339 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    348 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    349 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    363 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    386 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    388 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  snapd
+    220 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd-logind
+    253 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  bash /snap/ubuntu-desktop-installer/1286/bin/subiquity-server
+    255 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+    281 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal [gmain]
+    263 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  agetty -o -p -- \u --noclear --keep-baud console 115200,38400,9600 vt220
+    267 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  agetty -o -p -- \u --noclear tty1 linux
+    282 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres -D /var/lib/postgresql/14/main -c config_file=/etc/postgresql/14/main/postgresql.conf
+    329 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: checkpointer
+    330 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: background writer
+    331 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: walwriter
+    332 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: autovacuum launcher
+    333 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: stats collector
+    334 be/4 postgres    0.00 B/s    0.00 B/s  ?unavailable?  postgres: 14/main: logical replication launcher
+    347 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3.10 -m subiquity.cmd.server --use-os-prober --storage-version=2 --postinst-hooks-dir=/snap/ubuntu-desktop-installer/1286/etc/subiquity/postinst.d
+    520 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3.10 -m subiquity.cmd.server --use-os-prober --storage-version=2 --postinst-hooks-dir=/snap/ubuntu-desktop-installer/1286/etc/subiquity/postinst.d
+    422 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+    424 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  init
+    429 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  -bash
+    432 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  login -f
+    473 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  systemd --user
+    474 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  (sd-pam)
+    484 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  -bash
+    519 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /snap/ubuntu-desktop-installer/1286/usr/bin/cloud-init status --wait
+   2886 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd
+   2887 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd [gmain]
+   2888 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  packagekitd [gdbus]
+   2890 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug
+   2891 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug [gmain]
+   2893 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  polkitd --no-debug [gdbus]
+   3015 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  sudo iotop -b -n 3
+   3016 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  sudo iotop -b -n 3
+   3017 be/4 root        0.00 B/s    0.00 B/s  ?unavailable?  python3 /usr/sbin/iotop -b -n 3

@@ -1,0 +1,15 @@
+    PID COMMAND         %MEM %CPU
+    348 python3.10       1.2  0.4
+    219 snapd            0.5  0.2
+    568 python3          0.4  0.4
+    290 postgres         0.3  0.0
+    258 unattended-upgr  0.2  0.0
+   1578 packagekitd      0.2  0.0
+    213 networkd-dispat  0.2  0.0
+    165 systemd-resolve  0.1  0.0
+    105 snapfuse         0.1  0.3
+      1 systemd          0.1  0.6
+    343 postgres         0.1  0.0
+     43 systemd-journal  0.1  0.0
+     83 snapfuse         0.1  0.0
+    344 postgres         0.1  0.0
