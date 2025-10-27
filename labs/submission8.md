@@ -7,7 +7,7 @@
 **Command** htop
 
 **Output**
-![htop system monitoring screenshot](labs/Htop.png)
+![htop system monitoring screenshot](htop.png)
 
 **Command:** ps aux --sort=-%cpu | head -6
 
@@ -71,3 +71,22 @@ Filesystem      Size  Used Avail Use% Mounted on
 
 ### Reflection:
 The system shows healthy resource usage with Firefox as the main consumer. Plenty of free memory and low I/O wait indicate good performance. Disk space is adequate with Python packages being the largest data consumers.
+
+## Task 2 — Practical Website Monitoring Setup
+
+### Website URL: https://www.github.com
+
+### API Check Configuration:
+![API Check Configuration](1.png)
+
+### API Check Result: 
+![API Check Result](2.png)
+
+### Browser ckeck with result:
+![Browser ckeck with result](3.png)
+
+### Alert Settings:
+![Alert Rules](4.png)
+
+### Reflection:
+This monitoring setup helps maintain website reliability by providing immediate alerts for downtime and performance issues, enabling proactive problem resolution before users are affected.
