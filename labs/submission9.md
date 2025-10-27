@@ -5,7 +5,7 @@
 ### Number of Medium risk vulnerabilities found
 
 The automated OWASP ZAP baseline scan was executed against Juice Shop running at http://172.17.0.1:3000.
-The scan analyzed 95 URLs and produced **7 Medium-risk (WARN-NEW) alerts** in total.
+The ZAP baseline log shows **7 WARN-NEW alerts** in total, corresponding to multiple instances of these **two Medium-risk vulnerability types**.
 
 ### Medium-Risk Vulnerabilities
 
