@@ -1,0 +1,23 @@
+Filesystem      Size  Used Avail Use% Mounted on
+none            3.9G     0  3.9G   0% /usr/lib/modules/6.6.87.2-microsoft-standard-WSL2
+none            3.9G  4.0K  3.9G   1% /mnt/wsl
+drivers         458G  289G  170G  64% /usr/lib/wsl/drivers
+/dev/sdd       1007G  3.4G  953G   1% /
+none            3.9G   80K  3.9G   1% /mnt/wslg
+none            3.9G     0  3.9G   0% /usr/lib/wsl/lib
+rootfs          3.9G  2.7M  3.9G   1% /init
+none            3.9G  840K  3.9G   1% /run
+none            3.9G     0  3.9G   0% /run/lock
+none            3.9G   28K  3.9G   1% /run/shm
+none            3.9G   76K  3.9G   1% /mnt/wslg/versions.txt
+none            3.9G   76K  3.9G   1% /mnt/wslg/doc
+C:\             458G  289G  170G  64% /mnt/c
+snapfuse         74M   74M     0 100% /snap/core22/2133
+snapfuse        128K  128K     0 100% /snap/bare/5
+snapfuse         92M   92M     0 100% /snap/gtk-common-themes/1535
+snapfuse         51M   51M     0 100% /snap/snapd/24505
+snapfuse         51M   51M     0 100% /snap/snapd/25202
+snapfuse        132M  132M     0 100% /snap/ubuntu-desktop-installer/1276
+snapfuse        132M  132M     0 100% /snap/ubuntu-desktop-installer/1286
+tmpfs           783M  8.0K  783M   1% /run/user/0
+snapfuse         74M   74M     0 100% /snap/core22/2139

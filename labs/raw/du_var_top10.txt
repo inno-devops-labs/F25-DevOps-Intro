@@ -1,0 +1,10 @@
+2.3G	/var
+1.4G	/var/lib
+1.1G	/var/lib/snapd
+805M	/var/log
+801M	/var/log/journal/bace1ef34aa94d5a9a26e8b15ca0108c
+801M	/var/log/journal
+604M	/var/lib/snapd/snaps
+311M	/var/lib/snapd/cache
+264M	/var/lib/apt/lists
+264M	/var/lib/apt

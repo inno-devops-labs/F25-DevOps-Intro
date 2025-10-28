@@ -1,0 +1,15 @@
+    PID COMMAND         %CPU %MEM
+      1 systemd          0.6  0.1
+    348 python3.10       0.4  1.2
+    568 python3          0.4  0.4
+    105 snapfuse         0.3  0.1
+    219 snapd            0.2  0.5
+    114 snapfuse         0.1  0.1
+      2 init-systemd(Ub  0.0  0.0
+      6 init             0.0  0.0
+     43 systemd-journal  0.0  0.1
+     67 systemd-udevd    0.0  0.0
+     83 snapfuse         0.0  0.1
+     84 snapfuse         0.0  0.0
+     90 snapfuse         0.0  0.0
+     97 snapfuse         0.0  0.0
