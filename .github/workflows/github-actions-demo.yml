@@ -1,0 +1,21 @@
+name: GitHub Actions Demo with Manual Trigger
+run-name: ${{ github.actor }} is testing out GitHub Actions 2 task 🚀
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  Extend-Workflow-with-Manual-Trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Task 2 Gather System information
+        run: |
+          echo "=== SYSTEM INFORMATION ==="
+          echo "--- OS Info ---"
+          uname -a
+          echo "--- Memory Usage ---"
+          free -h
+          echo "--- Disk Space ---"
+          df -h
+          echo "--- CPU Details ---"
+          lscpu 
