@@ -35,6 +35,362 @@ Through **hands-on labs and lectures**, you'll explore version control, software
 
 ---
 
+## 🗒️ Lecture Slide Overview
+
+This is the final slide index extracted from `lectures/lec*.md`. Each lecture expands to list all slide titles and links to the source file.
+
+<details>
+<summary>📌 Lecture 1 - Introduction to DevOps (37 slides)</summary>
+
+Source: lectures/lec1.md
+
+- 📍 Slide 1 – 🚀 What is DevOps?
+- 📍 Slide 2 – 📜 A Brief History of DevOps
+- 📍 Slide 3 – 🎯 Why DevOps? (Key Goals)
+- 📍 Slide 4 – ⚖️ DevOps vs. Traditional IT
+- 📍 Slide 5 – 🔑 Core Principles: The CAMS Model
+- 📍 Slide 6 – 🌱 Culture in DevOps
+- 📍 Slide 7 – 🔄 Shift-Left Mindset
+- 📍 Slide 8 – 👥 Collaboration Between Teams
+- 📍 Slide 9 – 🔔 Feedback Loops
+- 📍 Slide 10 – 📚 Continuous Learning & Blameless Postmortems
+- 📍 Slide 11 – 🏗️ Infrastructure as Code (IaC)
+- 📍 Slide 12 – 🔄 Continuous Integration (CI) Basics
+- 📍 Slide 13 – 🚀 Continuous Delivery & Deployment (CD)
+- 📍 Slide 14 – 🐮 Cattle vs. Pets (Immutable Infrastructure)
+- 📍 Slide 15 – 📊 DevOps Metrics & KPIs
+- 📍 Slide 16 – 🤖 Automation First Approach
+- 📍 Slide 17 – ⚙️ Configuration Management
+- 📍 Slide 18 – 📦 Containerization Basics
+- 📍 Slide 19 – 🗂️ Orchestration Basics (Kubernetes Preview)
+- 📍 Slide 20 – 🔍 Observability (Logs, Metrics, Tracing)
+- 📍 Slide 21 – 📂 Version Control (Git Basics)
+- 📍 Slide 22 – ⚙️ CI/CD Tools Overview
+- 📍 Slide 23 – 📦 Artifact Repositories
+- 📍 Slide 24 – 🏗️ Infrastructure as Code (IaC) Tools
+- 📍 Slide 25 – ☁️ Cloud Providers
+- 📍 Slide 26 – 💬 Collaboration Tools
+- 📍 Slide 27 – 🔄 Typical DevOps Pipeline Workflow
+- 📍 Slide 28 – 🐙 Example: GitHub Actions CI/CD Workflow
+- 📍 Slide 29 – 🎬 Case Study: Netflix & Simian Army
+- 📍 Slide 30 – 📦 Case Study: Amazon’s “You Build It, You Run It”
+- 📍 Slide 31 – ⚠️ Challenges in DevOps Adoption
+- 📍 Slide 32 – 🌟 Best Practices for DevOps Success
+- 📍 Slide 33 – 🌀 DevOps Myths & Misconceptions
+- 📍 Slide 34 – ⚖️ Balancing Speed vs Stability (DevOps vs SRE)
+- 📍 Slide 35 – 📚 Summary of Key DevOps Concepts
+- 📍 Slide 36 – 📖 Recommended Reading & Learning
+- 📍 Slide 37 – 🛠️ Hands-on Practice Resources
+
+</details>
+
+<details>
+<summary>📌 Lecture 2 - Version Control (37 slides)</summary>
+
+Source: lectures/lec2.md
+
+- 📍 Slide 1 – 🧭 What is a Version Control System (VCS)?
+- 📍 Slide 2 – 🔎 Why We Need Version Control
+- 📍 Slide 3 – 🕰️ A Short History of VCS (to Understand Today)
+- 📍 Slide 4 – 🧭 Centralized vs Distributed VCS
+- 📍 Slide 5 – 🧰 The Git Ecosystem (What We’ll Use)
+- 📍 Slide 6 – 🏁 Getting Started with Git (Install & First Config)
+- 📍 Slide 7 – 🧩 Git’s Mental Model: Working Tree, Staging (Index), Repository
+- 📍 Slide 8 – 🧱 Commits, Trees & Hashes (SHA = Secure Hash Algorithm)
+- 📍 Slide 9 – 🌿 Branches & 🎯 HEAD (Current Position)
+- 📍 Slide 10 – 🧪 The Basic Local Workflow (Edit → Stage → Commit)
+- 📍 Slide 11 – 🔍 Exploring History (Logs, Shows, Blame, Search)
+- 📍 Slide 12 – 🧮 Understanding Diffs (Working, Staged, Commits, Ranges)
+- 📍 Slide 13 – 🔀 Rebase vs. Merge (and When to Use Each)
+- 📍 Slide 14 – ♻️ Undo & Recovery (Without Tears)
+- 📍 Slide 15 – 🌐 Collaborating with Remotes (Clone, Fetch, Pull, Push)
+- 📍 Slide 16 – 🛣️ Branching Strategies: GitFlow, GitHub Flow, Trunk-Based
+- 📍 Slide 17 – 👀 Pull Requests (PR) / Merge Requests (MR) & Code Review
+- 📍 Slide 18 – 🏷️ Tags & Releases (Versioning for Humans and Machines)
+- 📍 Slide 19 – 🗃️ Stashing Work-in-Progress (WIP) with Git Stash
+- 📍 Slide 20 – 🤖 Git Hooks & Local Automation (Quality Gates)
+- 📍 Slide 21 – 🪵 Large Files & Huge Repositories (LFS, Sparse, Partial)
+- 📍 Slide 22 – 🧭 Other Version Control Systems (Landscape & Use Cases)
+- 📍 Slide 23 – ⚖️ Git vs. SVN (Subversion) — Models & Workflows
+- 📍 Slide 24 – ⚖️ Git vs. Mercurial (Hg) — Same Goal, Different Feel
+- 📍 Slide 25 – ⚔️ War Stories & History Nuggets (Git vs the Old Guard)
+- 📍 Slide 26 – 🐧 Case Study: Linux Kernel Workflow at Scale
+- 📍 Slide 27 – 🏢 Case Study: Enterprise Migration & “Git at Scale”
+- 📍 Slide 28 – 🧭 Team Best Practices (Day-to-Day Git Hygiene)
+- 📍 Slide 29 – 🧯 Common Pitfalls & Recovery Patterns
+- 📍 Slide 30 – 🔐 Security, Signing & Compliance (Trust Your History)
+- 📍 Slide 31 – 🧱 Beyond Code: Everything-as-Code & 🚢 GitOps
+- 📍 Slide 32 – 🧭 Learning Resources & 🎯 Practice Playground
+- 📍 Slide 33 – 🧾 Summary & ✅ Next Steps (Hands-On)
+- 📍 Slide 34 – 🔭 Trends in Version Control: Decentralization & Content Addressing
+- 📍 Slide 35 – 🧊 Using IPFS with Git (CIDs, Pinning, Remotes)
+- 📍 Slide 36 – 🕸️ Radicle: P2P, Sovereign Code Collaboration (Built on Git)
+- 📍 Slide 37 – ⛓️ Blockchain-Backed Collaboration: Gitopia & Timestamps
+
+</details>
+
+<details>
+<summary>📌 Lecture 3 - CI/CD (42 slides)</summary>
+
+Source: lectures/lec3.md
+
+- 📍 Slide 1 – 🌍 What is CI/CD?
+- 📍 Slide 2 – 🕰️ Short History of CI/CD
+- 📍 Slide 3 – 📈 Why CI/CD Matters
+- 📍 Slide 4 – 🏗️ Core Principles of Continuous Integration
+- 📍 Slide 5 – 🔄 CI Workflow (Commit → Build → Test → Package)
+- 📍 Slide 6 – 📂 Build Automation Basics
+- 📍 Slide 7 – 🧪 Automated Testing in CI
+- 📍 Slide 8 – 🛠️ Popular CI Tools (1/2)
+- 📍 Slide 9 – 🛠️ Popular CI Tools (2/2)
+- 📍 Slide 10 – 🚚 Continuous Delivery vs Continuous Deployment
+- 📍 Slide 11 – 🛤️ Release Pipeline Explained
+- 📍 Slide 12 – 🧩 Configuration Management & IaC in CD
+- 📍 Slide 13 – 🌱 Blue-Green Deployment (Concept & History)
+- 📍 Slide 14 – 🏢 Blue-Green Deployment (Real-World Use Cases)
+- 📍 Slide 15 – 🐤 Canary Deployment (Concept & History)
+- 📍 Slide 16 – 🚏 Canary Deployment (Real-World Examples)
+- 📍 Slide 17 – 🧪 A/B Testing (Concept & History)
+- 📍 Slide 18 – 🏆 A/B Testing (Real-World Use Cases)
+- 📍 Slide 19 – 🔄 Rolling & Shadow Deployments
+- 📍 Slide 20 – 📦 CI/CD Pipeline Stages Explained
+- 📍 Slide 21 – 🔄 Event-Driven Pipelines (Triggers)
+- 📍 Slide 22 – 📝 Pipelines as Code
+- 📍 Slide 23 – 🧑‍🤝‍🧑 Branching Models with CI/CD
+- 📍 Slide 24 – ⚡ Pipeline Optimization Techniques
+- 📍 Slide 25 – 🐳 CI/CD with Containers (Docker & Podman)
+- 📍 Slide 26 – ☸️ CI/CD with Kubernetes (Helm, ArgoCD, Flux)
+- 📍 Slide 27 – ☁️ Cloud-Native CI/CD Services
+- 📍 Slide 28 – 🎯 Observability & Monitoring in CI/CD
+- 📍 Slide 29 – 🔄 Rollbacks & Recovery in CI/CD
+- 📍 Slide 30 – 🧯 Common Issues & Anti-Patterns
+- 📍 Slide 31 – 🔒 Security in CI/CD Pipelines
+- 📍 Slide 32 – 📜 Compliance, Audit & Governance in CI/CD
+- 📍 Slide 33 – 🛡️ Security Tools for CI/CD
+- 📍 Slide 34 – 🧪 Case Study: GitHub Actions vs GitLab CI vs Jenkins
+- 📍 Slide 35 – 🌐 Industry Adoption & Statistics of CI/CD
+- 📍 Slide 36 – 🔮 Emerging Trends in CI/CD
+- 📍 Slide 37 – 🧵 Decentralized & P2P CI/CD Concepts
+- 📍 Slide 38 – 🏆 Best Practices from Top Companies
+- 📍 Slide 39 – 📖 CI/CD Lifecycle in One Diagram
+- 📍 Slide 40 – 📚 Recommended Readings & Resources
+- 📍 Slide 41 – 🖥️ Hands-On Practice Suggestions
+- 📍 Slide 42 – ❓ Q&A + Reflection
+
+</details>
+
+<details>
+<summary>📌 Lecture 4 - Networking & OS for DevOps (37 slides)</summary>
+
+Source: lectures/lec4.md
+
+- 📍 Slide 1 – 🌐 Introduction to Networking in DevOps
+- 📍 Slide 2 – 📡 OSI Model & TCP/IP Stack
+- 📍 Slide 3 – 🔢 IP Addressing & Subnetting
+- 📍 Slide 4 – 🌐 DNS (Domain Name System)
+- 📍 Slide 5 – 🌍 HTTP & HTTPS
+- 📍 Slide 6 – 🔌 Load Balancing
+- 📍 Slide 7 – 🧩 Network Segmentation
+- 📍 Slide 8 – 🔒 Firewalls & Network Security
+- 📍 Slide 9 – 🔑 TLS & Certificate Management
+- 📍 Slide 10 – 🕵️ Network Monitoring & Troubleshooting
+- 📍 Slide 11 – 🛡️ VPNs & Secure Tunneling
+- 📍 Slide 12 – 🐧 Linux History & Distributions
+- 📍 Slide 13 – 💻 Linux File System Hierarchy
+- 📍 Slide 14 – 👨‍💻 Shell Environments & Scripting
+- 📍 Slide 15 – 📂 File Management & Text Processing
+- 📍 Slide 16 – 👤 User & Group Management
+- 📍 Slide 17 – 🔄 Process Management in Linux
+- 📍 Slide 18 – 🛠️ Systemd & Service Management
+- 📍 Slide 19 – 📊 Resource Monitoring & Performance
+- 📍 Slide 20 – 📝 Logging Systems
+- 📍 Slide 21 – 📆 Scheduling & Automation
+- 📍 Slide 22 – 🔐 File Permissions & Ownership
+- 📍 Slide 23 – 💪 Sudo & Privilege Escalation
+- 📍 Slide 24 – 🛡️ SELinux & AppArmor
+- 📍 Slide 25 – 🔒 Hardening Linux Systems
+- 📍 Slide 26 – 🌐 Network Interface Configuration
+- 📍 Slide 27 – 🔄 DHCP & DNS Setup
+- 📍 Slide 28 – 🌍 Web Servers: Apache & Nginx
+- 📍 Slide 29 – 🔄 Proxies & Reverse Proxies
+- 📍 Slide 30 – 🔐 SSH & Remote Administration
+- 📍 Slide 31 – 🔍 Network Troubleshooting Tools
+- 📍 Slide 32 – 🔬 System Diagnostics
+- 📍 Slide 33 – 🧰 Log Analysis
+- 📍 Slide 34 – ⚠️ Common DevOps Network/System Issues
+- 📍 Slide 35 – 🚀 Current Trends in DevOps Networking
+- 📍 Slide 36 – 🔮 Bleeding Edge Tools & Technologies
+- 📍 Slide 37 – 🔮 Future of DevOps: 2024-2030
+
+</details>
+
+<details>
+<summary>📌 Lecture 5 - Virtualization & Modern IT Infrastructure (20 slides)</summary>
+
+Source: lectures/lec5.md
+
+- 📍 Slide 1 – 🌟 Introduction to Virtualization - What & Why
+- 📍 Slide 2 – 📚 History of Virtualization (1960s IBM Mainframes → Modern Cloud)
+- 📍 Slide 3 – 💡 Core Concepts - Physical vs Virtual Resources
+- 📍 Slide 4 – 🎯 Benefits of Virtualization (Cost, Efficiency, Flexibility)
+- 📍 Slide 5 – ⚠️ Challenges & Limitations of Virtualization
+- 📍 Slide 6 – 🧠 Hypervisor Fundamentals - The Virtual Machine Monitor
+- 📍 Slide 7 – 🏗️ Type 1 Hypervisors (Bare Metal) - VMware ESXi, Hyper-V, Xen
+- 📍 Slide 8 – 🖥️ Type 2 Hypervisors (Hosted) - VirtualBox, VMware Workstation
+- 📍 Slide 9 – ⚖️ Type 1 vs Type 2 Comparison & Use Cases
+- 📍 Slide 10 – 🔍 Hypervisor Architecture Deep Dive
+- 📍 Slide 11 – 🐳 Container Revolution - Docker, Podman, containerd
+- 📍 Slide 12 – ⚖️ VMs vs Containers - Architecture & Use Cases
+- 📍 Slide 13 – 🌐 WebAssembly (WASM) - Server-Side Revolution
+- 📍 Slide 14 – 🔬 Unikernels & Microkernels - Specialized Virtualization
+- 📍 Slide 15 – ⚡ Serverless Computing - Functions-as-a-Service Evolution
+- 📍 Slide 16 – 🛡️ Security-Focused Virtualization - Firecracker, gVisor, Kata
+- 📍 Slide 17 – 📊 Performance Optimization - Modern Hardware Features
+- 📍 Slide 18 – 🔧 Hybrid Architectures - Best of All Worlds
+- 📍 Slide 19 – 🌐 Edge & IoT Virtualization - 5G Revolution
+- 📍 Slide 20 – 🔮 Emerging Technologies - The Next Decade
+
+</details>
+
+<details>
+<summary>📌 Lecture 6 - Containers: Docker & Kubernetes (19 slides)</summary>
+
+Source: lectures/lec6.md
+
+- 📍 Slide 1 – 🐳 What are Containers?
+- 📍 Slide 2 – 📜 History of Containers (1979 → 2024)
+- 📍 Slide 3 – 💡 Why Containers Matter in DevOps
+- 📍 Slide 4 – ⚖️ Containers vs Virtual Machines (VMs)
+- 📍 Slide 5 – 🧩 Container Components (Images, Layers, Registries)
+- 📍 Slide 6 – 🛠️ Container Engine Differences (Docker vs Podman vs containerd vs CRI-O)
+- 📍 Slide 7 – 🔍 OCI (Open Container Initiative) Standards
+- 📍 Slide 8 – ⚙️ Container Runtime Internals (runc, crun, Kata Containers, gVisor)
+- 📍 Slide 9 – 🏗️ Linux Kernel Features (Namespaces, cgroups, Capabilities, SELinux/AppArmor)
+- 📍 Slide 10 – 🐋 Docker Architecture (Client-Server, Daemon, CLI, Engine)
+- 📍 Slide 11 – 📦 Docker Images & Layers (Build Process, Caching, Multi-stage)
+- 📍 Slide 12 – 🎯 Dockerfile Best Practices (Optimization, Security, Size)
+- 📍 Slide 13 – 🌐 Docker Networking (Bridge, Host, Overlay, Container Communication)
+- 📍 Slide 14 – 💾 Docker Storage (Volumes, Bind Mounts, tmpfs, Drivers)
+- 📍 Slide 15 – ☸️ Introduction to Kubernetes (What, Why, Architecture)
+- 📍 Slide 16 – 🧩 Kubernetes Core Components (Control Plane, Nodes, etcd)
+- 📍 Slide 17 – 🎯 Kubernetes Objects (Pods, Deployments, Services, ConfigMaps, Secrets)
+- 📍 Slide 18 – 🌐 Kubernetes Networking (CNI, Services, Ingress, NetworkPolicies)
+- 📍 Slide 19 – 💾 Kubernetes Storage (PersistentVolumes, PVCs, StorageClasses)
+
+</details>
+
+<details>
+<summary>📌 Lecture 7 - GitOps & Progressive Delivery (18 slides)</summary>
+
+Source: lectures/lec7.md
+
+- 📍 Slide 1 – 🚀 What is GitOps? - The Modern Way to Operate
+- 📍 Slide 2 – 📜 GitOps History - From FTP to Pull Requests
+- 📍 Slide 3 – 🎯 GitOps Principles - The Four Golden Rules
+- 📍 Slide 4 – ⚡ Push vs Pull Deployment Models - The Great Debate
+- 📍 Slide 5 – 🛠️ GitOps Tooling Landscape - Choosing Your Weapon
+- 📍 Slide 6 – 🏗️ GitOps Repository Strategies - Organizing Your Git Repos
+- 📍 Slide 7 – ☸️ Argo CD Architecture & Core Concepts
+- 📍 Slide 8 – 🎨 Argo CD in Action - Hands-On Deployment
+- 📍 Slide 9 – 🔐 Argo CD Best Practices - Production-Ready Patterns
+- 📍 Slide 10 – 🎯 What is Progressive Delivery? - Beyond Basic Deployments
+- 📍 Slide 11 – 🔄 Deployment Strategies - Canary, Blue-Green, A/B Testing
+- 📍 Slide 12 – 📊 Observability & Metrics for Progressive Delivery
+- 📍 Slide 13 – 🎭 Argo Rollouts - Progressive Delivery Powerhouse
+- 📍 Slide 14 – 🚢 Flagger - Automated Progressive Delivery
+- 📍 Slide 15 – 🎯 Feature Flags & Experimentation
+- 📍 Slide 16 – 🔐 Security & Compliance in GitOps
+- 📍 Slide 17 – ⚙️ CI/CD Integration - The Complete Pipeline
+- 📍 Slide 18 – 🎉 Real-World Case Studies & Future Trends
+
+</details>
+
+<details>
+<summary>📌 Lecture 8 - SRE & Monitoring: System Metrics, SLAs & Reliability Engineering (20 slides)</summary>
+
+Source: lectures/lec8.md
+
+- 📍 Slide 1 – 🛡️ What is SRE? - Engineering Approach to Operations
+- 📍 Slide 2 – 📜 History of SRE - From Google's Need to Industry Standard
+- 📍 Slide 3 – 🤝 SRE vs DevOps vs Platform Engineering - Clarifying the Roles
+- 📍 Slide 4 – 🎨 SRE Principles - Reliability, Scalability, and Toil Reduction
+- 📍 Slide 5 – 🌟 Golden Signals of Monitoring - The Four Pillars of Observability
+- 📍 Slide 6 – 📏 SLI (Service Level Indicators) - What to Measure
+- 📍 Slide 7 – 🎯 SLO (Service Level Objectives) - Setting Realistic Targets
+- 📍 Slide 8 – 📋 SLA (Service Level Agreements) - Business Commitments and Consequences
+- 📍 Slide 9 – 💰 Error Budgets - Balancing Innovation and Reliability
+- 📍 Slide 10 – 📈 Prometheus & Grafana - The Open Source Monitoring Stack
+- 📍 Slide 11 – 🖥️ System Monitoring - Infrastructure Metrics (CPU, Memory, Disk, Network)
+- 📍 Slide 12 – 🌐 Application Performance Monitoring (APM) - Code-Level Observability
+- 📍 Slide 13 – 🌍 Website Monitoring with Checkly - Synthetic & API Monitoring
+- 📍 Slide 14 – 🔔 Smart Alerting Strategies - When and How to Alert
+- 📍 Slide 15 – 📱 Notification Systems - Slack, PagerDuty, Email Integration
+- 📍 Slide 16 – 🚨 Incident Response - From Detection to Resolution
+- 📍 Slide 17 – 🧪 Chaos Engineering - Testing Failure Scenarios
+- 📍 Slide 18 – 🔄 Capacity Planning - Scaling for Growth
+- 📍 Slide 19 – 📝 Runbooks & Playbooks - Standardizing Operations
+- 📍 Slide 20 – 📊 SRE in Practice - Real-World Case Studies and Lessons
+
+</details>
+
+<details>
+<summary>📌 Lecture 9 - Introduction to DevSecOps: Security as Code (20 slides)</summary>
+
+Source: lectures/lec9.md
+
+- 📍 Slide 1 – 🛡️ What is DevSecOps? - Security as Code
+- 📍 Slide 2 – 📜 History of DevSecOps - From Afterthought to Built-in
+- 📍 Slide 3 – 🎯 Why DevSecOps Matters - The Security Crisis
+- 📍 Slide 4 – 🔑 Core DevSecOps Principles - The Security Mindset
+- 📍 Slide 5 – 🛡️ Threat Modeling - Understanding Attack Surfaces
+- 📍 Slide 6 – ⚠️ Common Security Vulnerabilities - OWASP Top 10
+- 📍 Slide 7 – 🔐 Security in the SDLC - Integrating at Every Stage
+- 📍 Slide 8 – 🔍 SAST (Static Application Security Testing) - Code Analysis
+- 📍 Slide 9 – 🌐 DAST (Dynamic Application Security Testing) - Runtime Testing
+- 📍 Slide 10 – 📦 Software Composition Analysis (SCA) - Dependency Scanning
+- 📍 Slide 11 – 🐳 Container & Image Security - Securing the Runtime
+- 📍 Slide 12 – 🔐 Secrets Management - Never Commit Credentials
+- 📍 Slide 13 – 🤖 CI/CD Security Integration - Automated Security Gates
+- 📍 Slide 14 – 📜 Infrastructure as Code Security - IaC Scanning
+- 📍 Slide 15 – 🔒 Security Policy as Code - Automated Enforcement
+- 📍 Slide 16 – 🚨 Security Monitoring & Incident Response
+- 📍 Slide 17 – ✅ Compliance & Audit in DevSecOps
+- 📍 Slide 18 – 🏢 DevSecOps Culture & Team Structure
+- 📍 Slide 19 – 🎉 DevSecOps Success Stories & Real-World Impact
+- 📍 Slide 20 – 🚀 Your DevSecOps Journey Starts Now
+
+</details>
+
+<details>
+<summary>📌 Lecture 10 - Cloud Computing Fundamentals: Common Cloud Services (AWS/GCP/Azure) (20 slides)</summary>
+
+Source: lectures/lec10.md
+
+- 📍 Slide 1 – ☁️ Cloud Computing Overview
+- 📍 Slide 2 – 🖥️ Compute Services - VMs
+- 📍 Slide 3 – 📦 Compute Services - Containers
+- 📍 Slide 4 – ⚡ Compute Services - Serverless
+- 📍 Slide 5 – 💾 Storage Services - Object Storage
+- 📍 Slide 6 – 💿 Storage Services - Block & File
+- 📍 Slide 7 – 🗄️ Database Services - SQL
+- 📍 Slide 8 – 📊 Database Services - NoSQL
+- 📍 Slide 9 – 🌐 Networking - VPC & Load Balancers
+- 📍 Slide 10 – 🌍 Content Delivery - CDN
+- 📍 Slide 11 – 📦 Artifact Registries
+- 📍 Slide 12 – 📨 Messaging & Event Services
+- 📍 Slide 13 – 📊 Monitoring & Logging
+- 📍 Slide 14 – 🔐 Security & IAM
+- 📍 Slide 15 – 🔄 CI/CD Services
+- 📍 Slide 16 – 💰 Cost Management
+- 📍 Slide 17 – 🌍 Multi-Cloud Strategy
+- 📍 Slide 18 – 🆚 Cloud Provider Comparison
+- 📍 Slide 19 – 🎯 Common Architecture Patterns
+- 📍 Slide 20 – 🚀 Getting Started & Best Practices
+
+</details>
+
+---
+
 ## 🗺️ DevOps Learning Journey
 
 <details>

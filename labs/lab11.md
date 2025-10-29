@@ -137,7 +137,7 @@ In `labs/submission11.md`, document:
    4. Configure build settings:
       - **Platform:** IPFS/Filecoin
       - **Framework:** Other (or select appropriate framework)
-      - **Publish directory:** `/app` (adjust based on your project structure)
+      - **Publish directory:** `labs/lab11/app` (adjust based on your project structure)
    5. Click "Deploy"
 
    </details>
