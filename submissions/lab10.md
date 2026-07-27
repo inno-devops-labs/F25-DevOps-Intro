@@ -2,7 +2,6 @@
 
 **Author:** Karim Abdulkin (@GrandAdmiralBee)
 **Branch:** `feature/lab10`
-**PR:** <PR-URL>
 
 ---
 
@@ -36,7 +35,7 @@ Key design choices:
 
 Registry URL: <https://github.com/GrandAdmiralBee/DevOps-Intro/pkgs/container/devops-intro%2Fquicknotes>
 
-Green CI run: <RELEASE-CI-URL>
+Green CI run: <https://github.com/GrandAdmiralBee/DevOps-Intro/actions/runs/30255800046>
 
 Clean pull from a fresh machine (`docker system prune -af` first):
 
