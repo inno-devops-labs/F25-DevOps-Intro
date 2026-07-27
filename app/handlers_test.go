@@ -112,6 +112,27 @@ func TestDeleteNote_RemovesAndReturns204(t *testing.T) {
 	}
 }
 
+func TestSecureHeaders_AreSetOnEveryResponse(t *testing.T) {
+	srv := newTestServer(t)
+	rec := do(t, srv, http.MethodGet, "/health", nil)
+	if rec.Header().Get("X-Content-Type-Options") != "nosniff" {
+		t.Error("missing X-Content-Type-Options: nosniff header")
+	}
+	if rec.Header().Get("X-Frame-Options") != "DENY" {
+		t.Error("missing X-Frame-Options: DENY header")
+	}
+	if rec.Header().Get("Content-Security-Policy") != "default-src 'none'" {
+		t.Error("missing Content-Security-Policy header")
+	}
+	if rec.Header().Get("Referrer-Policy") != "no-referrer" {
+		t.Error("missing Referrer-Policy header")
+	}
+	rec2 := do(t, srv, http.MethodGet, "/notes", nil)
+	if rec2.Header().Get("X-Content-Type-Options") != "nosniff" {
+		t.Error("headers missing on /notes route")
+	}
+}
+
 func TestMetrics_ExposesPrometheusFormat(t *testing.T) {
 	srv := newTestServer(t)
 	_ = do(t, srv, http.MethodPost, "/notes", map[string]string{"title": "x"})
