@@ -21,7 +21,7 @@ Key design choices:
   human-readable tag as a trailing comment. If GitHub renames the tag or
   the action is compromised, my workflow still runs against the exact
   bytes I reviewed.
-- `docker/metadata-action` emits both a semver tag (`v0.1.0`) and `latest`
+- `docker/metadata-action` emits both a semver tag (`v0.10.0`) and `latest`
   from a single source of truth — the git tag.
 - `provenance: false` on `build-push-action` — the attestation manifest
   confuses HF Spaces' image puller. Real provenance for QuickNotes lives
@@ -36,12 +36,12 @@ Green CI run: <RELEASE-CI-URL>
 Clean pull from a fresh machine (`docker system prune -af` first):
 
 ```console
-$ docker pull ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.1.0
-v0.1.0: Pulling from grandadmiralbee/devops-intro/quicknotes
+$ docker pull ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.10.0
+v0.10.0: Pulling from grandadmiralbee/devops-intro/quicknotes
 ...
-Status: Downloaded newer image for ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.1.0
+Status: Downloaded newer image for ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.10.0
 
-$ docker run --rm -d -p 8080:8080 --name qn ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.1.0
+$ docker run --rm -d -p 8080:8080 --name qn ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.10.0
 $ curl -fsS localhost:8080/health
 {"status":"ok"}
 ```
@@ -61,7 +61,7 @@ for a short-lived cloud credential. Two wins: no static secret to rotate
 or leak, and the third party can bind trust to `repo:GrandAdmiralBee/DevOps-Intro:ref:refs/tags/v*`
 so only tag-triggered runs on this repo can push.
 
-**b) `:latest` + immutable tag together.** `:v0.1.0` is what deploys pin
+**b) `:latest` + immutable tag together.** `:v0.10.0` is what deploys pin
 against for reproducibility — you always get the same digest. `:latest`
 is a convenience pointer for humans running `docker pull` interactively
 and for CI jobs that want "whatever we shipped most recently" (dev
@@ -191,7 +191,7 @@ that ghcr.io shouldn't ship (secrets, hostnames).
 ### Setup
 
 `cloudflared tunnel --url http://localhost:8080` against
-`docker run … ghcr.io/…quicknotes:v0.1.0`. Full reproduction steps live
+`docker run … ghcr.io/…quicknotes:v0.10.0`. Full reproduction steps live
 in [`cloud/tunnel/README.md`](../cloud/tunnel/README.md).
 
 Ephemeral URL for this run: `https://<random>.trycloudflare.com`

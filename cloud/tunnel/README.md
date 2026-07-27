@@ -11,7 +11,7 @@ Same image the release workflow pushes to ghcr.io:
 ```bash
 docker run --rm -d --name qn-lab10-tunnel \
   -p 8080:8080 \
-  ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.1.0
+  ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.10.0
 
 curl -fsS localhost:8080/health
 # {"status":"ok"}
