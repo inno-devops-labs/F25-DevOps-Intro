@@ -5,21 +5,38 @@ on:
     branches:
       - main
       - feature/lab3
+    paths:
+      - "app/**"
+      - ".github/workflows/ci.yml"
   pull_request:
     branches:
       - main
+    paths:
+      - "app/**"
+      - ".github/workflows/ci.yml"
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 env:
+  GOFLAGS: -buildvcs=false
   GOTOOLCHAIN: local
 
 jobs:
   vet:
-    name: vet
+    name: vet (${{ matrix.go }})
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - "1.23"
+          - "1.24"
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -27,9 +44,14 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
         with:
-          go-version: "1.24"
+          go-version: ${{ matrix.go }}
           cache: true
           cache-dependency-path: app/go.mod
+
+      - name: Adapt the compatibility cell
+        if: matrix.go == '1.23'
+        working-directory: app
+        run: go mod edit -go=1.23
 
       - name: Download modules
         working-directory: app
@@ -40,9 +62,15 @@ jobs:
         run: go vet ./...
 
   test:
-    name: test
+    name: test (${{ matrix.go }})
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - "1.23"
+          - "1.24"
     steps:
       - name: Check out repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -50,9 +78,14 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
         with:
-          go-version: "1.24"
+          go-version: ${{ matrix.go }}
           cache: true
           cache-dependency-path: app/go.mod
+
+      - name: Adapt the compatibility cell
+        if: matrix.go == '1.23'
+        working-directory: app
+        run: go mod edit -go=1.23
 
       - name: Download modules
         working-directory: app
