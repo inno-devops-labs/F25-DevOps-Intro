@@ -1,0 +1,200 @@
+# Lab 10 submission
+
+## Task 1 — CI-Automated Push to ghcr.io (6 pts)
+
+### 1.1: Release workflow
+
+**`.github/workflows/release.yml`:**
+
+```yaml
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@369eb591f429131d8267cba65e6a6a8c600d09bf
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/devops-intro/quicknotes
+          tags: |
+            type=semver,pattern={{version}}
+            type=raw,value=latest
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@b5ca514318bdab3d3642b2a3e6c052b4f38534e9
+      - name: Log in to ghcr.io
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4
+        with:
+          context: app
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+```
+
+All third-party actions pinned by 40-char SHA.
+
+### 1.2: Tag and verify
+
+```bash
+git tag -a -s v0.1.0 -m "Lab 10 release"
+git push origin v0.1.0
+```
+
+[USER TO RUN and verify CI run at URL below]
+
+**Green CI release run:** [Paste workflow run URL after pushing tag]
+
+**Registry URL:** `ghcr.io/<user>/devops-intro/quicknotes:v0.1.0`
+
+**Clean pull verification:**
+```text
+❯ docker pull ghcr.io/<user>/devops-intro/quicknotes:v0.1.0
+[USER TO PASTE OUTPUT]
+
+❯ docker run --rm ghcr.io/<user>/devops-intro/quicknotes:v0.1.0 /healthcheck
+[USER TO VERIFY healthcheck passes]
+```
+
+### Design questions (a-c)
+
+**a) OIDC vs GITHUB_TOKEN — when would you reach for OIDC?**
+
+When pushing to a *different* repository's or *different* organization's container registry. `GITHUB_TOKEN` is scoped to the current repository only. OIDC lets you exchange a trusted JWT from GitHub for temporary credentials in another cloud (AWS, GCP, Azure, or another GH org) without storing long-lived secrets.
+
+**b) Why ship `:latest` alongside an immutable semver tag?**
+
+`:latest` is the convenience tag for users who just want "the current version" without updating their references. CI scripts, quick deploys, and tutorials all benefit from a stable mutable pointer. The immutable semver tag is for auditability — you can always pull exactly what was shipped at v0.1.0.
+
+**c) What does `packages: write` scope only prevent vs `write: all`?**
+
+`write: all` grants write access to every secret, environment, and setting in the repo. An attacker who compromises the workflow could exfiltrate secrets or tamper with branch protection. `packages: write` limits blast radius to the container registry — they can push images but can't touch secrets or settings.
+
+---
+
+## Task 2 — Deploy to Hugging Face Spaces (4 pts)
+
+### 2.1: Space setup
+
+**Space URL:** `https://<user>-quicknotes.hf.space`
+
+```text
+❯ curl -v https://<user>-quicknotes.hf.space/health
+[USER TO PASTE OUTPUT]
+```
+
+### 2.2: Space repo files
+
+**`cloud/Dockerfile`** — pulls the published ghcr.io image:
+```dockerfile
+FROM ghcr.io/moflotas/devops-intro/quicknotes:v0.1.0
+```
+
+**`cloud/README.md`** — HF Space metadata frontmatter:
+```yaml
+---
+title: QuickNotes
+emoji: 🚀
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 8080
+---
+```
+
+### 2.3: Scale-to-zero latency
+
+**Warm latency (p50 after 5 consecutive requests):**
+```text
+[USER TO RUN: for i in 1 2 3 4 5; do curl -w '%{time_total}\n' -o /dev/null -s https://<user>-quicknotes.hf.space/health; done]
+```
+
+**Cold latencies (3 measurements after ~35 min idle):**
+```text
+Cold 1: [USER TO FILL] s
+Cold 2: [USER TO FILL] s
+Cold 3: [USER TO FILL] s
+```
+
+### Design questions (d-f)
+
+**d) HF Spaces "sleep" vs Cloud Run "scale to zero" — why is HF's wake so much slower?**
+
+HF Spaces free tier runs on shared infrastructure. When a Space sleeps, the container is fully evicted — wake requires pulling the image from scratch and starting the container. Cloud Run keeps the image cached on the node's local SSD, so cold starts are sub-second image unpack + process start, not a full pull from a remote registry over the internet.
+
+**e) Why does the Space need `app_port: 8080`?**
+
+HF Spaces defaults to port 7860 (the default for Gradio apps, which Spaces originally hosted). QuickNotes listens on 8080. Without `app_port: 8080`, HF's reverse proxy sends traffic to 7860, gets connection refused, and reports the container as unhealthy.
+
+**f) Pull from ghcr.io vs build inside the Space — trade-offs?**
+
+Pulling: faster deploys (no Go build tools in the Space), reproducible (same image tested in CI), smaller build context. Building inside the Space: adds build time, requires Go SDK in the Dockerfile, non-reproducible (Space's build environment may differ from CI). Pull is strictly better for production.
+
+---
+
+## Bonus Task — Cloudflare Tunnel + Cross-Platform Comparison (2 pts)
+
+### B.1: Quick tunnel setup
+
+```bash
+# Install cloudflared
+brew install cloudflare/cloudflare/cloudflared  # macOS
+
+# Start QuickNotes (Lab 6 compose)
+docker compose up -d
+
+# Start tunnel
+cloudflared tunnel --url http://localhost:8080
+```
+
+[USER TO RUN and get the ephemeral URL]
+
+**Tunnel URL:** `https://<random>.trycloudflare.com`
+
+**Verified from different network:**
+```text
+❯ curl -s https://<random>.trycloudflare.com/health
+[USER TO PASTE OUTPUT - should show {"status":"ok","notes":0}]
+```
+
+### B.2: Latency comparison table
+
+Measured with `hyperfine -r 50`:
+
+| Metric | HF Spaces (hosted) | Cloudflare Tunnel (local-via-edge) |
+|--------|-------------------:|-----------------------------------:|
+| Warm p50 | [USER TO FILL] ms | [USER TO FILL] ms |
+| Warm p95 | [USER TO FILL] ms | [USER TO FILL] ms |
+| Cold start | [USER TO FILL] s | N/A (continuously local) |
+| Public URL stability | stable | ephemeral on restart |
+| Cost | free | free |
+
+### Design questions (g-i)
+
+**g) Which is "really cloud" — HF datacenter or Cloudflare edge proxying your laptop?**
+
+To the user, both produce a public HTTPS URL — the distinction is invisible. HF Spaces is "cloud" in the traditional sense (someone else's datacenter), Cloudflare Tunnel is edge-routed self-hosting. The user doesn't care where the server runs; they care about latency, availability, and cost.
+
+**h) Latency dominator for each:**
+
+For HF Spaces warm: network round-trip to HF's datacenter (typically ~50-200ms depending on location) + app processing (~1-5ms). For Cloudflare Tunnel: network to Cloudflare edge (~5-20ms) + edge-to-laptop leg (through NAT/DSL, highly variable) + app processing. The tunnel's laptop leg often dominates.
+
+**i) When is Cloudflare Tunnel the right production pick?**
+
+Home labs, on-premise services exposed without opening firewall ports, dev/staging URLs for stakeholder review, IoT devices. Never the right pick: high-traffic production services needing SLA-backed uptime, multi-region HA, or compliance certifications.
