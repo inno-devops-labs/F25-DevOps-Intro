@@ -10,7 +10,7 @@ on:
       - ".github/workflows/lab4-verify.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   trace-and-debug:
@@ -35,3 +35,11 @@ jobs:
 
       - name: Capture and diagnose QuickNotes
         run: bash lab4/run-linux.sh
+
+      - name: Publish generated evidence to a temporary branch
+        run: |
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add --force lab4/*.pcap lab4/*.txt
+          git commit -m "test(lab4): publish generated trace evidence"
+          git push --force origin HEAD:refs/heads/automation/lab4-results
