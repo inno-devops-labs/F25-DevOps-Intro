@@ -145,8 +145,9 @@ module.
 - `ci-ok` provides one stable required-check name even if the matrix changes.
 
 Docs-only skip evidence: the submission-only commit
-`DOCS_ONLY_COMMIT_SHA` did not produce a workflow run because it changed neither
-`app/**` nor `.github/workflows/ci.yml`.
+`74abc93ce308a09a7591ff42463eef71529023db` produced zero matching workflow
+runs in the public GitHub API because it changed neither `app/**` nor
+`.github/workflows/ci.yml`.
 
 #### f) Why key caches from dependency inputs?
 

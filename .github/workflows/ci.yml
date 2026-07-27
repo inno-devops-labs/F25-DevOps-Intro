@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/lab3
     paths:
       - "app/**"
       - ".github/workflows/ci.yml"
