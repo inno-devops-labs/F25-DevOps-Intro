@@ -161,65 +161,61 @@ needs to bake in Space-only env vars that ghcr.io shouldn't ship.
 
 ---
 
-## Bonus — Cloudflare Tunnel (2 pts, partial without HF comparison)
+## Bonus — Cloudflare Tunnel — **not attempted**
 
-### Setup
+**Cloudflare's edge is not reachable from Russia.** `cloudflared` cannot
+establish a QUIC or HTTP/2 connection to any of Cloudflare's edge IPs
+from an ISP inside RF — I tried both.
 
-`cloudflared tunnel --url http://localhost:8080` against
-`docker run … ghcr.io/…quicknotes:0.10.0`. Full reproduction steps live
-in [`cloud/tunnel/README.md`](../cloud/tunnel/README.md).
-
-Ephemeral URL for this run: `https://<random>.trycloudflare.com`
-
-Verified from a phone on cellular (4G, different public IP):
+QUIC attempt (default):
 ```
-$ curl -v https://<random>.trycloudflare.com/health
-< HTTP/2 200
-{"status":"ok"}
+2026-07-27T10:16:32Z ERR Failed to dial a quic connection
+    error="failed to dial to edge with quic: timeout: no recent network activity"
+    connIndex=0 event=0 ip=198.41.192.167
+2026-07-27T10:16:38Z ERR Failed to dial a quic connection ... ip=198.41.200.13
+2026-07-27T10:16:46Z ERR Failed to dial a quic connection ... ip=198.41.200.23
 ```
 
-Full transcript: [`lab10/tunnel-curl-health.txt`](lab10/tunnel-curl-health.txt).
+HTTP/2 attempt (`--protocol http2` — TCP:443 instead of UDP): same
+timeout against the same edge IP pool.
 
-### Measurements
+Attempted workaround: route `cloudflared` through a local SOCKS5 proxy
+via `proxychains4`. Failed because `cloudflared` is a Go binary and Go
+on Linux uses direct syscalls for network I/O, bypassing libc — so
+`LD_PRELOAD`-based hooks like proxychains don't intercept its
+connections. Confirmed: no `[proxychains] Strict chain` log line before
+the `Failed to dial` errors.
 
-50 warm samples, `curl -w '%{time_total}' -o /dev/null -s | sort -n`.
+I could have switched the Bonus to an SSH-based reverse tunnel
+(`localhost.run`, `serveo.net`, `bore.pub`) since SSH goes through
+SOCKS trivially — same architectural pattern (edge accepts traffic and
+routes to my laptop over a persistent connection). But the lab
+specifically asks for Cloudflare Tunnel, and swapping the vendor while
+also skipping Task 2 felt like too much deviation from the spec for a
+2-pt bonus. Dropped instead.
 
-| Metric                | Cloudflare Tunnel (local-via-edge) |
-|-----------------------|-----------------------------------:|
-| Warm p50              | `<TN-P50>` s                       |
-| Warm p95              | `<TN-P95>` s                       |
-| Cold start            | N/A (continuously local)           |
-| Public URL stability  | ephemeral on restart               |
-| Cost                  | free                               |
+### Design answers I can still give (g, h, i)
 
-Full percentile log: [`lab10/warm-tunnel.txt`](lab10/warm-tunnel.txt).
-
-**HF Spaces column omitted** — HF Docker SDK is no longer available on the
-free tier (see Task 2 above). The B.3 cross-platform comparison against
-HF isn't possible without deploying to a card-required tier.
-
-### Design answers
-
-**g) "Really cloud" vs reverse proxy.** A hosted-container platform (HF
-Spaces, Cloud Run, Render) is the honest cloud model — code runs in
+**g) "Really cloud" vs reverse proxy.** A hosted-container platform
+(Cloud Run, Render, HF Spaces) is the honest cloud model — code runs in
 someone else's datacenter, they own the failure domain, they scale it,
 my laptop can be off. Cloudflare Tunnel is a *reverse proxy*: the
-container still runs on my hardware, Cloudflare just advertises a public
-URL that routes through their edge. If my laptop sleeps, the URL 502s.
-For end users the difference is invisible — both answer at a
+container still runs on my hardware, Cloudflare just advertises a
+public URL that routes through their edge. If my laptop sleeps, the URL
+502s. For end users the difference is invisible — both answer at a
 `https://…` — but the reliability and geo distribution are totally
 different. It matters when SLOs and on-call get involved: a hosted
 platform takes the availability hit, Tunnel offloads it right back to me.
 
-**h) Latency dominator of the Tunnel path.** Client → nearest Cloudflare
-POP is fast (typically tens of ms — Cloudflare has ~300 POPs). Inside
-Cloudflare's network the routing is engineered and stable. The slow part
-is the return leg: **Cloudflare POP → my persistent WebSocket → my
-laptop on a residential uplink**. Residential upstream latency + jitter
-dominates. TLS termination happens at the edge, so TLS handshake cost
-lives at the client↔edge boundary and is not affected by the tunnel.
-(For a hosted-cloud comparison — HF, Cloud Run — the equivalent
-dominator would be client↔frontend RTT, since the container-to-user
+**h) Where the Tunnel path spends its latency budget.** Client →
+nearest Cloudflare POP is fast (typically tens of ms — Cloudflare has
+~300 POPs). Inside Cloudflare's network the routing is engineered and
+stable. The slow part is the return leg: **Cloudflare POP → the
+persistent WebSocket → my laptop on a residential uplink**. Residential
+upstream latency + jitter dominates. TLS termination happens at the
+edge, so TLS handshake cost lives at the client↔edge boundary and is
+not affected by the tunnel. (For a hosted cloud like Cloud Run, the
+equivalent dominator is client↔frontend RTT since the container-to-user
 path is engineered end-to-end.)
 
 **i) When Tunnel is the right pick.**
@@ -234,7 +230,8 @@ When it's **never** the right pick: any workload that expects the
 container to survive the laptop rebooting, any service with an SLO
 that must survive a residential ISP outage, anything charged for
 egress bandwidth (Cloudflare's cheap edge does not fix your home
-uplink being metered).
+uplink being metered), or **any user of the platform sitting inside a
+network that blocks Cloudflare's edge** — as this attempt demonstrates.
 
 ---
 
@@ -242,9 +239,8 @@ uplink being metered).
 
 - `.github/workflows/release.yml` — Task 1 release workflow
 - `app/Dockerfile`, `app/cmd/healthcheck/main.go` — carried forward from Lab 6
-- `cloud/tunnel/README.md` — Bonus reproduction steps
 - `submissions/lab10.md` — this file
-- `submissions/lab10/` — evidence logs (clean pull, tunnel curl, warm samples)
+- `submissions/lab10/clean-pull.txt` — evidence of anonymous ghcr.io pull
 - `submissions/images/hf-docker-paid.png` — screenshot of HF Docker SDK paywall
 
 ---
@@ -269,7 +265,8 @@ uplink being metered).
   `release.yml` existed), so re-pushing it wouldn't have fired the
   release workflow. Picked `v0.10.0` instead of moving the old tag —
   avoids force-updating a signed reference other labs may still cite.
-- **Quick tunnel URL changes every restart.** Documented as a design
-  quirk in `cloud/tunnel/README.md`; the alternative (named tunnel)
-  needs a Cloudflare-owned domain and defeats the "zero account"
-  requirement.
+- **Cloudflare edge unreachable from RF.** Both `cloudflared --protocol
+  quic` (default) and `--protocol http2` time out at the "dial edge"
+  stage against all attempted edge IPs (198.41.192.x, 198.41.200.x).
+  `proxychains4` doesn't help because Go bypasses libc for network
+  syscalls. Full details in the Bonus section.
