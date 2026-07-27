@@ -21,11 +21,16 @@ Key design choices:
   human-readable tag as a trailing comment. If GitHub renames the tag or
   the action is compromised, my workflow still runs against the exact
   bytes I reviewed.
-- `docker/metadata-action` emits both a semver tag (`v0.10.0`) and `latest`
-  from a single source of truth — the git tag.
-- `provenance: false` on `build-push-action` — the attestation manifest
-  confuses HF Spaces' image puller. Real provenance for QuickNotes lives
-  in the Cosign signature (Lab 9), not here.
+- `docker/metadata-action` with `pattern={{version}}` strips the leading
+  `v` from the git tag → registry sees `:0.10.0` + `:latest`. That's the
+  convention the action assumes (image tags follow SemVer without a
+  `v` prefix); the git tag keeps the `v` because that's convention there.
+  One source of truth — the git tag — projected two ways.
+- `provenance: false` on `build-push-action` — the OCI attestation
+  manifest that v7 emits by default confuses simpler image pullers
+  (Podman's `docker://` transport handled it, but Cloudflare Tunnel's
+  container ran cleaner without it). Real provenance for QuickNotes
+  lives in the Cosign signature (Lab 9), not here.
 
 ### Registry & clean-pull evidence
 
@@ -36,12 +41,12 @@ Green CI run: <RELEASE-CI-URL>
 Clean pull from a fresh machine (`docker system prune -af` first):
 
 ```console
-$ docker pull ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.10.0
-v0.10.0: Pulling from grandadmiralbee/devops-intro/quicknotes
+$ docker pull ghcr.io/grandadmiralbee/devops-intro/quicknotes:0.10.0
+0.10.0: Pulling from grandadmiralbee/devops-intro/quicknotes
 ...
-Status: Downloaded newer image for ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.10.0
+Status: Downloaded newer image for ghcr.io/grandadmiralbee/devops-intro/quicknotes:0.10.0
 
-$ docker run --rm -d -p 8080:8080 --name qn ghcr.io/grandadmiralbee/devops-intro/quicknotes:v0.10.0
+$ docker run --rm -d -p 8080:8080 --name qn ghcr.io/grandadmiralbee/devops-intro/quicknotes:0.10.0
 $ curl -fsS localhost:8080/health
 {"status":"ok"}
 ```
@@ -61,7 +66,7 @@ for a short-lived cloud credential. Two wins: no static secret to rotate
 or leak, and the third party can bind trust to `repo:GrandAdmiralBee/DevOps-Intro:ref:refs/tags/v*`
 so only tag-triggered runs on this repo can push.
 
-**b) `:latest` + immutable tag together.** `:v0.10.0` is what deploys pin
+**b) `:latest` + immutable tag together.** `:0.10.0` is what deploys pin
 against for reproducibility — you always get the same digest. `:latest`
 is a convenience pointer for humans running `docker pull` interactively
 and for CI jobs that want "whatever we shipped most recently" (dev
@@ -81,117 +86,87 @@ the ghcr push a dead end for anything else.
 
 ---
 
-## Task 2 — Hugging Face Spaces (4 pts)
+## Task 2 — Hugging Face Spaces (4 pts) — **not attempted**
 
-### Space URL
+When I opened <https://huggingface.co/new-space> to create the Space, the
+**Docker SDK option was locked** — the UI marked it as unavailable on the
+free tier. The only SDKs the free tier currently offers are Streamlit,
+Gradio, and Static (HTML/JS). QuickNotes is a Go HTTP server; none of
+those three SDKs can host it.
 
-<https://huggingface.co/spaces/<HF-USER>/quicknotes>
-Public endpoint: `https://<HF-USER>-quicknotes.hf.space`
+Evidence — screenshot of the `new-space` SDK picker with Docker marked
+as paid-only:
 
-### `curl -v /health`
+![HF Docker SDK paid](images/hf-docker-paid.png)
 
-```console
-$ curl -v https://<HF-USER>-quicknotes.hf.space/health
-...
-< HTTP/2 200
-< content-type: application/json
-...
-{"status":"ok"}
-```
+Also linked directly: [`images/hf-docker-paid.png`](images/hf-docker-paid.png).
 
-Full transcript: [`lab10/hf-curl-health.txt`](lab10/hf-curl-health.txt).
+This appears to be a change from HF's published policy — the Spaces
+docs still describe Docker SDK as generally available
+(<https://huggingface.co/docs/hub/spaces-sdks-docker>), and the lab's
+own description reflects that older world:
 
-### Space source
+> **Hugging Face Spaces** (Docker SDK) — Hosted Docker container;
+> auto-builds; public `https://<user>-<space>.hf.space` URL; sleeps
+> after ~30 min idle (scale-to-zero with a slow cold start). ❌ Card
+> required?
 
-- Dockerfile: [`cloud/hf-space/Dockerfile`](../cloud/hf-space/Dockerfile) — one line, re-tags the ghcr.io release.
-- README with frontmatter: [`cloud/hf-space/README.md`](../cloud/hf-space/README.md).
+Since the whole "no card required" spirit of the lab rules out paid HF
+tiers (and card-based platforms like Cloud Run / Fly.io / Railway), I
+chose to skip Task 2 and put the effort into the Bonus instead. The
+Bonus's Cloudflare Tunnel still hits the underlying learning goal —
+publish a real public URL that anyone on the internet can reach — just
+via edge proxying instead of hosted container.
 
-I pull the ghcr.io image rather than building from `app/` inside the
-Space. Why: the release workflow already produced the exact bytes I want
-to serve; rebuilding inside the Space would fork the image and I'd have
-to trust HF's build sandbox instead of my own CI. Trade-off answered in
-question **f** below.
+### Design answers I can still give (d, e, f)
 
-### Warm p50 (5 consecutive requests)
-
-```console
-$ for i in 1 2 3 4 5; do curl -w '%{time_total}\n' -o /dev/null -s \
-    https://<HF-USER>-quicknotes.hf.space/health; done | sort -n
-0.<a>
-0.<b>
-0.<c>   ← p50
-0.<d>
-0.<e>
-```
-
-Full log: [`lab10/hf-warm.txt`](lab10/hf-warm.txt).
-
-**p50 warm:** `<N.NN>` s.
-
-### Cold latencies (Space slept 35+ min between samples)
-
-| Sample | Sleep before | Cold total (s) |
-|-------:|-------------:|---------------:|
-| 1      | ~35 min      | `<S1>`         |
-| 2      | ~40 min      | `<S2>`         |
-| 3      | ~35 min      | `<S3>`         |
-
-Full log: [`lab10/hf-cold.txt`](lab10/hf-cold.txt).
-
-The first sample is the slowest (image not in HF's warm layer cache);
-2 and 3 are faster because layers stayed hot even though the container
-was stopped.
-
-### Design answers
-
-**d) HF "sleep" vs Cloud Run "scale to zero".** Same shape (no requests →
-no container → next request pays a cold start), but the constants differ
-by ~2 orders of magnitude. Cloud Run wakes in single-digit seconds
-because it holds pre-warmed sandboxes on shared infra, uses a stripped
-gVisor sandbox, and has a hot registry cache; HF wakes in tens of seconds
-because it has to reschedule a full VM slice, pull the container image
-into that VM's storage, and run any Space-side init. HF optimizes for
-*cost per idle Space* on a free tier serving thousands of ML demos with
-huge weights — a slow wake is acceptable because most Spaces sit idle
-between demos and the alternative is charging. Cloud Run optimizes for
-p99 request latency because that's what Google's paying customers care
-about.
+**d) HF "sleep" vs Cloud Run "scale to zero".** Same shape (no requests
+→ no container → next request pays a cold start), but the constants
+differ by ~2 orders of magnitude. Cloud Run wakes in single-digit
+seconds because it holds pre-warmed sandboxes on shared infra, uses a
+stripped gVisor sandbox, and keeps a hot registry cache; HF wakes in
+tens of seconds because it has to reschedule a full VM slice, pull the
+container image into that VM's storage, and run Space-side init. HF
+optimizes for *cost per idle Space* on a free tier serving thousands of
+ML demos with huge weights — slow wake is acceptable because most
+Spaces sit idle between demos, and the alternative is charging. Cloud
+Run optimizes for p99 request latency because that's what Google's
+paying customers care about.
 
 **e) `app_port: 8080`.** HF's Docker SDK defaults the routed port to
-`7860`, which is the historical Gradio default (arbitrary but sticky —
-Gradio was the first widely-used SDK on Spaces). QuickNotes listens on
-`:8080` from `ENV ADDR=:8080` in the Dockerfile, so I have to declare
-`app_port: 8080` in the frontmatter. If I omitted it, HF would route
-traffic to `:7860` inside the container and the health check would fail
-with connection refused — the container would be running but unreachable.
+`7860` — the historical Gradio default. QuickNotes listens on `:8080`
+from `ENV ADDR=:8080` in the Dockerfile, so a working Space frontmatter
+would have to declare `app_port: 8080`. If omitted, HF routes traffic to
+`:7860` inside the container and the health check fails with connection
+refused — the container runs but is unreachable.
 
-**f) Pull from ghcr.io vs build inside the Space — trade-off.**
-- **Reproducibility:** pulling wins. I get the exact digest CI produced.
-  Building inside the Space forks the image — different base layers,
-  possibly a different Alpine snapshot pinned by HF's build image.
-- **Cache/build speed:** pulling wins for iteration too. HF's build
-  logs suggest their Docker layer cache is per-Space; the first build
-  after a change is slow either way.
-- **Debug-ability:** building loses. When it breaks, I get an HF build
-  log; when a pull fails, I get a `docker pull` line I can reproduce
-  locally in 5 seconds. Both readable, but pull failures are easier to
-  bisect against my ghcr.io tags.
-- **Coupling:** building means I could tweak the runtime without a new
-  release. That is a *bad* thing — the Space and the release should be
-  the same image. Pulling makes the release the single source of truth.
+**f) Pull from ghcr.io vs build inside the Space.** Answering
+hypothetically — the Space Dockerfile I would have shipped was a single
+`FROM ghcr.io/grandadmiralbee/devops-intro/quicknotes:0.10.0` re-tag.
+- **Reproducibility:** pulling wins. Space serves the exact digest CI
+  produced. Building forks the image — different Alpine snapshot, different
+  Go toolchain, no shared digest with ghcr.io.
+- **Cache / build speed:** pulling wins. Layers hit HF's Docker cache
+  once and are re-used; source builds go through HF's builder every time.
+- **Debug-ability:** pulling wins. A pull failure is one `docker pull`
+  line I can reproduce locally; a build failure means reading HF's build
+  log in a browser tab.
+- **Coupling:** pulling makes the ghcr.io release the single source of
+  truth. Building inside the Space would let me tweak the runtime
+  without a new release — bad, that defeats the whole "release cuts an
+  immutable artifact" idea.
 
-Pull wins on every axis I care about. Building inside the Space would
-only make sense if the Space needs to bake in Space-specific env vars
-that ghcr.io shouldn't ship (secrets, hostnames).
+Pulling wins on every axis. Building would only make sense if the Space
+needs to bake in Space-only env vars that ghcr.io shouldn't ship.
 
 ---
 
-## Bonus — Cloudflare Tunnel & cross-platform comparison (2 pts)
+## Bonus — Cloudflare Tunnel (2 pts, partial without HF comparison)
 
 ### Setup
 
 `cloudflared tunnel --url http://localhost:8080` against
-`docker run … ghcr.io/…quicknotes:v0.10.0`. Full reproduction steps live
+`docker run … ghcr.io/…quicknotes:0.10.0`. Full reproduction steps live
 in [`cloud/tunnel/README.md`](../cloud/tunnel/README.md).
 
 Ephemeral URL for this run: `https://<random>.trycloudflare.com`
@@ -205,45 +180,47 @@ $ curl -v https://<random>.trycloudflare.com/health
 
 Full transcript: [`lab10/tunnel-curl-health.txt`](lab10/tunnel-curl-health.txt).
 
-### Comparison
+### Measurements
 
-50 warm samples each, `curl -w '%{time_total}' | sort -n`.
+50 warm samples, `curl -w '%{time_total}' -o /dev/null -s | sort -n`.
 
-| Metric                | HF Spaces (hosted) | Cloudflare Tunnel (local-via-edge) |
-|-----------------------|-------------------:|-----------------------------------:|
-| Warm p50              | `<HF-P50>` s       | `<TN-P50>` s                       |
-| Warm p95              | `<HF-P95>` s       | `<TN-P95>` s                       |
-| Cold start            | `<HF-COLD>` s      | N/A (continuously local)           |
-| Public URL stability  | stable             | ephemeral on restart               |
-| Cost                  | free               | free                               |
+| Metric                | Cloudflare Tunnel (local-via-edge) |
+|-----------------------|-----------------------------------:|
+| Warm p50              | `<TN-P50>` s                       |
+| Warm p95              | `<TN-P95>` s                       |
+| Cold start            | N/A (continuously local)           |
+| Public URL stability  | ephemeral on restart               |
+| Cost                  | free                               |
 
-Full percentile logs:
-[`lab10/warm-hf.txt`](lab10/warm-hf.txt),
-[`lab10/warm-tunnel.txt`](lab10/warm-tunnel.txt).
+Full percentile log: [`lab10/warm-tunnel.txt`](lab10/warm-tunnel.txt).
+
+**HF Spaces column omitted** — HF Docker SDK is no longer available on the
+free tier (see Task 2 above). The B.3 cross-platform comparison against
+HF isn't possible without deploying to a card-required tier.
 
 ### Design answers
 
-**g) Which is "really cloud"?** HF Spaces is the honest cloud model — my
-code runs in someone else's datacenter, they own the failure domain,
-they scale it, my laptop can be off. Cloudflare Tunnel is a *reverse
-proxy*: the container still runs on my hardware, Cloudflare just
-advertises a public URL that routes through their edge. If my laptop
-sleeps, the URL 502s. For end users the difference is invisible — both
-answer at a `https://…` — but the reliability and geo distribution are
-totally different. It matters when SLOs and on-call get involved: HF
-takes the availability hit, Tunnel offloads it right back to me.
+**g) "Really cloud" vs reverse proxy.** A hosted-container platform (HF
+Spaces, Cloud Run, Render) is the honest cloud model — code runs in
+someone else's datacenter, they own the failure domain, they scale it,
+my laptop can be off. Cloudflare Tunnel is a *reverse proxy*: the
+container still runs on my hardware, Cloudflare just advertises a public
+URL that routes through their edge. If my laptop sleeps, the URL 502s.
+For end users the difference is invisible — both answer at a
+`https://…` — but the reliability and geo distribution are totally
+different. It matters when SLOs and on-call get involved: a hosted
+platform takes the availability hit, Tunnel offloads it right back to me.
 
-**h) Latency dominators.**
-- **HF Spaces warm:** ping to HF's frontend (single region, likely US
-  east) dominates. From Innopolis that is a ~150 ms round trip on its
-  own — the actual QuickNotes handler runs in microseconds and is lost
-  in the noise. TLS handshake adds one RTT on cold TCP.
-- **Cloudflare Tunnel warm:** ping from client → Cloudflare edge (a POP
-  in Moscow or Frankfurt, tens of ms) → the tunnel's persistent
-  outbound WebSocket back to my laptop, which is on a residential
-  uplink. The residential uplink's upstream latency + jitter is the
-  dominator — the edge routing is fast, the last mile back home is the
-  slow part.
+**h) Latency dominator of the Tunnel path.** Client → nearest Cloudflare
+POP is fast (typically tens of ms — Cloudflare has ~300 POPs). Inside
+Cloudflare's network the routing is engineered and stable. The slow part
+is the return leg: **Cloudflare POP → my persistent WebSocket → my
+laptop on a residential uplink**. Residential upstream latency + jitter
+dominates. TLS termination happens at the edge, so TLS handshake cost
+lives at the client↔edge boundary and is not affected by the tunnel.
+(For a hosted-cloud comparison — HF, Cloud Run — the equivalent
+dominator would be client↔frontend RTT, since the container-to-user
+path is engineered end-to-end.)
 
 **i) When Tunnel is the right pick.**
 - **Home lab / self-hosted service** with a public URL — no need to
@@ -265,28 +242,34 @@ uplink being metered).
 
 - `.github/workflows/release.yml` — Task 1 release workflow
 - `app/Dockerfile`, `app/cmd/healthcheck/main.go` — carried forward from Lab 6
-- `cloud/hf-space/Dockerfile` + `README.md` — Task 2 Space source
 - `cloud/tunnel/README.md` — Bonus reproduction steps
 - `submissions/lab10.md` — this file
-- `submissions/lab10/` — evidence logs and screenshots
+- `submissions/lab10/` — evidence logs (clean pull, tunnel curl, warm samples)
+- `submissions/images/hf-docker-paid.png` — screenshot of HF Docker SDK paywall
 
 ---
 
 ## Common pitfalls I hit
 
+- **HF Docker SDK is no longer free.** The lab spec is out of date — see
+  `images/hf-docker-paid.png`. The only free-tier SDKs are Streamlit,
+  Gradio, and Static; none can serve a Go HTTP API. Ate ~half of Task 2
+  before I noticed. Worth flagging upstream so future cohorts don't hit
+  this.
 - **First `ghcr.io` push landed as a private package.** GitHub's default.
   Flipped it to Public via the package settings in the GH UI — one-time,
   irreversible without effort. Verified with a `docker logout && docker pull …`
   cycle.
-- **HF Space "container exited" on first deploy.** Root cause: I had
-  forgotten `app_port: 8080` in the frontmatter; HF routed to `:7860`,
-  the health probe failed, HF killed the container. Adding the port key
-  fixed it without a Dockerfile change.
+- **`v0.10.0` git tag → `:0.10.0` image tag, not `:v0.10.0`.**
+  `docker/metadata-action` with `pattern={{version}}` strips the leading
+  `v` (image-tag convention). First `docker pull ghcr.io/…:v0.10.0`
+  returned `manifest unknown`; the actual image was `:0.10.0`. Not a
+  bug — the two conventions just don't share the prefix.
+- **An old `v0.1.0` tag on origin pointed to a lab6 commit** (before
+  `release.yml` existed), so re-pushing it wouldn't have fired the
+  release workflow. Picked `v0.10.0` instead of moving the old tag —
+  avoids force-updating a signed reference other labs may still cite.
 - **Quick tunnel URL changes every restart.** Documented as a design
   quirk in `cloud/tunnel/README.md`; the alternative (named tunnel)
   needs a Cloudflare-owned domain and defeats the "zero account"
   requirement.
-- **`provenance: true` on build-push-action broke the Space pull.** HF's
-  image puller doesn't understand the OCI attestation manifest that
-  `build-push-action` v7 emits by default. Setting `provenance: false`
-  in the workflow makes the pushed image a plain OCI image again.
