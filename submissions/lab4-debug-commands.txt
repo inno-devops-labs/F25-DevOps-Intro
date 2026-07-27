@@ -1,0 +1,23 @@
+== ss -tlnp ==
+LISTEN 0      4096                *:8080            *:*    users:(("quicknotes",pid=1360,fd=3))
+== ip route show ==
+0.0.0.0/1 dev eth3 proto kernel scope link metric 5 
+default via 10.91.48.1 dev eth4 proto kernel metric 35 
+default via 26.0.0.1 dev eth0 proto kernel metric 9257 
+10.8.0.0/24 dev eth3 proto kernel scope link metric 261 
+10.91.48.0/20 dev eth4 proto kernel scope link metric 291 
+10.91.48.1 dev eth4 proto kernel scope link metric 35 
+26.0.0.0/8 dev eth0 proto kernel scope link metric 257 
+26.0.0.1 dev eth0 proto kernel scope link metric 9257 
+127.255.255.255 dev eth3 proto kernel scope link metric 261 
+128.0.0.0/1 dev eth3 proto kernel scope link metric 5 
+== mtr -rwc 5 localhost ==
+== dig +short example.com @1.1.1.1 ==
+172.66.147.243
+104.20.23.154
+== journalctl (likely N/A) ==
+-- No entries --
+== mtr -rwc 5 localhost ==
+Start: 2026-07-27T13:09:37+0300
+HOST: darknesod Loss%   Snt   Last   Avg  Best  Wrst StDev
+  1.|-- localhost  0.0%     5    0.1   0.1   0.1   0.2   0.0
