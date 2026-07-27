@@ -63,17 +63,22 @@ git push origin v0.1.0
 
 [USER TO RUN and verify CI run at URL below]
 
-**Green CI release run:** [Paste workflow run URL after pushing tag]
+**Green CI release run:** https://github.com/moflotas/DevOps-Intro/actions/runs/30304449344
 
-**Registry URL:** `ghcr.io/<user>/devops-intro/quicknotes:v0.1.0`
+**Registry URL:** `ghcr.io/moflotas/devops-intro/quicknotes:v0.1.0`
 
 **Clean pull verification:**
 ```text
-❯ docker pull ghcr.io/<user>/devops-intro/quicknotes:v0.1.0
-[USER TO PASTE OUTPUT]
+❯ docker pull --platform linux/amd64 ghcr.io/moflotas/devops-intro/quicknotes:v0.1.0
+v0.1.0: Pulling from moflotas/devops-intro/quicknotes
+Digest: sha256:69bc657ae6092738780e4bb8b0af331f453e5fcd68509b26658a553b7ee33957
+Status: Downloaded newer image for ghcr.io/moflotas/devops-intro/quicknotes:v0.1.0
 
-❯ docker run --rm ghcr.io/<user>/devops-intro/quicknotes:v0.1.0 /healthcheck
-[USER TO VERIFY healthcheck passes]
+❯ docker run --rm --platform linux/amd64 ghcr.io/moflotas/devops-intro/quicknotes:v0.1.0
+[... container starts on 8080 ...]
+
+❯ curl -s http://localhost:8080/health
+{"notes":0,"status":"ok"}
 ```
 
 ### Design questions (a-c)
