@@ -1,0 +1,83 @@
+# Lab 7 — Configuration Management
+
+Branch: `feature/lab7`
+
+## Implementation
+
+The deployment consists of:
+
+- [`ansible/playbook.yaml`](../ansible/playbook.yaml);
+- the Vagrant SSH [`inventory.ini`](../ansible/inventory.ini);
+- [`quicknotes.service.j2`](../ansible/templates/quicknotes.service.j2);
+- a reproducible static-binary build script and the committed Linux binary;
+- the copied seed data;
+- optional `ansible-pull` service, timer, and local inventory artifacts.
+
+The branch workflow uses an alternate local inventory on an ephemeral Ubuntu
+24.04 runner. That exercises the same modules against real systemd and proves
+service behavior and idempotency without pretending that GitHub provides a
+VirtualBox VM. Exact recaps and HTTP output will be attached after the run.
+
+## Design answers
+
+**a — modules versus commands.** Dedicated modules describe desired state and
+inspect the current system before changing it: `file` compares ownership/mode,
+`copy` compares content and metadata, and `systemd_service` queries systemd.
+An arbitrary `command` cannot infer whether its effect already exists unless
+the author adds `creates`, `removes`, or explicit guards. State-aware modules
+make repeat runs safe and their `changed` result meaningful.
+
+**b — handlers.** A notified handler runs once, at the end of the relevant
+play section, if at least one notifying task actually changed. It does not run
+when the template and binary are already identical. This batches restarts and
+avoids disrupting a healthy service on every convergence.
+
+**c — variable placement.** Role defaults would hold reusable, safely
+overridable defaults; `group_vars/quicknotes` would hold environment-wide
+values shared by the inventory group; host vars would hold the exceptional
+address or path of one VM. This compact lab has no role, so readable play vars
+are used for service defaults and `--extra-vars` only for the deliberate
+highest-precedence demonstration.
+
+**d — facts.** This playbook uses fixed paths and does not branch on
+distribution, interfaces, CPU, or other facts, so `gather_facts: false` is
+appropriate. It saves the remote setup-module round trip and Python work on
+every run. A multi-distribution role would likely turn facts back on.
+
+**e — zero changes.** `user`, `file`, and `systemd_service` compare system
+state; `copy` checks source/destination content and metadata; `template`
+renders locally and compares the result. On the second run every comparison
+matches, so no notify event is emitted and the recap is `changed=0`.
+
+**f — shell redirection.** A shell `echo > unit` normally reports changed on
+every run, rewrites even identical content, loses useful atomic transfer and
+diff behavior, and easily breaks quoting/newlines. It can trigger needless
+restarts and may leave a truncated unit if interrupted. The template module
+renders, diffs, transfers atomically, and reports change accurately.
+
+**g — check plus diff.** Plain check mode says that a file would change but
+does not show whether the rendered value is the intended port or an accidental
+secret/path deletion. `--diff` exposes the exact before/after unit, catching a
+syntactically valid but semantically wrong template before deployment.
+
+## Bonus — pull-mode GitOps
+
+When `enable_ansible_pull=true`, the play installs Ansible and Git, a local
+inventory, `ansible-pull.service`, and a persistent five-minute systemd timer.
+The service pulls this public fork's `feature/lab7` and limits the same
+playbook to a local connection.
+
+**h — security.** Pull mode removes inbound control-node SSH as a deployment
+requirement; the node needs outbound Git access and can authenticate with a
+read-only credential. The local agent still needs root to converge, so commit
+integrity, protected branches, least-privilege repository access, and pinned
+revisions remain important.
+
+**i — Kubernetes analogue.** This is the reconciliation loop used by GitOps
+controllers such as Argo CD and Flux. `ansible-pull` is a fair VM-scale model:
+desired state lives in Git, an agent periodically observes it, computes drift,
+and converges actual state without an imperative push from a workstation.
+
+Timer/journal/timeline output requires enabling the bonus on the actual VM and
+is not fabricated in this report; the graded service, timer, inventory, and
+automation artifacts are all present.

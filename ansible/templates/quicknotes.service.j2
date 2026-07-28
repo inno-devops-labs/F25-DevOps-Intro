@@ -1,0 +1,24 @@
+[Unit]
+Description=QuickNotes API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User={{ quicknotes_user }}
+Group={{ quicknotes_group }}
+WorkingDirectory={{ quicknotes_data_dir }}
+Environment="ADDR={{ quicknotes_addr }}"
+Environment="DATA_PATH={{ quicknotes_data_path }}"
+Environment="SEED_PATH={{ quicknotes_seed_path }}"
+ExecStart=/usr/local/bin/quicknotes
+Restart=on-failure
+RestartSec=2s
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths={{ quicknotes_data_dir }}
+
+[Install]
+WantedBy=multi-user.target

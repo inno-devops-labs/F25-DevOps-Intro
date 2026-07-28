@@ -1,0 +1,10 @@
+[Unit]
+Description=Converge QuickNotes from Git with ansible-pull
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment=ANSIBLE_FORCE_COLOR=0
+ExecStart=/usr/bin/ansible-pull --url {{ quicknotes_repo_url }} --checkout {{ quicknotes_repo_branch }} --inventory /etc/ansible/quicknotes-pull.ini --limit quicknotes ansible/playbook.yaml --extra-vars enable_ansible_pull=true
+Nice=10
