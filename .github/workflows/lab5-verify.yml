@@ -38,10 +38,16 @@ jobs:
             --output /tmp/vagrant.deb
           sudo apt-get install --yes /tmp/vagrant.deb
 
+      - name: Validate Vagrantfile syntax
+        run: ruby -c Vagrantfile
+
       - name: Validate Vagrant configuration
+        # Hosted runners have no VirtualBox provider. This still loads and
+        # validates the complete Vagrant configuration.
+        run: vagrant validate --ignore-provider
+
+      - name: Validate provisioner
         run: |
-          ruby -c Vagrantfile
-          vagrant validate
           bash -n vagrant/provision.sh
           shellcheck vagrant/provision.sh
 
