@@ -147,6 +147,18 @@ pinned v1.1.4 scanner. It uses Go 1.26.5 because Go 1.24 is end-of-life and a
 security gate that deliberately runs a vulnerable compiler/runtime would be
 self-defeating in July 2026.
 
+The gate was exercised, not merely configured:
+
+- commit `b72e1a7` temporarily required
+  `github.com/dgrijalva/jwt-go@v3.2.0` and called
+  `MapClaims.VerifyAudience`, the affected symbol in GO-2020-0017;
+- [run 30339967370](https://github.com/Mimir-sma/DevOps-Intro/actions/runs/30339967370)
+  failed specifically in the `govulncheck` job while the heavy scanner job was
+  intentionally skipped;
+- commit `c6f3eb2` completely removed the demo source, module, and checksum;
+- [run 30340097684](https://github.com/Mimir-sma/DevOps-Intro/actions/runs/30340097684)
+  then passed the `govulncheck` job on the clean call graph.
+
 **h — reachability.** A module-level CVE says vulnerable code exists in the
 dependency graph; call-graph reachability says the application can invoke the
 affected symbol. The latter sharply reduces urgent triage while the former
