@@ -52,8 +52,8 @@ jobs:
           printf 'image_bytes=%s\n' "$image_bytes" | tee -a lab6/evidence.txt
           test "$image_bytes" -le 25000000
 
-          docker pull golang:1.24.5-bookworm >/dev/null
-          docker image inspect golang:1.24.5-bookworm \
+          docker pull golang:1.24.13-bookworm >/dev/null
+          docker image inspect golang:1.24.13-bookworm \
             --format 'builder_bytes={{.Size}}' | tee -a lab6/evidence.txt
 
       - name: Verify Compose, health, persistence, and hardening

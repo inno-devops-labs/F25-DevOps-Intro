@@ -1,5 +1,5 @@
 # Deliberately cache-hostile comparison used only by the Lab 6 timing run.
-FROM golang:1.24.5-bookworm AS builder
+FROM golang:1.24.13-bookworm AS builder
 WORKDIR /src
 COPY . .
 RUN go mod download

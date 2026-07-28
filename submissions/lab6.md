@@ -5,6 +5,8 @@ Branch: `feature/lab6`
 The implementation is in [`app/Dockerfile`](../app/Dockerfile) and
 [`compose.yaml`](../compose.yaml). Automated Docker, Compose, persistence,
 hardening, and Trivy evidence will be committed with the final lab update.
+The builder is pinned to the last Go 1.24 patch, 1.24.13, rather than the
+older point release used in the VM exercise.
 
 ## Design answers
 
