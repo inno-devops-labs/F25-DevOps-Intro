@@ -131,3 +131,25 @@ func TestMetrics_ExposesPrometheusFormat(t *testing.T) {
 	}
 }
 
+func TestSecurityHeaders_AreAppliedToAllRoutes(t *testing.T) {
+	srv := newTestServer(t)
+	routes := []string{"/health", "/notes", "/not-a-route"}
+	required := map[string]string{
+		"Cache-Control":           "no-store",
+		"Content-Security-Policy": "default-src 'none'; frame-ancestors 'none'",
+		"Referrer-Policy":         "no-referrer",
+		"X-Content-Type-Options":  "nosniff",
+		"X-Frame-Options":         "DENY",
+	}
+
+	for _, target := range routes {
+		t.Run(target, func(t *testing.T) {
+			rec := do(t, srv, http.MethodGet, target, nil)
+			for name, want := range required {
+				if got := rec.Header().Get(name); got != want {
+					t.Errorf("%s = %q, want %q", name, got, want)
+				}
+			}
+		})
+	}
+}

@@ -1,0 +1,94 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE: ghcr.io/mimir-sma/devops-intro/quicknotes
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate semantic version
+        shell: bash
+        run: |
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "tag must be vMAJOR.MINOR.PATCH" >&2
+            exit 1
+          fi
+
+      - name: Log in to GitHub Container Registry
+        run: |
+          printf '%s' '${{ secrets.GITHUB_TOKEN }}' \
+            | docker login ghcr.io \
+                --username '${{ github.actor }}' \
+                --password-stdin
+
+      - name: Build and push immutable and convenience tags
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$GITHUB_REF_NAME"
+          docker build \
+            --pull \
+            --label "org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --label "org.opencontainers.image.version=${version}" \
+            --tag "${IMAGE}:${version}" \
+            --tag "${IMAGE}:latest" \
+            app
+          docker push "${IMAGE}:${version}"
+          docker push "${IMAGE}:latest"
+          docker buildx imagetools inspect "${IMAGE}:${version}"
+
+      - name: Smoke-test the pushed image
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker image rm "${IMAGE}:${GITHUB_REF_NAME}" "${IMAGE}:latest"
+          docker pull "${IMAGE}:${GITHUB_REF_NAME}"
+          docker run --detach \
+            --name quicknotes-release-smoke \
+            --publish 18080:8080 \
+            --env ADDR=:8080 \
+            --env DATA_PATH=/data/notes.json \
+            --env SEED_PATH=/app/seed.json \
+            "${IMAGE}:${GITHUB_REF_NAME}"
+          for _ in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:18080/health; then
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs quicknotes-release-smoke
+          exit 1
+
+      - name: Check anonymous pull visibility
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker rm --force quicknotes-release-smoke
+          docker image rm "${IMAGE}:${GITHUB_REF_NAME}"
+          docker logout ghcr.io
+          if docker pull "${IMAGE}:${GITHUB_REF_NAME}"; then
+            echo "anonymous_pull=success" | tee -a "$GITHUB_STEP_SUMMARY"
+          else
+            echo "anonymous_pull=manual_visibility_change_required" \
+              | tee -a "$GITHUB_STEP_SUMMARY"
+          fi
