@@ -1,0 +1,14 @@
+# Deliberately cache-hostile comparison used only by the Lab 6 timing run.
+FROM golang:1.24.5-bookworm AS builder
+WORKDIR /src
+COPY . .
+RUN go mod download
+RUN CGO_ENABLED=0 GOOS=linux go build \
+    -trimpath -ldflags="-s -w" -o /out/quicknotes .
+
+FROM gcr.io/distroless/static-debian12:nonroot
+COPY --from=builder --chown=65532:65532 /out/quicknotes /quicknotes
+COPY --chown=65532:65532 seed.json /app/seed.json
+USER nonroot:nonroot
+EXPOSE 8080
+ENTRYPOINT ["/quicknotes"]

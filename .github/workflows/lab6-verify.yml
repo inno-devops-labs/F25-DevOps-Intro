@@ -1,0 +1,153 @@
+name: lab6-verify
+
+on:
+  push:
+    branches:
+      - feature/lab6
+    paths:
+      - "app/**"
+      - "compose.yaml"
+      - "lab6/**"
+      - ".github/workflows/lab6-verify.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  container-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Build image and compare cache strategies
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p lab6
+          : >lab6/evidence.txt
+
+          measure_build() {
+            local label=$1
+            local dockerfile=$2
+            local start end
+            start=$(date +%s%N)
+            docker build --file "$dockerfile" --tag "quicknotes:${label}" app >/tmp/"${label}".log
+            end=$(date +%s%N)
+            awk -v label="$label" -v start="$start" -v end="$end" \
+              'BEGIN { printf "%s_ms=%d\n", label, (end-start)/1000000 }' \
+              | tee -a lab6/evidence.txt
+          }
+
+          measure_build naive-cold lab6/Dockerfile.naive
+          measure_build optimized-cold app/Dockerfile
+          printf '\n// cache timing source change\n' >>app/handlers.go
+          measure_build naive-rebuild lab6/Dockerfile.naive
+          measure_build optimized-rebuild app/Dockerfile
+          git checkout -- app/handlers.go
+          docker tag quicknotes:optimized-rebuild quicknotes:lab6
+
+          image_bytes=$(docker image inspect quicknotes:lab6 --format '{{.Size}}')
+          printf 'image_bytes=%s\n' "$image_bytes" | tee -a lab6/evidence.txt
+          test "$image_bytes" -le 25000000
+
+          docker pull golang:1.24.5-bookworm >/dev/null
+          docker image inspect golang:1.24.5-bookworm \
+            --format 'builder_bytes={{.Size}}' | tee -a lab6/evidence.txt
+
+      - name: Verify Compose, health, persistence, and hardening
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker compose config --quiet
+          docker compose up --detach
+
+          wait_healthy() {
+            local id
+            id=$(docker compose ps --quiet quicknotes)
+            for _ in {1..30}; do
+              if [[ $(docker inspect "$id" --format '{{.State.Health.Status}}') == healthy ]]; then
+                return 0
+              fi
+              sleep 1
+            done
+            docker compose logs
+            return 1
+          }
+
+          wait_healthy
+          {
+            echo '--- health ---'
+            curl --fail --silent http://127.0.0.1:8080/health
+            echo
+            echo '--- create durable note ---'
+            curl --fail --silent \
+              --request POST \
+              --header 'Content-Type: application/json' \
+              --data '{"title":"durable","body":"survive a restart"}' \
+              http://127.0.0.1:8080/notes
+            echo
+          } | tee -a lab6/evidence.txt
+
+          docker compose down
+          docker compose up --detach
+          wait_healthy
+          after_restart=$(curl --fail --silent http://127.0.0.1:8080/notes)
+          grep --quiet durable <<<"$after_restart"
+          {
+            echo '--- after down/up (volume retained) ---'
+            echo "$after_restart"
+          } | tee -a lab6/evidence.txt
+
+          docker compose down --volumes
+          docker compose up --detach
+          wait_healthy
+          after_delete=$(curl --fail --silent http://127.0.0.1:8080/notes)
+          if grep --quiet durable <<<"$after_delete"; then
+            echo 'durable note unexpectedly survived volume deletion' >&2
+            exit 1
+          fi
+
+          container_id=$(docker compose ps --quiet quicknotes)
+          {
+            echo '--- after down -v/up (new volume) ---'
+            echo "$after_delete"
+            echo '--- image config ---'
+            docker image inspect quicknotes:lab6 \
+              --format 'User={{json .Config.User}} Entrypoint={{json .Config.Entrypoint}} ExposedPorts={{json .Config.ExposedPorts}}'
+            echo '--- container hardening ---'
+            docker inspect "$container_id" \
+              --format 'CapDrop={{json .HostConfig.CapDrop}} ReadonlyRootfs={{.HostConfig.ReadonlyRootfs}} SecurityOpt={{json .HostConfig.SecurityOpt}}'
+            echo '--- shell absence ---'
+          } | tee -a lab6/evidence.txt
+
+          set +e
+          docker compose exec --no-TTY quicknotes sh >>lab6/evidence.txt 2>&1
+          shell_status=$?
+          set -e
+          printf 'shell_exit_status=%d\n' "$shell_status" | tee -a lab6/evidence.txt
+          test "$shell_status" -ne 0
+
+      - name: Scan image with Trivy
+        shell: bash
+        run: |
+          docker run --rm \
+            --volume /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:0.59.1 image \
+            --severity HIGH,CRITICAL \
+            --no-progress \
+            quicknotes:lab6 | tee lab6/trivy.txt
+
+      - name: Clean up containers
+        if: always()
+        run: docker compose down --volumes
+
+      - name: Publish generated evidence to a temporary branch
+        if: success()
+        run: |
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add --force lab6/evidence.txt lab6/trivy.txt
+          git commit -m "test(lab6): publish container evidence"
+          git push --force origin HEAD:refs/heads/automation/lab6-results
