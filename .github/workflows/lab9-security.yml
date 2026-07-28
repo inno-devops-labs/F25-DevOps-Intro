@@ -19,7 +19,7 @@ on:
       - ".github/workflows/lab9-security.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   govulncheck:
@@ -182,12 +182,3 @@ jobs:
         run: |
           docker compose down --volumes
           docker rm --force quicknotes-before 2>/dev/null || true
-
-      - name: Publish generated scan evidence to a temporary branch
-        if: success()
-        run: |
-          git config user.name github-actions
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add --force lab9
-          git commit -m "test(lab9): publish security scan evidence"
-          git push --force origin HEAD:refs/heads/automation/lab9-results

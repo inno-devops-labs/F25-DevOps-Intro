@@ -17,7 +17,88 @@ remaining standard-library findings.
 The security workflow pins Trivy 0.59.1, ZAP 2.16.1, and govulncheck 1.1.4.
 It performs image/filesystem/config scans, generates a CycloneDX SBOM, and
 runs passive ZAP baselines against both `main` (before) and this branch
-(after). Reports and exact triage will be attached after the real run.
+(after). The complete suite passed in
+[GitHub Actions run 30339421563](https://github.com/Mimir-sma/DevOps-Intro/actions/runs/30339421563).
+
+## Trivy and SBOM evidence
+
+All four artifacts are committed:
+
+- [`trivy-image.txt`](../lab9/trivy-image.txt) and its
+  [JSON form](../lab9/trivy-image.json);
+- [`trivy-fs.txt`](../lab9/trivy-fs.txt) and its
+  [JSON form](../lab9/trivy-fs.json);
+- [`trivy-config.txt`](../lab9/trivy-config.txt) and its
+  [JSON form](../lab9/trivy-config.json);
+- [`quicknotes.sbom.cdx.json`](../lab9/quicknotes.sbom.cdx.json).
+
+| Scan | HIGH | CRITICAL | Triage |
+|---|---:|---:|---|
+| Image | 0 | 0 | No HIGH/CRITICAL rows to disposition. |
+| Repository filesystem | 0 | 0 | No HIGH/CRITICAL rows to disposition. |
+| Docker/Compose config | 0 | 0 | No failed misconfiguration rows; both Dockerfiles passed 21 checks. |
+
+The human filesystem/config reports are empty because the selected severities
+had no results; their JSON files prove the target, timestamp, and successful
+scan. The image report records `debian 12.15` and total zero.
+
+First 30 lines of the CycloneDX 1.6 SBOM:
+
+```json
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:8bbb84cc-1b41-4e0a-a7e4-2a89f5a00b03",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-07-28T07:43:14+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "group": "aquasecurity",
+          "name": "trivy",
+          "version": "0.59.1"
+        }
+      ]
+    },
+    "component": {
+      "bom-ref": "b895dc6b-bc01-4fd2-ae24-a429161d2dac",
+      "type": "container",
+      "name": "quicknotes:lab9",
+      "properties": [
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:114dde0fefebbca13165d0da9c500a66190e497a82a53dcaabc3172d630be1e9"
+        },
+        {
+          "name": "aquasecurity:trivy:DiffID",
+          "value": "sha256:27cb265b6e0db3c9d3d865b51bcd6e9c83a5577482ec710f93189bd2d026f0d6"
+```
+
+The full SBOM contains 11 components, including both application binaries,
+the Go standard library, Debian base metadata, CA/media types, netbase, and
+timezone data.
+
+## ZAP before/after triage
+
+The passive reports are preserved as
+[`zap-before.json`](../lab9/zap-before/zap-before.json),
+[`zap-before.html`](../lab9/zap-before/zap-before.html),
+[`zap-after.json`](../lab9/zap-after/zap-after.json), and
+[`zap-after.html`](../lab9/zap-after/zap-after.html).
+
+| Report | ID / finding | Risk | URL(s) | Disposition |
+|---|---|---|---|---|
+| Before | 10116 — ZAP is Out of Date | Low | `/sitemap.xml` | **ACCEPT** — scanner self-report, not an application flaw. Version 2.16.1 is explicitly pinned for this lab; upgrade/recheck by 2026-08-31. |
+| Before | 10049 — Storable and Cacheable Content | Informational | `/robots.txt`, `/sitemap.xml` | **FIX** — middleware adds `Cache-Control: no-store` to every response in commit `6f6e79e`; regression test covers normal and 404 routes. |
+| After | 10116 — ZAP is Out of Date | Low | `/robots.txt` | **ACCEPT** — same scanner-self finding and dated upgrade action as above. |
+| After | 10049 — Non-Storable Content | Informational | `/`, `/robots.txt`, `/sitemap.xml` | **ACCEPT** — evidence is now `no-store`; API responses may be user-specific and the tiny demo has no cache-performance need. Re-evaluate if public immutable resources are added, by 2026-12-31. |
+
+The before finding named **Storable and Cacheable Content** is absent after
+the code change; ZAP instead confirms the intentional inverse behavior as
+**Non-Storable Content**. This is the scanner-visible proof of the fix.
 
 ## Design answers
 
