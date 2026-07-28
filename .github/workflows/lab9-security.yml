@@ -65,41 +65,63 @@ jobs:
           go -C app test ./...
           docker build --tag quicknotes:lab9 app
 
-      - name: Run Trivy image, filesystem, config, and SBOM scans
+      - name: Run Trivy image scan and generate SBOM
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p lab9
-          trivy_image() {
-            docker run --rm \
-              --volume /var/run/docker.sock:/var/run/docker.sock \
-              --volume trivy-cache:/root/.cache/ \
-              aquasec/trivy:0.59.1 image "$@"
-          }
-          trivy_repo() {
-            docker run --rm \
-              --volume "$PWD:/src:ro" \
-              --volume trivy-cache:/root/.cache/ \
-              aquasec/trivy:0.59.1 "$@"
-          }
-
-          trivy_image --severity HIGH,CRITICAL --no-progress quicknotes:lab9 \
+          docker run --rm \
+            --volume /var/run/docker.sock:/var/run/docker.sock \
+            --volume trivy-cache:/root/.cache/ \
+            aquasec/trivy:0.59.1 image \
+            --severity HIGH,CRITICAL --no-progress quicknotes:lab9 \
             | tee lab9/trivy-image.txt
-          trivy_image --severity HIGH,CRITICAL --no-progress \
+          docker run --rm \
+            --volume /var/run/docker.sock:/var/run/docker.sock \
+            --volume trivy-cache:/root/.cache/ \
+            aquasec/trivy:0.59.1 image \
+            --severity HIGH,CRITICAL --no-progress \
             --format json quicknotes:lab9 >lab9/trivy-image.json
+          docker run --rm \
+            --volume /var/run/docker.sock:/var/run/docker.sock \
+            --volume trivy-cache:/root/.cache/ \
+            aquasec/trivy:0.59.1 image \
+            --format cyclonedx --no-progress quicknotes:lab9 \
+            >lab9/quicknotes.sbom.cdx.json
 
-          trivy_repo fs --severity HIGH,CRITICAL --no-progress \
+      - name: Run Trivy filesystem scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --volume "$PWD:/src:ro" \
+            --volume trivy-cache:/root/.cache/ \
+            aquasec/trivy:0.59.1 fs \
+            --severity HIGH,CRITICAL --no-progress \
             --skip-dirs /src/.git /src | tee lab9/trivy-fs.txt
-          trivy_repo fs --severity HIGH,CRITICAL --no-progress \
+          docker run --rm \
+            --volume "$PWD:/src:ro" \
+            --volume trivy-cache:/root/.cache/ \
+            aquasec/trivy:0.59.1 fs \
+            --severity HIGH,CRITICAL --no-progress \
             --skip-dirs /src/.git --format json /src >lab9/trivy-fs.json
 
-          trivy_repo config --severity HIGH,CRITICAL --no-progress /src \
+      - name: Run Trivy configuration scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            --volume "$PWD:/src:ro" \
+            --volume trivy-cache:/root/.cache/ \
+            aquasec/trivy:0.59.1 config \
+            --severity HIGH,CRITICAL --no-progress /src \
             | tee lab9/trivy-config.txt
-          trivy_repo config --severity HIGH,CRITICAL --no-progress \
+          docker run --rm \
+            --volume "$PWD:/src:ro" \
+            --volume trivy-cache:/root/.cache/ \
+            aquasec/trivy:0.59.1 config \
+            --severity HIGH,CRITICAL --no-progress \
             --format json /src >lab9/trivy-config.json
-
-          trivy_image --format cyclonedx --no-progress quicknotes:lab9 \
-            >lab9/quicknotes.sbom.cdx.json
 
       - name: Run passive ZAP baseline before middleware
         shell: bash
