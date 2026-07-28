@@ -11,7 +11,7 @@ on:
       - ".github/workflows/lab7-verify.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   ansible-verification:
@@ -100,11 +100,3 @@ jobs:
             --extra-vars '{"quicknotes_addr":":18082"}' \
             --check \
             --diff | tee -a lab7/evidence.txt
-
-      - name: Publish generated evidence to a temporary branch
-        run: |
-          git config user.name github-actions
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add --force ansible/files/quicknotes lab7/evidence.txt
-          git commit -m "test(lab7): publish idempotency evidence"
-          git push --force origin HEAD:refs/heads/automation/lab7-results

@@ -1,0 +1,212 @@
+=== FIRST RUN ===
+
+PLAY [Deploy QuickNotes] *******************************************************
+
+TASK [Create QuickNotes system group] ******************************************
+changed: [localhost]
+
+TASK [Create QuickNotes system account] ****************************************
+changed: [localhost]
+
+TASK [Create QuickNotes data directory] ****************************************
+changed: [localhost]
+
+TASK [Install QuickNotes binary] ***********************************************
+changed: [localhost]
+
+TASK [Install seed data] *******************************************************
+changed: [localhost]
+
+TASK [Install QuickNotes systemd unit] *****************************************
+changed: [localhost]
+
+TASK [Enable and start QuickNotes] *********************************************
+changed: [localhost]
+
+TASK [Install pull-mode dependencies] ******************************************
+skipping: [localhost]
+
+TASK [Create local Ansible configuration directory] ****************************
+skipping: [localhost]
+
+TASK [Install pull-mode local inventory] ***************************************
+skipping: [localhost]
+
+TASK [Install ansible-pull service] ********************************************
+skipping: [localhost]
+
+TASK [Install ansible-pull timer] **********************************************
+skipping: [localhost]
+
+TASK [Enable and start ansible-pull timer] *************************************
+skipping: [localhost]
+
+RUNNING HANDLER [Restart QuickNotes] *******************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=8    changed=8    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+
+=== SERVICE RESPONSES ===
+{"notes":4,"status":"ok"}
+
+[{"id":3,"title":"DevOps mantra","body":"If it hurts, do it more often.","created_at":"2026-01-15T10:10:00Z"},{"id":4,"title":"Endpoint cheat-sheet","body":"GET /notes  GET /notes/{id}  POST /notes  DELETE /notes/{id}  GET /health  GET /metrics","created_at":"2026-01-15T10:15:00Z"},{"id":1,"title":"Welcome to QuickNotes","body":"This is the project you'll containerize, deploy, monitor, and harden across all 10 labs.","created_at":"2026-01-15T10:00:00Z"},{"id":2,"title":"Read app/main.go first","body":"Start by understanding the entry point — env vars, signal handling, graceful shutdown.","created_at":"2026-01-15T10:05:00Z"}]
+
+=== SECOND RUN ===
+
+PLAY [Deploy QuickNotes] *******************************************************
+
+TASK [Create QuickNotes system group] ******************************************
+ok: [localhost]
+
+TASK [Create QuickNotes system account] ****************************************
+ok: [localhost]
+
+TASK [Create QuickNotes data directory] ****************************************
+ok: [localhost]
+
+TASK [Install QuickNotes binary] ***********************************************
+ok: [localhost]
+
+TASK [Install seed data] *******************************************************
+ok: [localhost]
+
+TASK [Install QuickNotes systemd unit] *****************************************
+ok: [localhost]
+
+TASK [Enable and start QuickNotes] *********************************************
+ok: [localhost]
+
+TASK [Install pull-mode dependencies] ******************************************
+skipping: [localhost]
+
+TASK [Create local Ansible configuration directory] ****************************
+skipping: [localhost]
+
+TASK [Install pull-mode local inventory] ***************************************
+skipping: [localhost]
+
+TASK [Install ansible-pull service] ********************************************
+skipping: [localhost]
+
+TASK [Install ansible-pull timer] **********************************************
+skipping: [localhost]
+
+TASK [Enable and start ansible-pull timer] *************************************
+skipping: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=7    changed=0    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+
+=== SELECTIVE VARIABLE CHANGE ===
+
+PLAY [Deploy QuickNotes] *******************************************************
+
+TASK [Create QuickNotes system group] ******************************************
+ok: [localhost]
+
+TASK [Create QuickNotes system account] ****************************************
+ok: [localhost]
+
+TASK [Create QuickNotes data directory] ****************************************
+ok: [localhost]
+
+TASK [Install QuickNotes binary] ***********************************************
+ok: [localhost]
+
+TASK [Install seed data] *******************************************************
+ok: [localhost]
+
+TASK [Install QuickNotes systemd unit] *****************************************
+changed: [localhost]
+
+TASK [Enable and start QuickNotes] *********************************************
+ok: [localhost]
+
+TASK [Install pull-mode dependencies] ******************************************
+skipping: [localhost]
+
+TASK [Create local Ansible configuration directory] ****************************
+skipping: [localhost]
+
+TASK [Install pull-mode local inventory] ***************************************
+skipping: [localhost]
+
+TASK [Install ansible-pull service] ********************************************
+skipping: [localhost]
+
+TASK [Install ansible-pull timer] **********************************************
+skipping: [localhost]
+
+TASK [Enable and start ansible-pull timer] *************************************
+skipping: [localhost]
+
+RUNNING HANDLER [Restart QuickNotes] *******************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=8    changed=2    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+
+{"notes":4,"status":"ok"}
+
+=== CHECK DIFF ===
+
+PLAY [Deploy QuickNotes] *******************************************************
+
+TASK [Create QuickNotes system group] ******************************************
+ok: [localhost]
+
+TASK [Create QuickNotes system account] ****************************************
+ok: [localhost]
+
+TASK [Create QuickNotes data directory] ****************************************
+ok: [localhost]
+
+TASK [Install QuickNotes binary] ***********************************************
+ok: [localhost]
+
+TASK [Install seed data] *******************************************************
+ok: [localhost]
+
+TASK [Install QuickNotes systemd unit] *****************************************
+--- before: /etc/systemd/system/quicknotes.service
++++ after: /home/runner/.ansible/tmp/ansible-local-4786xg9nxmz1/tmp1kzgrnj4/quicknotes.service.j2
+@@ -8,7 +8,7 @@
+ User=quicknotes
+ Group=quicknotes
+ WorkingDirectory=/var/lib/quicknotes
+-Environment="ADDR=:18081"
++Environment="ADDR=:18082"
+ Environment="DATA_PATH=/var/lib/quicknotes/notes.json"
+ Environment="SEED_PATH=/var/lib/quicknotes/seed.json"
+ ExecStart=/usr/local/bin/quicknotes
+
+changed: [localhost]
+
+TASK [Enable and start QuickNotes] *********************************************
+ok: [localhost]
+
+TASK [Install pull-mode dependencies] ******************************************
+skipping: [localhost]
+
+TASK [Create local Ansible configuration directory] ****************************
+skipping: [localhost]
+
+TASK [Install pull-mode local inventory] ***************************************
+skipping: [localhost]
+
+TASK [Install ansible-pull service] ********************************************
+skipping: [localhost]
+
+TASK [Install ansible-pull timer] **********************************************
+skipping: [localhost]
+
+TASK [Enable and start ansible-pull timer] *************************************
+skipping: [localhost]
+
+RUNNING HANDLER [Restart QuickNotes] *******************************************
+changed: [localhost]
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=8    changed=2    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+
