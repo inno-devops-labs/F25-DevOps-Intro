@@ -20,7 +20,15 @@ The four panels are:
 CI validates the Prometheus config/rules, starts the real stack, checks target
 health and Grafana provisioning, drives sustained mixed traffic through the
 service, observes Pending and Firing, and captures a dashboard screenshot.
-The resulting evidence will be attached after the run.
+All checks passed in
+[GitHub Actions run 30338957072](https://github.com/Mimir-sma/DevOps-Intro/actions/runs/30338957072).
+
+The target evidence in [`lab8/targets.json`](../lab8/targets.json) records
+`http://quicknotes:8080/metrics` with `health: up` and no last error. Grafana's
+API returned the provisioned `quicknotes-golden-signals` UID. The generated
+[dashboard screenshot](../lab8/grafana-dashboard.png) shows non-trivial data
+in all four panels: about 2.22 requests/s, a 44% injected error ratio, roughly
+0.5 ms scrape duration, and four stored notes.
 
 ## Design answers
 
@@ -54,6 +62,13 @@ state in a Grafana database.
 `severity: page`, and a repository runbook annotation. The operational
 instructions are in
 [`docs/runbook/high-error-rate.md`](../docs/runbook/high-error-rate.md).
+
+The real state evidence is committed as
+[`alerts-normal.json`](../lab8/alerts-normal.json),
+[`alerts-pending.json`](../lab8/alerts-pending.json), and
+[`alerts-firing.json`](../lab8/alerts-firing.json). Before injection the alert
+was inactive, after one minute it was `pending`, and after the sustained
+five-minute gate it was `firing`.
 
 **e — sustained gate.** One bad request is normal user/input behavior and has
 negligible error-budget impact. Five continuous minutes filters isolated
