@@ -1,0 +1,50 @@
+name: lab5-verify
+
+on:
+  push:
+    branches:
+      - feature/lab5
+    paths:
+      - "Vagrantfile"
+      - "vagrant/**"
+      - "app/**"
+      - ".github/workflows/lab5-verify.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  static-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: "1.24.5"
+          cache-dependency-path: app/go.mod
+
+      - name: Install static validators
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes shellcheck
+          curl --fail --location --retry 3 \
+            https://releases.hashicorp.com/vagrant/2.4.9/vagrant_2.4.9-1_amd64.deb \
+            --output /tmp/vagrant.deb
+          sudo apt-get install --yes /tmp/vagrant.deb
+
+      - name: Validate Vagrant configuration
+        run: |
+          ruby -c Vagrantfile
+          vagrant validate
+          bash -n vagrant/provision.sh
+          shellcheck vagrant/provision.sh
+
+      - name: Test QuickNotes
+        working-directory: app
+        run: go test ./...
