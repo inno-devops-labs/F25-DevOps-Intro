@@ -2,6 +2,11 @@
 
 Branch: `feature/lab5`
 
+Static validation:
+[GitHub Actions run 30336962514](https://github.com/Mimir-sma/DevOps-Intro/actions/runs/30336962514)
+(`ruby -c`, `vagrant validate --ignore-provider`, Bash syntax, ShellCheck,
+and Go tests all passed).
+
 ## Implementation
 
 The root [`Vagrantfile`](../Vagrantfile) uses:
