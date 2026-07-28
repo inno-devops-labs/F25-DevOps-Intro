@@ -63,8 +63,17 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          curl --fail --silent http://127.0.0.1:9090/api/v1/targets \
-            | tee lab8/targets.json
+          for _ in {1..30}; do
+            curl --fail --silent http://127.0.0.1:9090/api/v1/targets \
+              >lab8/targets.json
+            if jq --exit-status \
+              '.data.activeTargets[] | select(.labels.job == "quicknotes" and .health == "up")' \
+              lab8/targets.json >/dev/null; then
+              break
+            fi
+            sleep 2
+          done
+          cat lab8/targets.json
           jq --exit-status \
             '.data.activeTargets[] | select(.labels.job == "quicknotes" and .health == "up")' \
             lab8/targets.json
