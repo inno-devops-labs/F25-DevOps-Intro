@@ -14,8 +14,24 @@ ghcr.io/mimir-sma/devops-intro/quicknotes
 
 It uses the repository-scoped `GITHUB_TOKEN`, grants only `contents: read` and
 `packages: write`, SHA-pins its sole action, inspects the remote manifest,
-pulls the version back, and smoke-tests `/health`. Release run and anonymous
-pull status will be added after the signed `v0.1.0` tag is pushed.
+pulls the version back, and smoke-tests `/health`.
+
+The signed `v0.1.0` tag points to commit
+`98476a64f0d408f076974ccbcc43460868829bdd`. The complete release succeeded in
+[GitHub Actions run 30339331330](https://github.com/Mimir-sma/DevOps-Intro/actions/runs/30339331330):
+both `v0.1.0` and `latest` were pushed, the remote manifest was inspected, the
+image was pulled back, and `/health` passed.
+
+An independent unauthenticated manifest request currently returns HTTP 401.
+GitHub creates a personal-account GHCR package as private on first publish;
+the remaining required action is the package owner choosing **Package
+settings → Change visibility → Public**. This irreversible account-level UI
+choice is not claimed as complete. After it is changed, this command is the
+clean proof:
+
+```console
+$ docker pull ghcr.io/mimir-sma/devops-intro/quicknotes:v0.1.0
+```
 
 **a — OIDC.** `GITHUB_TOKEN` is ideal for a package owned by the same GitHub
 repository. OIDC is preferable when assuming a short-lived role in AWS, GCP,
