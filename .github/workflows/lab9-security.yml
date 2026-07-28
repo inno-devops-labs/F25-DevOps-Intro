@@ -1,0 +1,171 @@
+name: lab9-security
+
+on:
+  push:
+    branches:
+      - feature/lab9
+    paths:
+      - "app/**"
+      - "compose.yaml"
+      - "lab9/**"
+      - ".github/workflows/lab9-security.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "app/**"
+      - "compose.yaml"
+      - "lab9/**"
+      - ".github/workflows/lab9-security.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  govulncheck:
+    name: govulncheck
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up supported Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: "1.26.5"
+          cache-dependency-path: app/go.mod
+
+      - name: Install pinned govulncheck
+        run: go install golang.org/x/vuln/cmd/govulncheck@v1.1.4
+
+      - name: Check reachable Go vulnerabilities
+        working-directory: app
+        run: govulncheck ./...
+
+  security-scans:
+    name: Trivy and ZAP
+    if: ${{ !contains(github.event.head_commit.message, '[govuln-demo]') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository and history
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Set up supported Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version: "1.26.5"
+          cache-dependency-path: app/go.mod
+
+      - name: Test middleware and build fixed image
+        run: |
+          go -C app test ./...
+          docker build --tag quicknotes:lab9 app
+
+      - name: Run Trivy image, filesystem, config, and SBOM scans
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p lab9
+          trivy_image() {
+            docker run --rm \
+              --volume /var/run/docker.sock:/var/run/docker.sock \
+              --volume trivy-cache:/root/.cache/ \
+              aquasec/trivy:0.59.1 image "$@"
+          }
+          trivy_repo() {
+            docker run --rm \
+              --volume "$PWD:/src:ro" \
+              --volume trivy-cache:/root/.cache/ \
+              aquasec/trivy:0.59.1 "$@"
+          }
+
+          trivy_image --severity HIGH,CRITICAL --no-progress quicknotes:lab9 \
+            | tee lab9/trivy-image.txt
+          trivy_image --severity HIGH,CRITICAL --no-progress \
+            --format json quicknotes:lab9 >lab9/trivy-image.json
+
+          trivy_repo fs --severity HIGH,CRITICAL --no-progress \
+            --skip-dirs /src/.git /src | tee lab9/trivy-fs.txt
+          trivy_repo fs --severity HIGH,CRITICAL --no-progress \
+            --skip-dirs /src/.git --format json /src >lab9/trivy-fs.json
+
+          trivy_repo config --severity HIGH,CRITICAL --no-progress /src \
+            | tee lab9/trivy-config.txt
+          trivy_repo config --severity HIGH,CRITICAL --no-progress \
+            --format json /src >lab9/trivy-config.json
+
+          trivy_image --format cyclonedx --no-progress quicknotes:lab9 \
+            >lab9/quicknotes.sbom.cdx.json
+
+      - name: Run passive ZAP baseline before middleware
+        shell: bash
+        run: |
+          set -euo pipefail
+          git worktree add --detach /tmp/lab9-before origin/main
+          docker build \
+            --file "$GITHUB_WORKSPACE/lab9/Dockerfile.before" \
+            --tag quicknotes:lab9-before \
+            /tmp/lab9-before/app
+          docker run --detach \
+            --name quicknotes-before \
+            --publish 8081:8080 \
+            --env ADDR=:8080 \
+            --env DATA_PATH=/data/notes.json \
+            --env SEED_PATH=/app/seed.json \
+            quicknotes:lab9-before
+          for _ in {1..30}; do
+            curl --fail --silent http://127.0.0.1:8081/health >/dev/null && break
+            sleep 1
+          done
+
+          mkdir -p lab9/zap-before
+          chmod 0777 lab9/zap-before
+          docker run --rm --network host \
+            --volume "$PWD/lab9/zap-before:/zap/wrk/:rw" \
+            ghcr.io/zaproxy/zaproxy:2.16.1 \
+            zap-baseline.py \
+            -t http://127.0.0.1:8081 \
+            -J zap-before.json \
+            -r zap-before.html \
+            -I
+          docker rm --force quicknotes-before
+
+      - name: Run passive ZAP baseline after middleware
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker compose up --detach
+          for _ in {1..30}; do
+            curl --fail --silent http://127.0.0.1:8080/health >/dev/null && break
+            sleep 1
+          done
+
+          mkdir -p lab9/zap-after
+          chmod 0777 lab9/zap-after
+          docker run --rm --network host \
+            --volume "$PWD/lab9/zap-after:/zap/wrk/:rw" \
+            ghcr.io/zaproxy/zaproxy:2.16.1 \
+            zap-baseline.py \
+            -t http://127.0.0.1:8080 \
+            -J zap-after.json \
+            -r zap-after.html \
+            -I
+
+      - name: Clean up containers
+        if: always()
+        run: |
+          docker compose down --volumes
+          docker rm --force quicknotes-before 2>/dev/null || true
+
+      - name: Publish generated scan evidence to a temporary branch
+        if: success()
+        run: |
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add --force lab9
+          git commit -m "test(lab9): publish security scan evidence"
+          git push --force origin HEAD:refs/heads/automation/lab9-results
