@@ -1,0 +1,6 @@
+.git
+.github
+data
+quicknotes
+*.exe
+Dockerfile*

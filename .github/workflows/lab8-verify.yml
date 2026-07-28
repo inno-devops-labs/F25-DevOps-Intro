@@ -1,0 +1,141 @@
+name: lab8-verify
+
+on:
+  push:
+    branches:
+      - feature/lab8
+    paths:
+      - "app/**"
+      - "compose.yaml"
+      - "monitoring/**"
+      - "docs/runbook/**"
+      - "lab8/**"
+      - ".github/workflows/lab8-verify.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  monitoring-verification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GRAFANA_ADMIN_USER: quicknotes-ci
+      GRAFANA_ADMIN_PASSWORD: ci-only-random-9cV4nJ8pQ2
+      GRAFANA_ANONYMOUS_ENABLED: "true"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate monitoring configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker compose config --quiet
+          jq --exit-status \
+            '.panels | length == 4' \
+            monitoring/grafana/dashboards/golden-signals.json
+          docker run --rm \
+            --entrypoint /bin/promtool \
+            --volume "$PWD/monitoring/prometheus:/etc/prometheus:ro" \
+            prom/prometheus:v3.12.0 \
+            check config /etc/prometheus/prometheus.yml
+
+      - name: Start stack and verify provisioning
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p lab8
+          docker compose up --build --detach
+
+          for _ in {1..60}; do
+            if curl --fail --silent http://127.0.0.1:9090/-/ready >/dev/null \
+              && curl --fail --silent http://127.0.0.1:3000/api/health >/dev/null; then
+              break
+            fi
+            sleep 2
+          done
+
+          curl --fail --silent http://127.0.0.1:9090/api/v1/targets \
+            | tee lab8/targets.json
+          jq --exit-status \
+            '.data.activeTargets[] | select(.labels.job == "quicknotes" and .health == "up")' \
+            lab8/targets.json
+
+          curl --fail --silent \
+            --user "${GRAFANA_ADMIN_USER}:${GRAFANA_ADMIN_PASSWORD}" \
+            'http://127.0.0.1:3000/api/search?query=QuickNotes%20Golden%20Signals' \
+            | tee lab8/grafana-search.json
+          jq --exit-status \
+            '.[] | select(.uid == "quicknotes-golden-signals")' \
+            lab8/grafana-search.json
+
+          curl --fail --silent \
+            'http://127.0.0.1:9090/api/v1/rules?type=alert' \
+            | tee lab8/alerts-normal.json
+
+      - name: Exercise pending and firing alert states
+        shell: bash
+        run: |
+          set -euo pipefail
+          (
+            for _ in $(seq 1 390); do
+              curl --silent --output /dev/null \
+                --request POST \
+                --header 'Content-Type: application/json' \
+                --data '{broken' \
+                http://127.0.0.1:8080/notes
+              curl --silent --output /dev/null http://127.0.0.1:8080/health
+              sleep 1
+            done
+          ) &
+          traffic_pid=$!
+
+          sleep 60
+          curl --fail --silent http://127.0.0.1:9090/api/v1/alerts \
+            | tee lab8/alerts-pending.json
+          jq --exit-status \
+            '.data.alerts[] | select(.labels.alertname == "QuickNotesHighErrorRate" and .state == "pending")' \
+            lab8/alerts-pending.json
+
+          sleep 315
+          curl --fail --silent http://127.0.0.1:9090/api/v1/alerts \
+            | tee lab8/alerts-firing.json
+          jq --exit-status \
+            '.data.alerts[] | select(.labels.alertname == "QuickNotesHighErrorRate" and .state == "firing")' \
+            lab8/alerts-firing.json
+          wait "$traffic_pid"
+
+          curl --fail --silent --get \
+            --data-urlencode 'query=rate(quicknotes_http_requests_total[1m])' \
+            http://127.0.0.1:9090/api/v1/query \
+            | tee lab8/traffic-query.json
+          curl --fail --silent --get \
+            --data-urlencode 'query=100 * sum(rate(quicknotes_http_responses_by_code_total{code=~"4..|5.."}[1m])) / clamp_min(rate(quicknotes_http_requests_total[1m]), 0.001)' \
+            http://127.0.0.1:9090/api/v1/query \
+            | tee lab8/error-query.json
+
+      - name: Capture provisioned dashboard
+        run: |
+          google-chrome --headless=new \
+            --no-sandbox \
+            --disable-gpu \
+            --hide-scrollbars \
+            --window-size=1600,1000 \
+            --virtual-time-budget=15000 \
+            --screenshot=lab8/grafana-dashboard.png \
+            http://127.0.0.1:3000/d/quicknotes-golden-signals
+          test -s lab8/grafana-dashboard.png
+
+      - name: Clean up stack
+        if: always()
+        run: docker compose down --volumes
+
+      - name: Publish generated evidence to a temporary branch
+        if: success()
+        run: |
+          git config user.name github-actions
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add --force lab8
+          git commit -m "test(lab8): publish monitoring evidence"
+          git push --force origin HEAD:refs/heads/automation/lab8-results
