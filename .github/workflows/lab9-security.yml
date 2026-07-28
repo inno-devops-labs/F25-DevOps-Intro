@@ -114,13 +114,13 @@ jobs:
             --volume "$PWD:/src:ro" \
             --volume trivy-cache:/root/.cache/ \
             aquasec/trivy:0.59.1 config \
-            --severity HIGH,CRITICAL --no-progress /src \
+            --severity HIGH,CRITICAL /src \
             | tee lab9/trivy-config.txt
           docker run --rm \
             --volume "$PWD:/src:ro" \
             --volume trivy-cache:/root/.cache/ \
             aquasec/trivy:0.59.1 config \
-            --severity HIGH,CRITICAL --no-progress \
+            --severity HIGH,CRITICAL \
             --format json /src >lab9/trivy-config.json
 
       - name: Run passive ZAP baseline before middleware
