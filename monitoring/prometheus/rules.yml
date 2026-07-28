@@ -6,7 +6,7 @@ groups:
         expr: |
           sum(rate(quicknotes_http_responses_by_code_total{code=~"4..|5.."}[1m]))
           /
-          clamp_min(rate(quicknotes_http_requests_total[1m]), 0.001)
+          clamp_min(sum(rate(quicknotes_http_requests_total[1m])), 0.001)
           > 0.05
         for: 5m
         labels:

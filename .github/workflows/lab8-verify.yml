@@ -131,7 +131,7 @@ jobs:
             http://127.0.0.1:9090/api/v1/query \
             | tee lab8/traffic-query.json
           curl --fail --silent --get \
-            --data-urlencode 'query=100 * sum(rate(quicknotes_http_responses_by_code_total{code=~"4..|5.."}[1m])) / clamp_min(rate(quicknotes_http_requests_total[1m]), 0.001)' \
+            --data-urlencode 'query=100 * sum(rate(quicknotes_http_responses_by_code_total{code=~"4..|5.."}[1m])) / clamp_min(sum(rate(quicknotes_http_requests_total[1m])), 0.001)' \
             http://127.0.0.1:9090/api/v1/query \
             | tee lab8/error-query.json
 

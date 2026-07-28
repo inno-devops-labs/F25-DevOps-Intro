@@ -96,7 +96,7 @@
       "id": 3,
       "targets": [
         {
-          "expr": "100 * sum(rate(quicknotes_http_responses_by_code_total{code=~\"4..|5..\"}[1m])) / clamp_min(rate(quicknotes_http_requests_total[1m]), 0.001)",
+          "expr": "100 * sum(rate(quicknotes_http_responses_by_code_total{code=~\"4..|5..\"}[1m])) / clamp_min(sum(rate(quicknotes_http_requests_total[1m])), 0.001)",
           "legendFormat": "error ratio",
           "refId": "A"
         }
