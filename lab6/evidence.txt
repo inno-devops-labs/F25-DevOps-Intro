@@ -1,0 +1,23 @@
+naive-cold_ms=27362
+optimized-cold_ms=12030
+naive-rebuild_ms=10961
+optimized-rebuild_ms=11001
+image_bytes=13533837
+builder_bytes=854104362
+--- health ---
+{"notes":4,"status":"ok"}
+
+--- create durable note ---
+{"id":5,"title":"durable","body":"survive a restart","created_at":"2026-07-28T07:06:23.65310183Z"}
+
+--- after down/up (volume retained) ---
+[{"id":4,"title":"Endpoint cheat-sheet","body":"GET /notes  GET /notes/{id}  POST /notes  DELETE /notes/{id}  GET /health  GET /metrics","created_at":"2026-01-15T10:15:00Z"},{"id":5,"title":"durable","body":"survive a restart","created_at":"2026-07-28T07:06:23.65310183Z"},{"id":1,"title":"Welcome to QuickNotes","body":"This is the project you'll containerize, deploy, monitor, and harden across all 10 labs.","created_at":"2026-01-15T10:00:00Z"},{"id":2,"title":"Read app/main.go first","body":"Start by understanding the entry point — env vars, signal handling, graceful shutdown.","created_at":"2026-01-15T10:05:00Z"},{"id":3,"title":"DevOps mantra","body":"If it hurts, do it more often.","created_at":"2026-01-15T10:10:00Z"}]
+--- after down -v/up (new volume) ---
+[{"id":1,"title":"Welcome to QuickNotes","body":"This is the project you'll containerize, deploy, monitor, and harden across all 10 labs.","created_at":"2026-01-15T10:00:00Z"},{"id":2,"title":"Read app/main.go first","body":"Start by understanding the entry point — env vars, signal handling, graceful shutdown.","created_at":"2026-01-15T10:05:00Z"},{"id":3,"title":"DevOps mantra","body":"If it hurts, do it more often.","created_at":"2026-01-15T10:10:00Z"},{"id":4,"title":"Endpoint cheat-sheet","body":"GET /notes  GET /notes/{id}  POST /notes  DELETE /notes/{id}  GET /health  GET /metrics","created_at":"2026-01-15T10:15:00Z"}]
+--- image config ---
+User="nonroot:nonroot" Entrypoint=["/quicknotes"] ExposedPorts={"8080/tcp":{}}
+--- container hardening ---
+CapDrop=["ALL"] ReadonlyRootfs=true SecurityOpt=["no-new-privileges:true"]
+--- shell absence ---
+OCI runtime exec failed: exec failed: unable to start container process: exec: "sh": executable file not found in $PATH
+shell_exit_status=127
