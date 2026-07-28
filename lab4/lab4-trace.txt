@@ -1,0 +1,46 @@
+reading from file /home/runner/work/DevOps-Intro/DevOps-Intro/lab4/lab4-trace.pcap, link-type EN10MB (Ethernet), snapshot length 262144
+21:18:33.891680 IP 127.0.0.1.56488 > 127.0.0.1.8080: Flags [S], seq 2072563708, win 65495, options [mss 65495,sackOK,TS val 1700780122 ecr 0,nop,wscale 10], length 0
+E..<.,@.@...............{............0.........
+e_.Z.......
+
+21:18:33.891696 IP 127.0.0.1.8080 > 127.0.0.1.56488: Flags [S.], seq 2529594801, ack 2072563709, win 65483, options [mss 65495,sackOK,TS val 1700780122 ecr 1700780122,nop,wscale 10], length 0
+E..<..@.@.<.................{........0.........
+e_.Ze_.Z...
+
+21:18:33.891708 IP 127.0.0.1.56488 > 127.0.0.1.8080: Flags [.], ack 1, win 64, options [nop,nop,TS val 1700780122 ecr 1700780122], length 0
+E..4.-@.@...............{..........@.(.....
+e_.Ze_.Z
+21:18:33.891762 IP 127.0.0.1.56488 > 127.0.0.1.8080: Flags [P.], seq 1:175, ack 1, win 64, options [nop,nop,TS val 1700780122 ecr 1700780122], length 174: HTTP: POST /notes HTTP/1.1
+E.....@.@...............{..........@.......
+e_.Ze_.ZPOST /notes HTTP/1.1
+Host: 127.0.0.1:8080
+User-Agent: curl/8.5.0
+Accept: */*
+Content-Type: application/json
+Content-Length: 39
+
+{"title":"trace me","body":"in flight"}
+21:18:33.891778 IP 127.0.0.1.8080 > 127.0.0.1.56488: Flags [.], ack 175, win 64, options [nop,nop,TS val 1700780122 ecr 1700780122], length 0
+E..44l@.@..V................{......@.(.....
+e_.Ze_.Z
+21:18:33.892151 IP 127.0.0.1.8080 > 127.0.0.1.56488: Flags [P.], seq 1:207, ack 175, win 64, options [nop,nop,TS val 1700780122 ecr 1700780122], length 206: HTTP: HTTP/1.1 201 Created
+E...4m@.@...................{......@.......
+e_.Ze_.ZHTTP/1.1 201 Created
+Content-Type: application/json
+Date: Mon, 27 Jul 2026 21:18:33 GMT
+Content-Length: 93
+
+{"id":5,"title":"trace me","body":"in flight","created_at":"2026-07-27T21:18:33.891929881Z"}
+
+21:18:33.892166 IP 127.0.0.1.56488 > 127.0.0.1.8080: Flags [.], ack 207, win 64, options [nop,nop,TS val 1700780122 ecr 1700780122], length 0
+E..4./@.@...............{..........@.(.....
+e_.Ze_.Z
+21:18:33.892360 IP 127.0.0.1.56488 > 127.0.0.1.8080: Flags [F.], seq 175, ack 207, win 64, options [nop,nop,TS val 1700780123 ecr 1700780122], length 0
+E..4.0@.@...............{..........@.(.....
+e_.[e_.Z
+21:18:33.892420 IP 127.0.0.1.8080 > 127.0.0.1.56488: Flags [F.], seq 207, ack 176, win 64, options [nop,nop,TS val 1700780123 ecr 1700780123], length 0
+E..44n@.@..T................{......@.(.....
+e_.[e_.[
+21:18:33.892436 IP 127.0.0.1.56488 > 127.0.0.1.8080: Flags [.], ack 208, win 64, options [nop,nop,TS val 1700780123 ecr 1700780123], length 0
+E..4.1@.@...............{..........@.(.....
+e_.[e_.[

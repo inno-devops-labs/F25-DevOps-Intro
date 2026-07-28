@@ -1,0 +1,3 @@
+$ curl -s http://localhost:8080/health
+{"notes":4,"status":"ok"}
+
