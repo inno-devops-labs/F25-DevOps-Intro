@@ -41,7 +41,7 @@ jobs:
             prom/prometheus:v3.12.0 \
             check config /etc/prometheus/prometheus.yml
 
-      - name: Start stack and verify provisioning
+      - name: Start monitoring stack
         shell: bash
         run: |
           set -euo pipefail
@@ -56,6 +56,13 @@ jobs:
             sleep 2
           done
 
+          curl --fail --silent http://127.0.0.1:9090/-/ready >/dev/null
+          curl --fail --silent http://127.0.0.1:3000/api/health >/dev/null
+
+      - name: Verify Prometheus target
+        shell: bash
+        run: |
+          set -euo pipefail
           curl --fail --silent http://127.0.0.1:9090/api/v1/targets \
             | tee lab8/targets.json
           jq --exit-status \
@@ -63,16 +70,20 @@ jobs:
             lab8/targets.json
 
           curl --fail --silent \
+            'http://127.0.0.1:9090/api/v1/rules?type=alert' \
+            | tee lab8/alerts-normal.json
+
+      - name: Verify Grafana provisioning
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent \
             --user "${GRAFANA_ADMIN_USER}:${GRAFANA_ADMIN_PASSWORD}" \
             'http://127.0.0.1:3000/api/search?query=QuickNotes%20Golden%20Signals' \
             | tee lab8/grafana-search.json
           jq --exit-status \
             '.[] | select(.uid == "quicknotes-golden-signals")' \
             lab8/grafana-search.json
-
-          curl --fail --silent \
-            'http://127.0.0.1:9090/api/v1/rules?type=alert' \
-            | tee lab8/alerts-normal.json
 
       - name: Exercise pending and firing alert states
         shell: bash
