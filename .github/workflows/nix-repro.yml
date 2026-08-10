@@ -25,6 +25,11 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
 
+      - name: Deliberately break reproducibility in replica a
+        if: matrix.replica == 'a'
+        run: |
+          sed -i 's|tag = "latest";|tag = "broken";|' flake.nix
+
       - name: Build the OCI image
         run: nix build .#docker
 
