@@ -1,0 +1,15 @@
+﻿=== Release run (green) ===
+https://github.com/HNS2112/DevOps-Intro/actions/runs/31361528580
+
+=== Anonymous pull token obtained from ghcr.io (no credentials) ===
+GET https://ghcr.io/token?scope=repository:hns2112/devops-intro/quicknotes:pull
+
+=== Manifest fetched anonymously for tag v0.1.0 ===
+mediaType: application/vnd.docker.distribution.manifest.v2+json
+config digest: sha256:4a8ed45d3d35ac26ed9b4eea769c86f12035e155ffa585a7e6bb39fc7184ef85
+layers: 18
+total layer size: ~4.07 MB
+
+=== Image URL ===
+ghcr.io/hns2112/devops-intro/quicknotes:v0.1.0
+ghcr.io/hns2112/devops-intro/quicknotes:latest

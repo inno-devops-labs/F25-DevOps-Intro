@@ -1,0 +1,24 @@
+﻿=== Render service ===
+https://quicknotes-e5cq.onrender.com
+Service ID: srv-d9sn2rmgekts73900hd0
+Image: ghcr.io/hns2112/devops-intro/quicknotes:v0.1.0
+Region: Frankfurt (EU Central), Free instance (512 MB RAM, 0.1 CPU)
+
+=== Health check ===
+$ curl -s https://quicknotes-e5cq.onrender.com/health
+{"notes":4,"status":"ok"}
+
+=== Warm latency, 5 consecutive requests (time_total, seconds) ===
+1.252934
+1.156695
+1.150823
+1.144736
+1.165416
+p50 = 1.156695
+
+=== Latency breakdown (single warm request) ===
+dns=0.000000 connect=0.056976 tls=0.902002 ttfb=1.209832 total=1.209883
+TLS handshake accounts for 845 ms of the 1210 ms total (70%).
+
+=== /notes endpoint ===
+Returns 4 seeded notes (ids 1-4), HTTP 200.
