@@ -1,0 +1,25 @@
+﻿=== Windows attempt (abandoned) ===
+Host: Windows 11, Go 1.26.5, Spin 4.0.2, TinyGo 0.41.1
+
+1. Spin 4 template no longer uses TinyGo at all.
+   Generated spin.toml build command: 'go tool componentize-go build'
+   Generated go.mod requires: github.com/spinframework/spin-go-sdk/v3 v3.0.0
+   Tool: github.com/bytecodealliance/componentize-go v0.3.3
+   The lab's requirements for -buildmode=c-shared and TinyGo describe a toolchain
+   Spin 3.x used; Spin 4 replaced it.
+
+2. componentize-go's own installer requests a file that does not exist:
+   GET .../v0.3.3/componentize-go-windows-amd64.tar.gz -> 404
+   The release publishes componentize-go-windows-amd64.zip instead.
+
+3. Installing the binary manually got further, but the scaffold ships no wit/
+   directory, so the build fails with 'failed to read path for WIT [wit]'.
+
+4. Supplying a wit/ directory from componentize-go's own wasip2 example got
+   further still, and then the Go linker panicked:
+   runtime.wasiOnIdle.wrapinfo: missing section for relocation target
+   panic: runtime error: invalid memory address or nil pointer dereference
+   cmd/link/internal/ld.(*pclntab).generateFuncdata
+   This is a linker bug in the host Go toolchain, not a configuration error.
+
+Conclusion: the lab was completed on macOS instead.
