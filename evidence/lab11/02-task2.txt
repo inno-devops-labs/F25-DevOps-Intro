@@ -1,0 +1,26 @@
+=== Nix-built OCI image, environment A (local checkout in a container) ===
+$ nix build .#docker && sha256sum result
+ada0ff2f0f50d0165735c5834405cc68bc29340eb36a32b84a66c68735f78b6f  result
+$ ls -laL result
+-r--r--r-- 1 root root 2965862 Jan  1  1970 result
+
+=== Loads and runs ===
+$ docker load < quicknotes-nix.tar.gz
+Loaded image: quicknotes-nix:latest
+$ docker run -d -p 8090:8080 -e ADDR=0.0.0.0:8080 -e DATA_PATH=/tmp/n.json quicknotes-nix:latest
+$ curl -s http://localhost:8090/health
+{"notes":0,"status":"ok"}
+(zero notes because seed.json is not copied into the Nix image; the store is
+empty at start, which is correct behaviour rather than a failure)
+
+=== Lab 6 Dockerfile image, two builds with --no-cache ===
+$ docker build --no-cache -t qn-lab6:run1 ./app
+$ docker build --no-cache -t qn-lab6:run2 ./app
+$ docker images --no-trunc qn-lab6
+qn-lab6  run2  sha256:18bbcbb8a5d4f5b78a2de59cfc8d727bd2351b4759144d1ecf59198e859913fa  16.2MB
+qn-lab6  run1  sha256:f887b938ba01b5f0d6a1ee1ae47ddeb94270f3ec4e61990c018f205f444d993e  16.2MB
+=== DIFFERENT ===
+
+=== Size comparison ===
+Nix-built tarball:      2,965,862 bytes (2.97 MB)
+Lab 6 Docker image:     16.2 MB

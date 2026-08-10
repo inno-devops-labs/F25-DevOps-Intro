@@ -1,0 +1,31 @@
+=== Environment A: local checkout, mounted into a nixos/nix container ===
+$ docker run --rm -v "$PWD:/repo" -w /repo nixos/nix bash -c \
+    "nix build .#quicknotes && nix-store --query --hash \$(readlink result)"
+building '/nix/store/17f1ham94r7b7d4jabfqjgqxr5n3gmy7-quicknotes-0.1.0.drv'...
+sha256:05k94m87943kvs0hhdi0s7v5pw1ldnhdjivbycw7n2d196igkl0a
+
+$ ls -la result/bin/
+-r-xr-xr-x 1 root root 5619248 Jan  1  1970 quicknotes
+
+=== Environment B: fresh container, empty store, source cloned from GitHub ===
+$ docker run --rm nixos/nix bash -c \
+    "nix build 'github:HNS2112/DevOps-Intro/feature/lab11#quicknotes' && \
+     nix-store --query --hash \$(readlink result)"
+building '/nix/store/17f1ham94r7b7d4jabfqjgqxr5n3gmy7-quicknotes-0.1.0.drv'...
+sha256:05k94m87943kvs0hhdi0s7v5pw1ldnhdjivbycw7n2d196igkl0a
+
+=== IDENTICAL ===
+Both store hashes match. The derivation path is identical too
+(17f1ham94r7b7d4jabfqjgqxr5n3gmy7), so Nix computed the same build recipe
+before either build started.
+
+=== It runs ===
+$ /repo/result/bin/quicknotes   (ADDR=0.0.0.0:8080 DATA_PATH=/tmp/n.json)
+2026/08/10 15:40:54 quicknotes listening on 0.0.0.0:8080 (notes loaded: 4)
+$ wget -qO- http://127.0.0.1:8080/health
+{"notes":4,"status":"ok"}
+
+=== Pinned nixpkgs (from flake.lock) ===
+rev: fcb8fcd6bf2d0adecae5bd491afaaaf8311b758d
+narHash: sha256-9BG7OgUWdu0ONDO5X2q6+K4bsuBITkX/3W4nNJu1Ito=
+go: 1.26.5
