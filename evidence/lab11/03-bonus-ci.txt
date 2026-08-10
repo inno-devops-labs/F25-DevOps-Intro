@@ -1,0 +1,33 @@
+=== GREEN run — digests match ===
+https://github.com/HNS2112/DevOps-Intro/actions/runs/31408151132
+
+build (a)  Compute digest  replica a digest: c0b0caa46f21cbfed2e79da55db93204d974c7d67a1ed92542df7811b01aefb1
+build (b)  Compute digest  replica b digest: c0b0caa46f21cbfed2e79da55db93204d974c7d67a1ed92542df7811b01aefb1
+compare    Assert the two digests match  Digests match — build is reproducible across runners.
+
+=== RED run — reproducibility deliberately broken in replica a ===
+https://github.com/HNS2112/DevOps-Intro/actions/runs/31408954858
+
+The break: a step gated on `if: matrix.replica == 'a'` rewrote the image tag in
+flake.nix from "latest" to "broken" before building, so replica a produced a
+different derivation and therefore a different tarball. The compare job failed,
+which is the gate doing its job.
+
+Reverted afterwards; the following run is green again.
+
+=== Note on the CI digest vs the local one ===
+CI digest:   c0b0caa46f21cbfed2e79da55db93204d974c7d67a1ed92542df7811b01aefb1
+Local digest: ada0ff2f0f50d0165735c5834405cc68bc29340eb36a32b84a66c68735f78b6f
+
+These differ because GitHub runners are x86_64-linux and the local containers
+run aarch64-linux on Apple Silicon. The flake builds for whichever system it
+runs on. Reproducibility holds within an architecture, which is what the proof
+requires: two runners of the same architecture agree exactly.
+
+=== Digest values in the red run ===
+A="8a0ae6234370f59b7efb209539a79aadb4a24ddfa12b0e331b78d3a531c70c8a"  (replica a, broken)
+B="c0b0caa46f21cbfed2e79da55db93204d974c7d67a1ed92542df7811b01aefb1"  (replica b, unmodified)
+The compare job exited non-zero on the inequality check.
+
+=== GREEN again after revert ===
+https://github.com/HNS2112/DevOps-Intro/actions/runs/31409241116
