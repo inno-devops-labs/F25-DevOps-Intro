@@ -25,3 +25,9 @@ Returns 4 seeded notes (ids 1-4), HTTP 200.
 
 === Cold start measurements (Render free tier, spins down after ~15 min idle) ===
 cold-1 total=25.263881
+cold-2 total=14.207056
+cold-3 total=14.270426
+
+Note: cold-1 (25.3 s) was measurably slower than cold-2 and cold-3 (~14.2 s).
+The first wake included pulling the image onto the node; subsequent wakes only
+had to start the container from a cached image.
