@@ -1,0 +1,56 @@
+name: Nix Reproducibility
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        replica: [a, b]
+    runs-on: ubuntu-24.04
+    outputs:
+      digest-a: ${{ steps.digest.outputs.a }}
+      digest-b: ${{ steps.digest.outputs.b }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@ef8a148080ab6020fd15196c2084a2eea5ff2d25 # v22
+
+      - name: Build the OCI image
+        run: nix build .#docker
+
+      - name: Compute digest
+        id: digest
+        run: |
+          D=$(sha256sum result | awk '{print $1}')
+          echo "replica ${{ matrix.replica }} digest: $D"
+          echo "${{ matrix.replica }}=$D" >> "$GITHUB_OUTPUT"
+
+  compare:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Assert the two digests match
+        run: |
+          A="${{ needs.build.outputs.digest-a }}"
+          B="${{ needs.build.outputs.digest-b }}"
+          echo "replica a: $A"
+          echo "replica b: $B"
+          if [ -z "$A" ] || [ -z "$B" ]; then
+            echo "one or both digests are empty"
+            exit 1
+          fi
+          if [ "$A" != "$B" ]; then
+            echo "REPRODUCIBILITY BROKEN: digests differ"
+            exit 1
+          fi
+          echo "Digests match — build is reproducible across runners."
