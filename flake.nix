@@ -29,6 +29,7 @@
             paths = [ quicknotes ];
             pathsToLink = [ "/bin" ];
           };
+          extraCommands = "mkdir -p tmp && chmod 1777 tmp";
           config = {
             Entrypoint = [ "${quicknotes}/bin/quicknotes" ];
             ExposedPorts = { "8080/tcp" = {}; };
