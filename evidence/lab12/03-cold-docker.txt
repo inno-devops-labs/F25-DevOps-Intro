@@ -1,0 +1,6 @@
+=== Docker cold start (5 samples) ===
+docker cold-1 = 137.5 ms
+docker cold-2 = 143.7 ms
+docker cold-3 = 139.9 ms
+docker cold-4 = 131.5 ms
+docker cold-5 = 140.7 ms

@@ -1,0 +1,6 @@
+=== Spin cold start (5 samples) ===
+spin cold-1 = 171.7 ms
+spin cold-2 = 136.3 ms
+spin cold-3 = 137.2 ms
+spin cold-4 = 134.6 ms
+spin cold-5 = 139.9 ms

@@ -1,0 +1,53 @@
+=== toolchain ===
+spin 4.0.2 (bfc7543 2026-06-23)
+go version go1.25.12 darwin/arm64 (build used this; the 1.26.5 shown by a shell without GOTOOLCHAIN=local crashes the linker)
+GOTOOLCHAIN=
+
+=== spin.toml ===
+#:schema https://schemas.spinframework.dev/spin/manifest-v2/latest.json
+
+spin_manifest_version = 2
+
+[application]
+name = "moscow-time"
+version = "0.1.0"
+authors = ["Elvira <239804565+HNS2112@users.noreply.github.com>"]
+description = ""
+
+[[trigger.http]]
+route = "/time"
+component = "moscow-time"
+
+[component.moscow-time]
+source = "main.wasm"
+allowed_outbound_hosts = []
+[component.moscow-time.build]
+command = "go tool componentize-go build"
+watch = ["**/*.go", "go.mod"]
+
+=== go.mod ===
+module github.com/moscow_time
+
+go 1.25.5
+
+require github.com/spinframework/spin-go-sdk/v3 v3.0.0
+
+require (
+	github.com/apparentlymart/go-userdirs v0.0.0-20200915174352-b0c018a67c13 // indirect
+	github.com/bytecodealliance/componentize-go v0.3.3 // indirect
+	github.com/gofrs/flock v0.13.0 // indirect
+	go.bytecodealliance.org/pkg v0.2.1 // indirect
+	golang.org/x/sys v0.37.0 // indirect
+)
+
+tool github.com/bytecodealliance/componentize-go
+=== artifact ===
+-rw-r--r--  1 elvira  staff  5242031 Aug 10 17:56 wasm/moscow-time/main.wasm
+
+=== GET /time ===
+{
+    "unix": 1786374003,
+    "iso": "2026-08-10T18:00:03+03:00",
+    "hour_minute": "18:00",
+    "zone": "Europe/Moscow (UTC+3)"
+}

@@ -1,0 +1,18 @@
+=== wasm-cli artifact ===
+-rwxr-xr-x  1 elvira  staff  3184098 Aug 10 18:06 main.wasm
+
+=== build command ===
+GOOS=wasip1 GOARCH=wasm go build -o main.wasm .
+
+=== run command + output ===
+wasmtime run --env REQUEST_METHOD=GET --env PATH_INFO=/time main.wasm
+Content-Type: application/json
+
+{"unix":1786374493,"iso":"2026-08-10T18:08:13+03:00","hour_minute":"18:08","zone":"Europe/Moscow (UTC+3)"}
+
+=== Spin component under bare wasmtime run ===
+Error: failed to run main module `../wasm/moscow-time/main.wasm`
+
+Caused by:
+    0: component imports instance `wasi:http/types@0.3.0-rc-2026-03-15`, but a matching implementation was not found in the linker
+    1: instance export `fields` has the wrong type
