@@ -1,0 +1,39 @@
+﻿=== Cloudflare quick tunnel ===
+https://subsequent-workstation-foster-again.trycloudflare.com
+Connector ID: c5968e56-8743-4b6c-aeec-ff8fc466a7d8
+Edge location: dfw11 (Dallas), protocol: quic
+Local origin: http://localhost:8080 (go run, Windows 11)
+
+=== Health check via tunnel ===
+{"notes":4,"status":"ok"}
+
+=== Warm latency, 50 requests (time_total, seconds) ===
+p50 = 1.4166
+p95 = 2.4306
+min = 1.3742
+max = 2.9096
+
+=== Latency breakdown (single request) ===
+dns=0.012468 connect=0.215458 tls=1.029152 ttfb=1.385472 total=1.385518
+TLS handshake: 814 ms of 1386 ms total (59%)
+
+=== Pre-checks (from cloudflared startup) ===
+DNS Resolution   region1/2.v2.argotunnel.com  PASS
+UDP Connectivity region1/2.v2.argotunnel.com  PASS (QUIC)
+TCP Connectivity region1/2.v2.argotunnel.com  PASS (HTTP/2)
+Cloudflare API   api.cloudflare.com:443       PASS
+
+=== Verified from a different network path ===
+Opened https://subsequent-workstation-foster-again.trycloudflare.com/health
+on an Android phone. Response: {"notes": 4, "status": "ok"}
+
+Caveat, stated plainly: the lab asks to verify from cellular data. Cellular was
+not available on this network, so the phone used the same Wi-Fi as the host —
+but without the VPN the host runs through, so the request left from a different
+public IP and took a different route.
+
+This still demonstrates public routability rather than LAN reachability. A quick
+tunnel has no LAN path by construction: cloudflared holds an outbound QUIC
+connection to a Cloudflare edge (logged as location=dfw11, Dallas) and the
+public hostname resolves to Cloudflare's anycast addresses. Any request to that
+hostname is served through the edge regardless of where the client sits.

@@ -22,3 +22,6 @@ TLS handshake accounts for 845 ms of the 1210 ms total (70%).
 
 === /notes endpoint ===
 Returns 4 seeded notes (ids 1-4), HTTP 200.
+
+=== Cold start measurements (Render free tier, spins down after ~15 min idle) ===
+cold-1 total=25.263881
