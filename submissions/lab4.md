@@ -345,10 +345,154 @@ surfaced the problem in seconds instead of six minutes.
 
 ---
 
+## Bonus Task — TLS Termination and Handshake Capture
+
+### B.1 Setup
+
+QuickNotes bound to `127.0.0.1:8080` with no TLS of its own; Caddy terminating
+TLS on `:8443` and proxying to it.
+
+`tls/Caddyfile`:
+
+```
+{
+	auto_https disable_redirects
+	admin off
+}
+
+localhost:8443 {
+	tls internal
+	reverse_proxy 127.0.0.1:8080
+}
+```
+
+`tls internal` makes Caddy issue a certificate from its own local CA rather than
+going to Let's Encrypt — the right choice for `localhost`, which no public CA
+will ever certify. Caddy installs its root into the macOS keychain on first run:
+
+```
+WARN  pki.ca.local  installing root certificate (you might be prompted for password)
+INFO  tls.obtain    certificate obtained successfully  {"identifier": "localhost", "issuer": "local"}
+INFO  certificate installed properly in macOS keychain
+```
+
+It works end to end:
+
+```console
+$ curl -sk https://localhost:8443/health
+{"notes":4,"status":"ok"}
+```
+
+### B.2 The handshake, packet by packet
+
+Captured with `tshark -i lo0 -f "tcp port 8443"` around a single request.
+
+```
+ 1  ::1 → ::1  TCP      59391 → 8443 [SYN]
+ 2  ::1 → ::1  TCP      8443 → 59391 [SYN, ACK]
+ 3  ::1 → ::1  TCP      59391 → 8443 [ACK]
+ 5  ::1 → ::1  TLSv1    Client Hello (SNI=localhost)
+ 7  ::1 → ::1  TLSv1.3  Server Hello, Change Cipher Spec, Application Data ×4
+ 9  ::1 → ::1  TLSv1.3  Change Cipher Spec
+10  ::1 → ::1  TLSv1.3  Application Data
+11  ::1 → ::1  TLSv1.3  Application Data
+15  ::1 → ::1  TLSv1.3  Application Data
+17  ::1 → ::1  TLSv1.3  Application Data
+19  ::1 → ::1  TCP      59391 → 8443 [FIN, ACK]
+```
+
+The TCP three-way handshake of §1.1 is still there in packets 1–3 — TLS runs on
+top of it, it does not replace it. The whole exchange took 31 milliseconds
+against the 915 microseconds of the plaintext version in §1.1, and essentially
+all of that difference is the handshake.
+
+**ClientHello** (packet 5):
+
+```
+Version: TLS 1.2 (0x0303)                       ← legacy field
+Server Name: localhost
+supported_versions: 0x0304, 0x0303, 0x0302, 0x0301
+Cipher Suites (49 suites):
+  TLS_CHACHA20_POLY1305_SHA256 (0x1303)
+  TLS_AES_256_GCM_SHA384       (0x1302)
+  TLS_AES_128_GCM_SHA256       (0x1301)
+  ... 46 more, down to TLS_RSA_WITH_AES_128_CBC_SHA
+```
+
+**ServerHello** (packet 7):
+
+```
+Version: TLS 1.2 (0x0303)                       ← legacy field
+  [Expert Info: This legacy_version field MUST be ignored.
+   The supported_versions extension is present and MUST be used instead.]
+Extension: supported_versions — Supported Version: TLS 1.3 (0x0304)
+Cipher Suite: TLS_CHACHA20_POLY1305_SHA256 (0x1303)
+```
+
+**Two things in that output are worth stopping on.**
+
+The record layer claims TLS 1.2 on both sides while the connection is actually
+TLS 1.3 — and Wireshark flags it as an expert note, not a bug. TLS 1.3 pins the
+legacy version field at 1.2 and moves the real negotiation into the
+`supported_versions` extension, specifically because middleboxes on the internet
+were dropping handshakes that advertised a version they had never seen. The
+protocol lies about its own version to get through hardware that predates it.
+
+And the client offered 49 cipher suites spanning TLS 1.0 through 1.3 —
+including `TLS_RSA_WITH_AES_128_CBC_SHA` and two GOST suites — while the server
+picked `TLS_CHACHA20_POLY1305_SHA256`, one of the three TLS 1.3 suites. The
+client's list is a compatibility net; the server's single choice is the actual
+security posture. Reading a capture and seeing weak suites offered says nothing
+by itself — what matters is which one came back.
+
+### B.3 Plaintext versus ciphertext
+
+Same application, same endpoint, two captures:
+
+```
+--- HTTP on :8080 (Task 1.1) ---
+POST /notes HTTP/1.1
+Content-Type: application/json
+{"title":"lab4","body":"packet capture"}
+
+--- HTTPS on :8443 (this task) ---
+ 10  TLSv1.3  134  Application Data
+ 11  TLSv1.3  181  Application Data
+ 15  TLSv1.3  281  Application Data
+ 17  TLSv1.3  100  Application Data
+```
+
+In §1.1 the request line, the headers and the JSON body were all readable
+straight out of the capture. Here the same traffic is four opaque records.
+
+What TLS does **not** hide is worth naming precisely, because it is visible in
+the very capture above: the source and destination addresses, the port, the
+timing and sizes of every record, and — in packet 5 — the SNI field carrying
+`localhost` in cleartext. An observer learns who is talking to which host, when,
+and roughly how much. They do not learn what was said. Encrypted Client Hello
+exists to close the SNI gap and was not in play here.
+
+### B.4 What this does and does not buy
+
+The proxy pattern is worth stating plainly: **QuickNotes still speaks plain HTTP**
+and knows nothing about TLS. Caddy decrypts at the edge and forwards cleartext
+over loopback to `127.0.0.1:8080`, which is safe here only because that hop never
+leaves the machine. In a real deployment the same arrangement across a network
+segment would be a plaintext hop an attacker on that segment could read — the
+thing service meshes and mTLS exist to close.
+
+That separation is also what makes it practical. The application does not manage
+certificates, renewals, cipher configuration or protocol versions; Caddy does,
+and its defaults are current. Lab 6's image would need none of it, and Lab 10's
+Render deployment got TLS for free from the platform for exactly the same reason
+— someone else terminates it.
+
+---
+
 ## Summary
 
 | Task | Status |
 |------|--------|
 | Task 1 — packet capture, diagnostics, DNS, refused vs. timeout | Complete |
 | Task 2 — broken deploy, outside-in triage, postmortem | Complete |
-| Bonus — TLS proxy and handshake capture | Not attempted |
+| Bonus — TLS proxy and handshake capture | Complete |
