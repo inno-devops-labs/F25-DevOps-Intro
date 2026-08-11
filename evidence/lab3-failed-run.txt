@@ -1,0 +1,8 @@
+test	Run unit tests	2026-08-04T17:34:27.6294100Z shell: /usr/bin/bash -e {0}
+test	Run unit tests	2026-08-04T17:34:27.6294414Z ##[endgroup]
+test	Run unit tests	2026-08-04T17:34:48.9027010Z --- FAIL: TestHealth_ReportsCount (0.00s)
+test	Run unit tests	2026-08-04T17:34:48.9027918Z     handlers_test.go:53: notes count: 1
+test	Run unit tests	2026-08-04T17:34:48.9028377Z FAIL
+test	Run unit tests	2026-08-04T17:34:48.9028684Z FAIL	quicknotes	0.015s
+test	Run unit tests	2026-08-04T17:34:48.9029011Z FAIL
+test	Run unit tests	2026-08-04T17:34:48.9618493Z ##[error]Process completed with exit code 1.

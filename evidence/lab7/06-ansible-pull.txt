@@ -1,0 +1,27 @@
+=== Timer installed and active ===
+[0;4mNEXT                       [0m[0;4m [0m[0;4m    LEFT[0m[0;4m [0m[0;4mLAST                       [0m[0;4m [0m[0;4m     PASSED[0m[0;4m [0m[0;4mUNIT              [0m[0;4m [0m[0;4mACTIVATES           [0m
+Tue 2026-08-11 16:08:25 UTC 1min 52s Tue 2026-08-11 16:03:25 UTC 3min 7s ago ansible-pull.timer ansible-pull.service
+
+[0;1;39m1 timers listed.[0m
+Pass --all to see loaded but inactive timers, too.
+
+=== Convergence timeline (UTC) ===
+commit pushed        2026-08-11 16:00:11
+timer fired          2026-08-11 16:03:18
+service restarted    2026-08-11 16:03:36
+verified from host   2026-08-11 16:05:15
+elapsed: 3m 25s from push to applied state, no host command involved
+
+=== Unit on the VM after convergence ===
+Environment=ADDR=:8081
+
+=== ansible-pull recap for that run ===
+Aug 11 15:58:31 quicknotes-vm ansible-pull[3967]: localhost                  : ok=6    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+Aug 11 16:03:37 quicknotes-vm ansible-pull[4476]: TASK [Render the systemd unit] *************************************************
+Aug 11 16:03:37 quicknotes-vm ansible-pull[4476]: PLAY RECAP *********************************************************************
+Aug 11 16:03:37 quicknotes-vm ansible-pull[4476]: localhost                  : ok=7    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+=== Note ===
+The unit above still shows ADDR=:8081 because the snapshot was taken before the
+timer picked up the revert commit. The next fire reconciled it back to :8080
+with no host command — the loop works in both directions.
