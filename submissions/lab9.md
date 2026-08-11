@@ -308,7 +308,82 @@ Accepted and documented rather than silenced.
 
 ## Bonus Task — govulncheck in CI
 
-Not attempted.
+### B.1 The job
+
+Added to the Lab 3 pipeline, gated by `ci-ok` alongside `vet`, `test` and `lint`:
+
+```yaml
+  govulncheck:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 1
+
+      - name: Run govulncheck
+        uses: golang/govulncheck-action@032d45514ae346b1db93c04b0c90b841c370344f # v1.1.0
+        with:
+          go-version-input: '1.25'
+          work-dir: app
+```
+
+`ci-ok`'s `needs` became `[vet, test, lint, govulncheck]`, so a vulnerability
+finding blocks the merge the same way a failing test does.
+
+### B.2 One failure worth recording
+
+The first attempt specified `go-version-input: '1.24'`, matching `go.mod`, and
+the job failed:
+
+```
+go: golang.org/x/vuln/cmd/govulncheck@latest: golang.org/x/vuln@v1.6.0
+    requires go >= 1.25.0 (running go 1.24.13; GOTOOLCHAIN=local)
+```
+
+The scanner's own toolchain floor is higher than the application's. Notably,
+`GOTOOLCHAIN=local` — added to this pipeline in the Lab 3 bonus to stop Go
+silently upgrading itself — is what turned a silent auto-upgrade into a visible
+error. That is the pin working correctly: the failure is loud and the cause is
+in the message, rather than the build quietly running on a different compiler
+than the one declared.
+
+Bumping the input to `1.25` fixed it. The job now passes.
+
+### B.3 The result, and why it differs from Trivy
+
+```console
+$ go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+No vulnerabilities found.
+```
+
+**Zero findings — against Trivy's 15 in the same binary.** The two tools are not
+disagreeing; they answer different questions.
+
+Trivy reads the Go build information embedded in the binary, sees
+`stdlib v1.24.6`, and reports every CVE published against that version. That is
+a question about *presence*: is vulnerable code in this artifact?
+
+govulncheck builds a call graph from the entry points and reports a vulnerability
+only when a path exists from application code to the affected symbol. That is a
+question about *reachability*: can this vulnerable code actually be invoked here?
+
+The gap is the triage argument from §1.2 made concrete. QuickNotes never calls
+`net/mail`, `mime`, or the TLS session-resumption path that `CVE-2025-68121`
+affects — those packages are linked into the binary but unreachable from any
+handler. Trivy is right that they are present; govulncheck is right that they
+cannot be exercised.
+
+Both belong in a pipeline, for different jobs. Trivy answers "what do I need to
+patch eventually" and drives the toolchain-bump decision. govulncheck answers
+"what can hurt me today" and is the one that should block a merge — which is why
+it, and not Trivy, is wired into `ci-ok` here.
+
+### B.4 Evidence
+
+- Failed run (toolchain floor): https://github.com/HNS2112/DevOps-Intro/actions/runs/31411530404
+- Green run: https://github.com/HNS2112/DevOps-Intro/actions/runs/31458925656
+- Local output: `security/govulncheck.txt`
 
 ---
 
@@ -318,4 +393,4 @@ Not attempted.
 |------|--------|
 | Task 1 — Trivy image / fs / config / SBOM, triage, design questions | Complete |
 | Task 2 — ZAP baseline, triage, code fix, regression test, re-scan | Complete |
-| Bonus — govulncheck in CI | Not attempted |
+| Bonus — govulncheck in CI | Complete |
