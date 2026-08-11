@@ -1,0 +1,28 @@
+● quicknotes.service - QuickNotes HTTP service
+     Loaded: loaded (/etc/systemd/system/quicknotes.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2026-08-11 15:50:14 UTC; 22s ago
+   Main PID: 3128 (quicknotes)
+      Tasks: 7 (limit: 1056)
+     Memory: 1.4M (peak: 1.7M)
+        CPU: 2ms
+     CGroup: /system.slice/quicknotes.service
+---
+[Unit]
+Description=QuickNotes HTTP service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=quicknotes
+Group=quicknotes
+WorkingDirectory=/var/lib/quicknotes
+ExecStart=/usr/local/bin/quicknotes
+Environment=ADDR=:8080
+Environment=DATA_PATH=/var/lib/quicknotes/notes.json
+Environment=SEED_PATH=/var/lib/quicknotes/seed.json
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

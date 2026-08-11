@@ -1,0 +1,39 @@
+
+PLAY [Deploy QuickNotes to the Lab 5 VM] ***************************************
+
+TASK [Create the quicknotes system user] ***************************************
+ok: [lab5-vm]
+
+TASK [Ensure the data directory exists] ****************************************
+ok: [lab5-vm]
+
+TASK [Copy the QuickNotes binary] **********************************************
+ok: [lab5-vm]
+
+TASK [Copy the seed file] ******************************************************
+ok: [lab5-vm]
+
+TASK [Render the systemd unit] *************************************************
+--- before: /etc/systemd/system/quicknotes.service
++++ after: /home/hns/.ansible/tmp/ansible-local-111168l9dvf9nu/tmpvar2epoe/quicknotes.service.j2
+@@ -13,7 +13,7 @@
+ Environment=DATA_PATH=/var/lib/quicknotes/notes.json
+ Environment=SEED_PATH=/var/lib/quicknotes/seed.json
+ Restart=on-failure
+-RestartSec=3
++RestartSec=5
+ 
+ [Install]
+ WantedBy=multi-user.target
+
+changed: [lab5-vm]
+
+TASK [Enable and start the service] ********************************************
+ok: [lab5-vm]
+
+RUNNING HANDLER [restart quicknotes] *******************************************
+changed: [lab5-vm]
+
+PLAY RECAP *********************************************************************
+lab5-vm                    : ok=7    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
