@@ -1,0 +1,45 @@
+=== Packet summary ===
+    1   0.000000          ::1 → ::1          TCP 88  59391 → 8443 [SYN] Seq=0 Win=65535 Len=0 MSS=16324 WS=64 TSval=1233291516 TSecr=0 SACK_PERM
+    2   0.000160          ::1 → ::1          TCP 88  8443 → 59391 [SYN, ACK] Seq=0 Ack=1 Win=65535 Len=0 MSS=16324 WS=64 TSval=3794062206 TSecr=1233291516 SACK_PERM
+    3   0.000233          ::1 → ::1          TCP 76  59391 → 8443 [ACK] Seq=1 Ack=1 Win=407808 Len=0 TSval=1233291516 TSecr=3794062206
+    4   0.000278          ::1 → ::1          TCP 76  [TCP Window Update] 8443 → 59391 [ACK] Seq=1 Ack=1 Win=407808 Len=0 TSval=3794062206 TSecr=1233291516
+    5   0.000497          ::1 → ::1          TLSv1 392  Client Hello (SNI=localhost)
+    6   0.000564          ::1 → ::1          TCP 76  8443 → 59391 [ACK] Seq=1 Ack=317 Win=407552 Len=0 TSval=3794062207 TSecr=1233291517
+    7   0.001097          ::1 → ::1          TLSv1.3 1366  Server Hello, Change Cipher Spec, Application Data, Application Data, Application Data, Application Data
+    8   0.001163          ::1 → ::1          TCP 76  59391 → 8443 [ACK] Seq=317 Ack=1291 Win=406528 Len=0 TSval=1233291517 TSecr=3794062207
+    9   0.030593          ::1 → ::1          TLSv1.3 82  Change Cipher Spec
+   10   0.030630          ::1 → ::1          TLSv1.3 134  Application Data
+   11   0.030684          ::1 → ::1          TLSv1.3 181  Application Data
+   12   0.030688          ::1 → ::1          TCP 76  8443 → 59391 [ACK] Seq=1291 Ack=323 Win=407552 Len=0 TSval=3794062237 TSecr=1233291547
+   13   0.030715          ::1 → ::1          TCP 76  8443 → 59391 [ACK] Seq=1291 Ack=381 Win=407552 Len=0 TSval=3794062237 TSecr=1233291547
+   14   0.030723          ::1 → ::1          TCP 76  8443 → 59391 [ACK] Seq=1291 Ack=486 Win=407488 Len=0 TSval=3794062237 TSecr=1233291547
+   15   0.031516          ::1 → ::1          TLSv1.3 281  Application Data
+   16   0.031551          ::1 → ::1          TCP 76  59391 → 8443 [ACK] Seq=486 Ack=1496 Win=406336 Len=0 TSval=1233291548 TSecr=3794062238
+   17   0.031673          ::1 → ::1          TLSv1.3 100  Application Data
+   18   0.031702          ::1 → ::1          TCP 76  8443 → 59391 [ACK] Seq=1496 Ack=510 Win=407488 Len=0 TSval=3794062238 TSecr=1233291548
+   19   0.031712          ::1 → ::1          TCP 76  59391 → 8443 [FIN, ACK] Seq=510 Ack=1496 Win=406336 Len=0 TSval=1233291548 TSecr=3794062238
+   20   0.031736          ::1 → ::1          TCP 76  8443 → 59391 [ACK] Seq=1496 Ack=511 Win=407488 Len=0 TSval=3794062238 TSecr=1233291548
+
+=== ClientHello ===
+0x0303	localhost	0x0304,0x0303,0x0302,0x0301	0x1303,0x1302,0x1301,0xcca9,0xcca8,0xccaa,0xc030,0xc02c,0xc028,0xc024,0xc014,0xc00a,0x009f,0x006b,0x0039,0xff85,0x00c4,0x0088,0x0081,0x009d,0x003d,0x0035,0x00c0,0x0084,0xc02f,0xc02b,0xc027,0xc023,0xc013,0xc009,0x009e,0x0067,0x0033,0x00be,0x0045,0x009c,0x003c,0x002f,0x00ba,0x0041,0xc011,0xc007,0x0005,0x0004,0xc012,0xc008,0x0016,0x000a,0x00ff
+
+=== ServerHello: negotiated version and cipher ===
+0x0303	0x0304	0x1303
+
+=== Is the payload encrypted? ===
+(content type 23 = application data — the HTTP request and response are ciphertext)
+
+=== Contrast with the plaintext capture from Task 1.1 ===
+--- HTTP on :8080 (no TLS) — request and body readable ---
+18:50:14.556203 IP localhost.52742 > localhost.http-alt: Flags [P.], seq 1:176, ack 1, win 64, options [nop,nop,TS val 2230267369 ecr 407459794], length 175: HTTP: POST /notes HTTP/1.1
+..-..IW.POST /notes HTTP/1.1
+Content-Type: application/json
+{"title":"lab4","body":"packet capture"}
+Content-Type: application/json
+
+--- HTTPS on :8443 (TLS 1.3) — same class of traffic, nothing readable ---
+    7   0.001097          ::1 → ::1          TLSv1.3 1366  Server Hello, Change Cipher Spec, Application Data, Application Data, Application Data, Application Data
+   10   0.030630          ::1 → ::1          TLSv1.3 134  Application Data
+   11   0.030684          ::1 → ::1          TLSv1.3 181  Application Data
+   15   0.031516          ::1 → ::1          TLSv1.3 281  Application Data
+   17   0.031673          ::1 → ::1          TLSv1.3 100  Application Data
