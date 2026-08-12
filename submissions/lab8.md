@@ -395,7 +395,111 @@ being affected.
 
 ## Bonus Task — Synthetic Monitoring from the Outside
 
-Not attempted.
+### B.1 Setup
+
+The target is the Render deployment from Lab 10 — the same QuickNotes image,
+already publicly reachable, so no tunnel was needed:
+
+```
+https://quicknotes-e5cq.onrender.com/health
+```
+
+Checkly API check:
+
+| Setting | Value |
+|---|---|
+| Method | GET |
+| Assertion | Status code Equals 200 |
+| Degraded after | 200 ms |
+| Failed after | 2000 ms |
+| Frequency | 1 minute |
+| Locations | Frankfurt (eu-central-1), Singapore (ap-southeast-1) |
+| Scheduling | parallel runs — both locations fire on every tick |
+| Alerting | email channel |
+
+![Checkly check](../evidence/lab8/lab8-checkly.png)
+
+Two thresholds rather than one is worth noting: Checkly distinguishes
+**degraded** from **failed**, which Prometheus's binary `up == 1` cannot. A
+service answering correctly but slowly is a real state, and it is the state this
+check spent the window in.
+
+### B.2 Internal versus external, same 30-minute window
+
+Window: 16:28:36 – ~17:00 UTC.
+
+| | Prometheus (inside the Compose network) | Checkly (Frankfurt + Singapore) |
+|---|---|---|
+| Latency p50 | **2.1 ms** | **175 ms** (AVG) |
+| Latency p95 | **6.4 ms** | **533 ms** |
+| Errors observed | 0 (1447 requests) | 0 — availability 100% |
+| Status | `up == 1` throughout | **DEGRADED** |
+
+A third vantage point, measured from the laptop over a VPN against the same
+Render URL in the same window:
+
+| | Laptop over VPN → Render |
+|---|---|
+| p50 | **2171 ms** |
+| p95 | **2420 ms** |
+
+**Three observers, three verdicts about one service.** The 83× gap between
+Prometheus and Checkly is not the application — it is the network, and the fact
+that they are watching different deployments of it. Prometheus scrapes a
+container on loopback inside a Compose network; Checkly crosses the public
+internet to a Frankfurt datacentre.
+
+The laptop number is the one that makes the point sharply. **2171 ms exceeds the
+2000 ms failure threshold this check is configured with.** Had the probe run from
+here, it would have reported the service as down for the entire window. From
+Frankfurt and Singapore it passed every single time. Same service, same moment,
+opposite conclusions — because "is it up?" is not a property of the service, it
+is a property of the path between a client and the service.
+
+The DEGRADED status is the honest middle. Availability was 100% and every
+assertion passed, but AVG 175 ms sits above the 200 ms... in fact just under it,
+while p95 at 533 ms is well over — so a meaningful minority of probes were slow
+enough to trip the degraded threshold. Nothing was broken; something was slower
+than it should be. That distinction is invisible to a check that only asks
+whether a response arrived.
+
+One side effect worth recording: the Checkly probe polls every minute, which is
+frequent enough to **keep the Render free instance awake**. Lab 10 measured its
+cold start at 14–25 s after 15 minutes of idle; during this window it never went
+idle. The act of monitoring changed the behaviour of the thing monitored — a
+benign version of the observer effect, and a reason synthetic-probe frequency is
+a capacity decision as well as a detection-latency one.
+
+### B.3 What each catches that the other cannot
+
+**Checkly catches everything between the user and the application**, and
+Prometheus is structurally blind to all of it. If DNS for the domain stops
+resolving, if the TLS certificate expires, if Render's edge proxy fails, if a
+route to the region is withdrawn, if the platform's ingress returns 502 while the
+container underneath is perfectly healthy — the container keeps serving,
+`/metrics` keeps reporting `up == 1`, and every internal dashboard stays green
+while no user can reach the service. Lab 10's scale-to-zero is a milder version
+of the same blindness: a 14-second cold start is invisible from inside, because
+the process that would report it is not running yet. Checkly also catches
+regional failures by construction — two locations mean a problem affecting only
+Singapore shows up as a split verdict rather than an ambiguous average.
+
+**Prometheus catches everything inside the application**, and Checkly is blind to
+all of it. Error ratios per status code, saturation, request volume, the
+distinction between a 4xx from a broken caller and a 5xx from a broken
+handler — none of it is visible from a single probe of one endpoint. More
+importantly, Checkly polls **one URL once a minute**; QuickNotes served 1447
+requests in this window, and if 5% of `POST /notes` had failed while `/health`
+kept returning 200, the external probe would have reported perfect availability
+throughout. That is precisely the alert built in Task 2, and it fires on a signal
+Checkly does not collect.
+
+The division is between **reachability** and **behaviour**. External probes prove
+the service can be reached and answer within a bound, from places users actually
+are; internal metrics explain what it is doing once reached. Neither substitutes
+for the other, which is why production systems run both — and why the Lab 10
+deployment being green in Checkly while showing 2.2-second latency from a VPN'd
+laptop in Kazan is a complete answer to neither question on its own.
 
 ---
 
@@ -405,4 +509,4 @@ Not attempted.
 |------|--------|
 | Task 1 — Prometheus + Grafana + provisioned 4-panel dashboard | Complete |
 | Task 2 — Sustained-breach alert, runbook, firing observed | Complete |
-| Bonus — Checkly synthetic probe | Not attempted |
+| Bonus — Checkly synthetic probe | Complete |

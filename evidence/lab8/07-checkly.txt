@@ -1,0 +1,29 @@
+=== Measurement window ===
+opened  2026-08-11 16:28:36 UTC
+closed  ~2026-08-11 17:00 UTC (30+ minutes)
+
+=== Prometheus — local container, inside the Compose network ===
+p50  2.1 ms
+p95  6.4 ms
+requests over the window: 1447
+errors (4xx+5xx):         0
+
+=== Checkly — Render deployment, Frankfurt + Singapore, 1 min frequency ===
+AVG  175 ms
+P95  533 ms
+AVA  100%
+status: DEGRADED (degraded threshold 200 ms, failed threshold 2000 ms)
+
+=== Laptop over VPN — Render deployment, same window ===
+p50  2171 ms
+p95  2420 ms
+
+=== Checkly check configuration ===
+URL:        https://quicknotes-e5cq.onrender.com/health
+Method:     GET
+Assertion:  Status code Equals 200
+Degraded:   >200 ms   Failed: >2000 ms
+Frequency:  1 minute
+Locations:  Frankfurt (eu-central-1), Singapore (ap-southeast-1)
+Scheduling: parallel runs
+Alerting:   email channel
