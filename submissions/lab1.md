@@ -128,7 +128,11 @@ Signed commits help verify who actually created a commit and make it harder to i
 
 ## Task 2 — Pull Request Template
 
-I added `.github/pull_request_template.md` to the `main` branch of my fork. The template contains Goal, Changes, Testing, and Checklist sections and is used for the Lab 1 pull request
+I added `.github/pull_request_template.md` to the `main` branch of my fork. The template contains the required Goal, Changes, Testing, and Checklist sections
+
+I verified that the template works by opening a test pull request from `feature/lab1` to `main` in my fork. GitHub automatically populated the pull request description with the template:
+
+![PR template auto-population](./images/pr-template-auto-populated.png)
 
 ## Task 3 — GitHub Community
 
