@@ -125,3 +125,40 @@ Screenshot of the Verified badge:
 ### Why Signed Commits Matter
 
 Signed commits help verify who actually created a commit and make it harder to impersonate another developer. The xz-utils incident in March 2024 showed how trust in maintainers can be abused to introduce malicious changes into widely used software. Signing does not prevent such attacks by itself, but it makes the origin of changes easier to verify
+
+## Task 3 — GitHub Community
+
+I starred the course repository and `simple-container-com/api`, and followed the professor, TAs, and three classmates
+
+Starring repositories helps save useful projects and increases their visibility in the open-source community. Following developers helps me discover their work, learn from their projects, and stay connected for future collaboration.
+
+
+## Bonus Task - Branch Protection
+
+I configured branch protection for `main` with:
+- Require a pull request before merging
+- Require signed commits
+- Require linear history
+
+![Branch protection settings](./images/branch-protection.png)
+
+### Unsigned Commit Test
+
+I created an unsigned commit and tried to push it directly to `main`. GitHub rejected the push:
+
+```text
+remote: error: GH006: Protected branch update failed for refs/heads/main.
+remote:
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+remote:
+remote:   3213c7cc64e4a26aee325adbc886a0ea3345e39f
+remote:
+remote: - Changes must be made through a pull request.
+```
+
+![](./images/error.png)
+
+### Knight Capital Reflection
+
+The Knight Capital incident shows how a deployment mistake can have a very large impact in a short time. Requiring pull requests would add a review step before changes reach the main branch, while signed commits would help verify who created each change. These controls would not guarantee that a deployment is safe, but they could reduce the chance of unreviewed or unauthorized changes reaching production.
