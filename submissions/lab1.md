@@ -126,6 +126,10 @@ Screenshot of the Verified badge:
 
 Signed commits help verify who actually created a commit and make it harder to impersonate another developer. The xz-utils incident in March 2024 showed how trust in maintainers can be abused to introduce malicious changes into widely used software. Signing does not prevent such attacks by itself, but it makes the origin of changes easier to verify
 
+## Task 2 — Pull Request Template
+
+I added `.github/pull_request_template.md` to the `main` branch of my fork. The template contains Goal, Changes, Testing, and Checklist sections and is used for the Lab 1 pull request
+
 ## Task 3 — GitHub Community
 
 I starred the course repository and `simple-container-com/api`, and followed the professor, TAs, and three classmates
