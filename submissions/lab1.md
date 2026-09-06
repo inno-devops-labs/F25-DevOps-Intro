@@ -83,7 +83,15 @@ _(to be filled in)_
 
 ## Task 3 — GitHub Community Engagement
 
-_(to be filled in)_
+Completed:
+- Starred the course repository ([inno-devops-labs/DevOps-Intro](https://github.com/inno-devops-labs/DevOps-Intro))
+- Starred [simple-container-com/api](https://github.com/simple-container-com/api)
+- Followed the professor ([@Cre-eD](https://github.com/Cre-eD)) and TAs ([@Naghme98](https://github.com/Naghme98), [@pierrepicaud](https://github.com/pierrepicaud))
+- Followed 3+ classmates from the course
+
+### GitHub Community
+
+Starring a repository is a lightweight way to bookmark useful projects and signal to maintainers that their work is valued and being watched by the community — star counts are also one of the first signals people use to judge whether an open-source project is trustworthy and active. Following other developers helps you keep track of what teammates and collaborators are building, makes it easier to discover their projects and contributions, and builds the kind of professional network that carries over from a classroom setting into future team and open-source work.
 
 ## Bonus Task — Branch Protection & Required Signed Commits
 
