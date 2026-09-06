@@ -79,7 +79,11 @@ In March 2024, a backdoor was discovered in the xz-utils library, planted by a c
 
 ## Task 2 — Pull Request Template & First PR
 
-_(to be filled in)_
+Added `.github/pull_request_template.md` to the fork's `main` branch (content: Goal / Changes / Testing / Checklist sections), committed and pushed it before opening the lab PR.
+
+Screenshot of the filled-in PR description:
+
+![PR description filled from template](screenshots/request.png)
 
 ## Task 3 — GitHub Community Engagement
 
