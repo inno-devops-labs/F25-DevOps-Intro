@@ -124,8 +124,6 @@ error: failed to push some refs to 'https://github.com/aniksel/DevOps-Intro.git'
 
 ![Rejected push](screenshots/remote.png)
 
-Interesting side note: the first attempt at an unsigned push actually succeeded, with GitHub reporting `Bypassed rule violations` — by default, branch protection rules do not apply to the repository owner/admin. Only after enabling "Do not allow bypassing the above settings" did the second attempt get rejected as shown above.
-
 ### Reflection
 
 Knight Capital's August 2012 incident happened because an old, dead code path was accidentally reactivated in production and pushed live without anyone catching it in review — the deploy went straight to production and lost the company roughly $440 million in 45 minutes. If a rule like "require signed commits + require a pull request before merging" had been enforced (and, crucially, enforced without an admin bypass) on their production deploy branch, that change could not have reached production without going through review first, and every commit's authorship would have been verifiable after the fact. Branch protection will not catch every bad deploy, but it removes the easiest way for an unreviewed, unverified change to slip straight into production.
