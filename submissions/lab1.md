@@ -68,7 +68,9 @@ Date:   Mon Sep 7 15:22:01 2026 +0300
 ### Why signed commits matter
 Signed commits help verify that a commit was created by the expected developer and has not been impersonated. The xz-utils story discussed in Lecture 1 shows why software supply-chain trust and contributor identity are important. Commit signing provides an additional layer of verification when reviewing changes.
 
+## Task 3 — GitHub Community
 
+Starring repositories helps developers bookmark useful projects and increases their visibility in the open-source community. Following developers helps me stay updated on their work, discover new projects, and build connections for future collaboration.
 
 
 
