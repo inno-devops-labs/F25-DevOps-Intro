@@ -91,3 +91,47 @@ cc23840 test: recovery commit 1
 ```
 
 `git reflog` records recent movements of references such as `HEAD`, so commits can often be recovered even after a hard reset. If `git gc` had already pruned the unreachable objects after their expiration period, reflog entries alone would not be enough because the underlying commit objects could already be deleted from the object database.
+
+## Task 2 — Signed Tag and Rebase
+
+### Signed tag
+
+A signed annotated tag was created:
+
+```text
+v0.1.0-lab2-arinaagafonova
+```
+
+Verification output:
+
+```text
+Good "git" signature for agafonova_arina@icloud.com with ED25519 key SHA256:IrCUPC4DTS87Y/H7GEphaSNlZoYPZJH7jOFCI0C1SPY
+```
+
+The tag was pushed to the fork with:
+
+```bash
+git push origin "v0.1.0-lab2-$USER"
+```
+
+### Rebase
+
+Before rebase:
+
+```text
+* e4e76ca (origin/main, origin/HEAD, main) docs: upstream moved while you worked
+| * e02f206 (HEAD -> feature/lab2) docs(lab2): document git recovery
+| * 5fa7123 test: recovery commit 2
+| * cc23840 test: recovery commit 1
+```
+
+After rebase:
+
+```text
+* 03580ba (HEAD -> feature/lab2) docs(lab2): document git recovery
+* ef26c9a test: recovery commit 2
+* 4bc5b69 test: recovery commit 1
+* e4e76ca (origin/main, origin/HEAD, main) docs: upstream moved while you worked
+```
+
+The feature branch was rebased onto the updated `origin/main`, so its commits were replayed on top of the latest main branch. Rebase keeps the history linear and avoids an extra merge commit, which makes the sequence of changes easier to read. Since rebase rewrites commit hashes, the branch was pushed using `git push --force-with-lease`, which is safer than a plain `--force` because it refuses to overwrite unexpected remote changes.
