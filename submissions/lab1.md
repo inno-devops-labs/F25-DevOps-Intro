@@ -74,10 +74,16 @@ GitHub also successfully verified the commit signature (`Verified`).
 
 ![Verified signed commit](assets/lab1-verified.png)
 
-Signed commits help verify the identity of the author and ensure that a commit was actually signed with the expected key. This makes the repository history more trustworthy and helps protect against commit impersonation.
+Signed commits help verify that a commit was actually created by the expected developer and has not been impersonated. This is especially important in supply-chain incidents such as the xz-utils backdoor case from March 2024, where trust in contributors and changes to critical software became a major security concern. Verified signatures make repository history more trustworthy and make it harder to impersonate legitimate maintainers.
+
+## Pull Request Template
+
+The pull request template is stored in `.github/pull_request_template.md` on the `main` branch.
+
+The template was tested using a draft pull request and auto-populated successfully.
+
+![PR template auto-population](assets/lab1-pr-template.png)
 
 ## GitHub Community
 
-I starred the required repositories and followed the professor, TAs, and at least three classmates.
-
-This helps me stay connected with the course community and makes it easier to follow updates and contributions.
+Starring repositories helps bookmark useful open-source projects and also increases their visibility within the community. Following developers makes it easier to discover their work, stay aware of classmates' and teammates' activity, and build professional connections for future collaboration.
