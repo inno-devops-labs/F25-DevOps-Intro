@@ -135,3 +135,47 @@ After rebase:
 ```
 
 The feature branch was rebased onto the updated `origin/main`, so its commits were replayed on top of the latest main branch. Rebase keeps the history linear and avoids an extra merge commit, which makes the sequence of changes easier to read. Since rebase rewrites commit hashes, the branch was pushed using `git push --force-with-lease`, which is safer than a plain `--force` because it refuses to overwrite unexpected remote changes.
+
+## Bonus — Git Bisect
+
+The regression was investigated using:
+
+```bash
+git bisect start
+git bisect bad HEAD
+git bisect good v0.0.1
+git bisect run sh -c 'cd app && go test ./... && go build ./...'
+```
+
+The automated test identified the first bad commit as:
+
+```text
+f285ede8611e55ac0a7d01100891c0cc775e0709
+refactor(store): simplify nextID restoration in load()
+```
+
+The failing test was:
+
+```text
+TestStore_PersistsAcrossReload
+nextID not restored: got 1, want 2
+```
+
+### Bisect log
+
+```text
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493] docs(app): mention go test invocation
+git bisect bad f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493
+# status: waiting for good commit(s), bad commit known
+# good: [0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7] chore(app): document versioning scheme (bisect fixture baseline)
+git bisect good 0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7
+# bad: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+git bisect bad f285ede8611e55ac0a7d01100891c0cc775e0709
+# good: [cb89bb9ee2ee5010b166061447eaca3ae0da2378] docs(store): comment the load() decode step
+git bisect good cb89bb9ee2ee5010b166061447eaca3ae0da2378
+# first bad commit: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+```
+
+`git bisect` uses binary search, repeatedly testing a commit near the middle of the remaining candidate range. Therefore, for `N` candidate commits, it requires approximately `log2(N)` test steps instead of checking all `N` commits sequentially.
