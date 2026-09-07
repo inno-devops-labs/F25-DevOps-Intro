@@ -87,3 +87,30 @@ The template was tested using a draft pull request and auto-populated successful
 ## GitHub Community
 
 Starring repositories helps bookmark useful open-source projects and also increases their visibility within the community. Following developers makes it easier to discover their work, stay aware of classmates' and teammates' activity, and build professional connections for future collaboration.
+
+## Bonus — Branch Protection
+
+The `main` branch is protected with the following rules:
+- Require signed commits
+- Require a pull request before merging
+- Require linear history
+
+![Branch protection rules](assets/lab1-branch-protection.png)
+
+### Unsigned Push Rejection
+
+```text
+remote: error: GH006: Protected branch update failed for refs/heads/main.
+remote: - Commits must have verified signatures.
+remote: - Changes must be made through a pull request.
+```
+
+The rejected commit was:
+
+```text
+26e69a47a3f9b886cc6b663a5e499b048f625a85
+```
+
+### Reflection
+
+If Knight Capital had used branch protection and required signed commits on its production deployment branch, engineers would not have been able to push arbitrary changes directly into the production path. A pull request requirement could have forced an additional review step before deployment, while signed commits would have provided stronger accountability for the exact changes being released. These controls would not guarantee that a faulty deployment could never happen, but they would have added friction and verification at a critical point in the release process. In a high-risk production environment, that extra control could significantly reduce the chance of an uncontrolled deployment incident.
