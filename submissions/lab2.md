@@ -328,8 +328,8 @@ f0485c0 Publish lec1
 #### What would happen if git gc had run between the bad reset and your recovery?
 In my case - nothing bad would happen. gc has timings, for example gc.reflogExpire. It determines, how
 many days reflog will keep the entries. After a specified amount of days, reflog will delete everything that
-is expired. I searched, and it appears git uses 90 days as a default value. In my case, i did everything in a
-several minutes, so there was no risk of git gc deleting anything.
+is expired. I searched, and it appears git uses 90 days as a default value. There is also a setting for
+unreachable objects, and they are deleted in 14 days. In my case - objects became unreachable, but i did everything in a several minutes, so there was no risk of git gc deleting anything.
 
 ## Task 2. Tagging and Rebasing
 ### Signed tag
@@ -457,7 +457,7 @@ $ git log --oneline --graph
 
 ### Merge or Rebase?
 I would use rebase if I'm working on a branch alone, since it modifies history to make it linear.
-While it's pretty and clean, it is appropriate to use when several people are working on a branch.
+While it's pretty and clean, it is not appropriate to use when several people are working on a branch.
 For example, in outputs above, it is clearly visible, that rebasing changed the SHAs.
 In case of several people working on a branch i would use merge, since it preserves history as it is and
 doesn't disrupt SHAs.
