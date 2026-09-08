@@ -158,13 +158,13 @@ Raw runtime evidence: [curl responses](evidence/lab1/http.md) and [server log](e
 
 ### SSH signing
 
-Signing is enabled for this repository using `gpg.format=ssh`, `commit.gpgsign=true`, `tag.gpgsign=true`, and the existing `~/.ssh/id_ed25519.pub` key. Local verification uses `.git/allowed_signers`; private key material is not included in this submission.
+Signing is enabled for this repository using `gpg.format=ssh`, `commit.gpgsign=true`, `tag.gpgsign=true`, and the existing `~/.ssh/id_ed25519_sonder314.pub` key. Local verification uses `.git/allowed_signers`; private key material is not included in this submission.
 
 The signed template commit was verified with `git log --show-signature -1`:
 
 ```text
-commit 0ce5837ababb9cfcd4c032404353c9755dd4a468
-Good "git" signature for usersamsung873@gmail.com with ED25519 key SHA256:HJ3GjAUvvTz8stL0wfExxm3SO3v6T0R9NtxtMBwlJi0
+commit 852c216ad052fe8a1b5d85887c8bee826fdcc49d
+Good "git" signature for usersamsung873@gmail.com with ED25519 key SHA256:RhLO1q1uCo2ao0SZqhu1c77Gq/mG6sUkLS/fdDMqXQA
 Author: Arina <usersamsung873@gmail.com>
 Date:   Tue Sep 8 13:24:03 2026 +0300
 
@@ -176,7 +176,13 @@ Date:   Tue Sep 8 13:24:03 2026 +0300
 
 Raw evidence: [signature.txt](evidence/lab1/signature.txt).
 
-**Pending GitHub verification:** ensure the public key is registered as both an Authentication Key and a Signing Key in the `sonder314` account; confirm SSH authentication, push the branches, and verify the commits on GitHub. Local signature verification alone does not prove a GitHub Verified badge.
+SSH authentication with the new key succeeded as `sonder314`, as confirmed by the student:
+
+```text
+Hi sonder314! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+**Pending GitHub verification:** ensure the new public key is also registered as a Signing Key in `sonder314`, push the branches, and verify the commits on GitHub. Local signature verification alone does not prove a GitHub Verified badge.
 
 **Pending screenshot:** save a real screenshot of the commit's Verified badge as `submissions/evidence/lab1/verified.png`, then embed it here.
 
@@ -186,7 +192,7 @@ Commit signatures bind a commit to a signing key and make changes to its signed 
 
 ## Task 2 — PR template and first pull request
 
-The required template is committed on local `main` at `0ce5837` and inherited by `feature/lab1`: [pull_request_template.md](../.github/pull_request_template.md). It contains Goal, Changes, Testing and Checklist sections.
+The required template is committed on local `main` at `852c216` and inherited by `feature/lab1`: [pull_request_template.md](../.github/pull_request_template.md). It contains Goal, Changes, Testing and Checklist sections.
 
 - [x] Template committed on local `main` with a valid SSH signature.
 - [ ] Template pushed to the fork's `main` before PR creation.
