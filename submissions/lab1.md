@@ -202,14 +202,14 @@ The required template is committed on local `main` at `0ce5837` and inherited by
 
 Starring repositories bookmarks useful tools and helps maintainers' projects gain visibility. Following developers makes it easier to discover their work, keep up with classmates' projects and identify opportunities to collaborate and learn.
 
-The actions below require verification in the `sonder314` account:
+The following actions were completed manually in the `sonder314` account, as confirmed by the student on 8 September 2026:
 
-- [ ] Star [inno-devops-labs/DevOps-Intro](https://github.com/inno-devops-labs/DevOps-Intro).
-- [ ] Star [simple-container-com/api](https://github.com/simple-container-com/api).
-- [ ] Follow [Cre-eD](https://github.com/Cre-eD).
-- [ ] Follow [Naghme98](https://github.com/Naghme98).
-- [ ] Follow [pierrepicaud](https://github.com/pierrepicaud).
-- [ ] Follow at least three classmates; record their actual profile links here.
+- [x] Star [inno-devops-labs/DevOps-Intro](https://github.com/inno-devops-labs/DevOps-Intro).
+- [x] Star [simple-container-com/api](https://github.com/simple-container-com/api).
+- [x] Follow [Cre-eD](https://github.com/Cre-eD).
+- [x] Follow [Naghme98](https://github.com/Naghme98).
+- [x] Follow [pierrepicaud](https://github.com/pierrepicaud).
+- [x] Follow at least three classmates (completed manually).
 
 ## Bonus — Branch protection and required signing
 
@@ -233,7 +233,7 @@ The [SEC's Knight Capital order](https://www.sec.gov/files/litigation/admin/2013
 - [x] Live curl evidence captured (4 seed notes → 5 after POST).
 - [ ] GitHub Verified screenshot included.
 - [ ] Published template and auto-population evidence included.
-- [ ] Stars and all six required follows confirmed.
+- [x] Stars and all six required follows confirmed by the student.
 - [ ] Bonus rules screenshot and genuine rejection output included.
 - [ ] Actual upstream PR URL recorded and PR checklist completed.
 - [ ] PR URL submitted through Moodle before the deadline.
