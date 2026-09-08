@@ -62,3 +62,5 @@ Signed commits help verify that a commit was created by the expected developer a
 
 - GitHub username: allniluv
 - Course repository: DevOps-Intro
+
+I starred the course repository and the `simple-container-com/api` repository, and followed the professor, TAs, and at least three classmates. Stars help recognize and support useful open-source projects, while following teammates helps with collaboration, team projects, and professional growth.
