@@ -3,7 +3,7 @@
 Student: Arina ([@sonder314](https://github.com/sonder314))  
 Repository: [sonder314/DevOps-Intro](https://github.com/sonder314/DevOps-Intro)  
 Branch: `feature/lab1`  
-Status: **Branches published and GitHub signatures verified; the unsigned-push test and upstream PR remain to be completed.**
+Status: **Upstream PR opened; final PR checklist and Moodle submission remain to be confirmed.**
 
 ## Task 1 — QuickNotes and SSH commit signing
 
@@ -199,12 +199,12 @@ I committed the required template on local `main` at `579f5c9` and included it i
 - [x] Template committed on local `main` with a valid SSH signature.
 - [x] Template pushed to the fork's `main` before PR creation.
 - [x] Template auto-population captured in a real screenshot.
-- [ ] PR opened from `sonder314:feature/lab1` to `inno-devops-labs:main`.
+- [x] I opened the submission PR in the course repository.
 - [ ] PR checklist completed and every contributed commit shows Verified.
 
-**PR URL:** not yet recorded; I still need to publish the PR.
+**PR URL:** [inno-devops-labs/DevOps-Intro#1506](https://github.com/inno-devops-labs/DevOps-Intro/pull/1506).
 
-I checked the PR creation form in my fork and confirmed that the Goal, Changes, Testing and Checklist sections appeared automatically. This demonstrates my fork's template; the final submission PR targets the course repository.
+I checked the PR creation form in my fork and confirmed that the Goal, Changes, Testing and Checklist sections appeared automatically. This demonstrates my fork's template. The upstream PR form did not automatically populate my fork's template because its base is the course repository; the description needs the same sections filled in manually.
 
 ![Automatically populated PR template in my fork](evidence/lab1/pr-template.png)
 
@@ -223,13 +223,29 @@ I completed the following actions using my `sonder314` account:
 
 ## Bonus — Branch protection and required signing
 
-**Status: branch protection configured; remote rejection test pending.**
+**Status: branch protection configured and unsigned push rejected.**
 
 I configured my fork's `main` to require signed commits, pull requests before merging and linear history. I also disabled bypassing the rules for administrators.
 
 ![Required signatures, PRs, linear history and administrator enforcement](evidence/lab1/branch-protection.png)
 
-**Rejection test still to run:** I need to attempt an unsigned push to protected `main` and record the exact server rejection, including the `remote: error:` lines.
+I created an unsigned empty commit with the same file tree as `origin/main` and attempted to push it to `main`. GitHub rejected the push:
+
+```text
+remote: error: GH006: Protected branch update failed for refs/heads/main.        
+remote: 
+remote: - Commits must have verified signatures.        
+remote:   Found 1 violation:        
+remote: 
+remote:   e3a3a4002a4ceebb070b644ff1760c2cf4174f6f        
+remote: 
+remote: - Changes must be made through a pull request.        
+To github.com:sonder314/DevOps-Intro.git
+ ! [remote rejected] e3a3a4002a4ceebb070b644ff1760c2cf4174f6f -> main (protected branch hook declined)
+error: failed to push some refs to 'github.com:sonder314/DevOps-Intro.git'
+```
+
+[Full rejection log](evidence/lab1/unsigned-push.txt). My local branches were unchanged, and commit signing remained enabled.
 
 ### Knight Capital reflection
 
@@ -244,6 +260,7 @@ The [SEC's Knight Capital order](https://www.sec.gov/files/litigation/admin/2013
 - [x] GitHub Verified screenshot included.
 - [x] Published template and auto-population evidence included.
 - [x] I completed the required stars and followed the professor, both TAs and at least three classmates.
-- [ ] Bonus rules screenshot and genuine rejection output included.
-- [ ] Actual upstream PR URL recorded and PR checklist completed.
+- [x] Bonus rules screenshot and genuine rejection output included.
+- [x] Actual upstream PR URL recorded.
+- [ ] Final PR checklist and newest commit Verified badge checked.
 - [ ] PR URL submitted through Moodle before the deadline.
