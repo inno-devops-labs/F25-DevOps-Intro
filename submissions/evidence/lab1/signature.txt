@@ -1,0 +1,8 @@
+commit 579f5c9cc6f9bb2accda8a57985c5706ec8e82f1
+Good "git" signature for usersamsung873@gmail.com with ED25519 key SHA256:RhLO1q1uCo2ao0SZqhu1c77Gq/mG6sUkLS/fdDMqXQA
+Author: Arina <uzersamsung873@gmail.com>
+Date:   Tue Sep 8 13:24:03 2026 +0300
+
+    docs: add PR template
+    
+    Signed-off-by: Arina <uzersamsung873@gmail.com>

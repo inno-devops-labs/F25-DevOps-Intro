@@ -1,0 +1,2 @@
+2026/09/08 13:27:04 quicknotes listening on 127.0.0.1:8080 (notes loaded: 4)
+2026/09/08 13:27:05 shutting down
