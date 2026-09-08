@@ -3,7 +3,7 @@
 Student: Arina ([@sonder314](https://github.com/sonder314))  
 Repository: [sonder314/DevOps-Intro](https://github.com/sonder314/DevOps-Intro)  
 Branch: `feature/lab1`  
-Status: **Branches published; GitHub verification screenshots, the upstream PR and bonus evidence are still pending.**
+Status: **Branches published and GitHub signatures verified; the unsigned-push test and upstream PR remain to be completed.**
 
 ## Task 1 — QuickNotes and SSH commit signing
 
@@ -184,9 +184,9 @@ Hi sonder314! You've successfully authenticated, but GitHub does not provide she
 
 I pushed `main` and `feature/lab1` to my fork successfully.
 
-**Still to complete:** I need to check the Verified badges on GitHub and confirm that my new public key is registered as a Signing Key. Local signature verification is already successful.
+I registered my public key for SSH signing and checked that all my published commits show Verified on GitHub.
 
-**Evidence still to add:** a screenshot of the Verified badge on my GitHub commit.
+![GitHub Verified signature for sonder314](evidence/lab1/verified.png)
 
 ### Why signing matters
 
@@ -198,13 +198,15 @@ I committed the required template on local `main` at `579f5c9` and included it i
 
 - [x] Template committed on local `main` with a valid SSH signature.
 - [x] Template pushed to the fork's `main` before PR creation.
-- [ ] Template auto-population captured in a real screenshot.
+- [x] Template auto-population captured in a real screenshot.
 - [ ] PR opened from `sonder314:feature/lab1` to `inno-devops-labs:main`.
 - [ ] PR checklist completed and every contributed commit shows Verified.
 
 **PR URL:** not yet recorded; I still need to publish the PR.
 
-**Template check:** I still need to capture the PR form showing the template sections. GitHub loads the template from the base repository's default branch, so publishing it on my fork does not install it in the upstream repository. See [GitHub's template documentation](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository).
+I checked the PR creation form in my fork and confirmed that the Goal, Changes, Testing and Checklist sections appeared automatically. This demonstrates my fork's template; the final submission PR targets the course repository.
+
+![Automatically populated PR template in my fork](evidence/lab1/pr-template.png)
 
 ## Task 3 — GitHub Community
 
@@ -221,11 +223,11 @@ I completed the following actions using my `sonder314` account:
 
 ## Bonus — Branch protection and required signing
 
-**Status: configuration and remote rejection evidence pending.**
+**Status: branch protection configured; remote rejection test pending.**
 
-I still need to configure my fork's `main` to require signed commits, pull requests before merging and linear history, with bypassing disabled for administrators.
+I configured my fork's `main` to require signed commits, pull requests before merging and linear history. I also disabled bypassing the rules for administrators.
 
-**Evidence still to add:** a screenshot of my enabled branch protection rules.
+![Required signatures, PRs, linear history and administrator enforcement](evidence/lab1/branch-protection.png)
 
 **Rejection test still to run:** I need to attempt an unsigned push to protected `main` and record the exact server rejection, including the `remote: error:` lines.
 
@@ -239,8 +241,8 @@ The [SEC's Knight Capital order](https://www.sec.gov/files/litigation/admin/2013
 - [x] Local SSH signing is configured and verified.
 - [x] Template exists on local `main`.
 - [x] Live curl evidence captured (4 seed notes → 5 after POST).
-- [ ] GitHub Verified screenshot included.
-- [ ] Published template and auto-population evidence included.
+- [x] GitHub Verified screenshot included.
+- [x] Published template and auto-population evidence included.
 - [x] I completed the required stars and followed the professor, both TAs and at least three classmates.
 - [ ] Bonus rules screenshot and genuine rejection output included.
 - [ ] Actual upstream PR URL recorded and PR checklist completed.
