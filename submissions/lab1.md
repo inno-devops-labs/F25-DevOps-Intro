@@ -152,7 +152,9 @@ The repository's existing tests passed with `cd app && go test ./...`:
 ok  	quicknotes	0.011s
 ```
 
-These tests exercise the handlers and store but do not replace the required live HTTP checks above.
+These tests exercise the handlers and store; the live HTTP checks above separately confirm the running application.
+
+Raw runtime evidence: [curl responses](evidence/lab1/http.md) and [server log](evidence/lab1/server.txt).
 
 ### SSH signing
 
