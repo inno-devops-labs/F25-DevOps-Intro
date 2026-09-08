@@ -3,13 +3,13 @@
 Student: Arina ([@sonder314](https://github.com/sonder314))  
 Repository: [sonder314/DevOps-Intro](https://github.com/sonder314/DevOps-Intro)  
 Branch: `feature/lab1`  
-Status: **Prepared locally; outstanding evidence is explicitly marked below.**
+Status: **Branches published; GitHub verification screenshots, the upstream PR and bonus evidence are still pending.**
 
 ## Task 1 — QuickNotes and SSH commit signing
 
 ### Environment
 
-Verified locally on 8 September 2026:
+I checked my local tool versions on 8 September 2026:
 
 ```text
 git version 2.53.0
@@ -17,14 +17,14 @@ go version go1.26.7 linux/amd64
 OpenSSH_10.2p1 Ubuntu-2ubuntu3.5
 ```
 
-Go is installed in the repository-local `.goenv/toolchain`, with separate build and module caches. Activate it from the repository root using `source .goenv/activate`, then run `cd app && go run .`. The local environment is excluded from version control.
+I use Go from the repository-local `.goenv/toolchain`, with separate build and module caches. I activate it with `source .goenv/activate` from the repository root. For the HTTP checks, I ran QuickNotes with a separate data file initialized from `app/seed.json`, so my existing application data was preserved.
 
 ### QuickNotes endpoint evidence
 
 <!-- BEGIN HTTP EVIDENCE -->
-Captured at 2026-09-08T13:27:05+0300.
+I captured the following responses at 2026-09-08T13:27:05+0300.
 
-Fresh isolated data: four seed notes; POST returned HTTP 201; five notes afterwards.
+I checked that the application started with four seed notes, returned HTTP 201 when I created a note, and contained five notes afterwards.
 
 ### `GET /health` (HTTP 200)
 
@@ -146,7 +146,7 @@ curl -s http://localhost:8080/health | python3 -m json.tool
 
 ### Tests
 
-The repository's existing tests passed with `cd app && go test ./...`:
+I checked the application with its existing tests (`cd app && go test ./...`):
 
 ```text
 ok  	quicknotes	0.011s
@@ -158,78 +158,80 @@ Raw runtime evidence: [curl responses](evidence/lab1/http.md) and [server log](e
 
 ### SSH signing
 
-Signing is enabled for this repository using `gpg.format=ssh`, `commit.gpgsign=true`, `tag.gpgsign=true`, and the existing `~/.ssh/id_ed25519_sonder314.pub` key. Local verification uses `.git/allowed_signers`; private key material is not included in this submission.
+I configured SSH signing for this repository using `gpg.format=ssh`, `commit.gpgsign=true`, `tag.gpgsign=true`, and the existing `~/.ssh/id_ed25519_sonder314.pub` key. Local verification uses `.git/allowed_signers`; private key material is not included in this submission.
 
-The signed template commit was verified with `git log --show-signature -1`:
+I verified the template commit on `main` with `git log --show-signature -1`:
 
 ```text
-commit 852c216ad052fe8a1b5d85887c8bee826fdcc49d
-Good "git" signature for usersamsung873@gmail.com with ED25519 key SHA256:RhLO1q1uCo2ao0SZqhu1c77Gq/mG6sUkLS/fdDMqXQA
-Author: Arina <usersamsung873@gmail.com>
+commit 579f5c9cc6f9bb2accda8a57985c5706ec8e82f1
+Good "git" signature for uzersamsung873@gmail.com with ED25519 key SHA256:RhLO1q1uCo2ao0SZqhu1c77Gq/mG6sUkLS/fdDMqXQA
+Author: Arina <uzersamsung873@gmail.com>
 Date:   Tue Sep 8 13:24:03 2026 +0300
 
     docs: add PR template
     
-    Signed-off-by: Arina <usersamsung873@gmail.com>
+    Signed-off-by: Arina <uzersamsung873@gmail.com>
 
 ```
 
 Raw evidence: [signature.txt](evidence/lab1/signature.txt).
 
-SSH authentication with the new key succeeded as `sonder314`, as confirmed by the student:
+I authenticated to GitHub as `sonder314` using my new SSH key:
 
 ```text
 Hi sonder314! You've successfully authenticated, but GitHub does not provide shell access.
 ```
 
-**Pending GitHub verification:** ensure the new public key is also registered as a Signing Key in `sonder314`, push the branches, and verify the commits on GitHub. Local signature verification alone does not prove a GitHub Verified badge.
+I pushed `main` and `feature/lab1` to my fork successfully.
 
-**Pending screenshot:** save a real screenshot of the commit's Verified badge as `submissions/evidence/lab1/verified.png`, then embed it here.
+**Still to complete:** I need to check the Verified badges on GitHub and confirm that my new public key is registered as a Signing Key. Local signature verification is already successful.
+
+**Evidence still to add:** a screenshot of the Verified badge on my GitHub commit.
 
 ### Why signing matters
 
-Commit signatures bind a commit to a signing key and make changes to its signed contents detectable, supporting attribution and audit trails. The [March 2024 xz-utils backdoor disclosure](https://openwall.com/lists/oss-security/2024/03/29/4) shows why supply-chain trust needs more than a familiar maintainer identity: an authorized contributor or compromised key can still deliver malicious code. Signing therefore complements code review, reproducible builds and testing; it does not certify that code is safe.
+I use commit signatures to bind my commits to my signing key and make changes to their signed contents detectable. The [March 2024 xz-utils backdoor disclosure](https://openwall.com/lists/oss-security/2024/03/29/4) shows why supply-chain trust needs more than a familiar maintainer identity: an authorized contributor or compromised key can still deliver malicious code. Signing therefore complements code review, reproducible builds and testing; it does not certify that code is safe.
 
 ## Task 2 — PR template and first pull request
 
-The required template is committed on local `main` at `852c216` and inherited by `feature/lab1`: [pull_request_template.md](../.github/pull_request_template.md). It contains Goal, Changes, Testing and Checklist sections.
+I committed the required template on local `main` at `579f5c9` and included it in `feature/lab1`: [pull_request_template.md](../.github/pull_request_template.md). It contains Goal, Changes, Testing and Checklist sections.
 
 - [x] Template committed on local `main` with a valid SSH signature.
-- [ ] Template pushed to the fork's `main` before PR creation.
+- [x] Template pushed to the fork's `main` before PR creation.
 - [ ] Template auto-population captured in a real screenshot.
 - [ ] PR opened from `sonder314:feature/lab1` to `inno-devops-labs:main`.
 - [ ] PR checklist completed and every contributed commit shows Verified.
 
-**Pending PR URL:** add the actual upstream PR link after publication.
+**PR URL:** not yet recorded; I still need to publish the PR.
 
-**Template scope:** GitHub loads templates from the base repository's default branch. A template on the fork's `main` can be demonstrated in the fork's PR creation form; it does not by itself install a template in the course repository. If the upstream form is empty, use the same sections manually and document that distinction rather than claiming automatic population. See [GitHub's template documentation](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository).
+**Template check:** I still need to capture the PR form showing the template sections. GitHub loads the template from the base repository's default branch, so publishing it on my fork does not install it in the upstream repository. See [GitHub's template documentation](https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/creating-a-pull-request-template-for-your-repository).
 
 ## Task 3 — GitHub Community
 
-Starring repositories bookmarks useful tools and helps maintainers' projects gain visibility. Following developers makes it easier to discover their work, keep up with classmates' projects and identify opportunities to collaborate and learn.
+I star repositories to bookmark useful tools and help the projects gain visibility. I follow developers to keep up with my classmates' work, discover projects and find opportunities to collaborate and learn.
 
-The following actions were completed manually in the `sonder314` account, as confirmed by the student on 8 September 2026:
+I completed the following actions using my `sonder314` account:
 
-- [x] Star [inno-devops-labs/DevOps-Intro](https://github.com/inno-devops-labs/DevOps-Intro).
-- [x] Star [simple-container-com/api](https://github.com/simple-container-com/api).
-- [x] Follow [Cre-eD](https://github.com/Cre-eD).
-- [x] Follow [Naghme98](https://github.com/Naghme98).
-- [x] Follow [pierrepicaud](https://github.com/pierrepicaud).
-- [x] Follow at least three classmates (completed manually).
+- [x] I starred [inno-devops-labs/DevOps-Intro](https://github.com/inno-devops-labs/DevOps-Intro).
+- [x] I starred [simple-container-com/api](https://github.com/simple-container-com/api).
+- [x] I followed [Cre-eD](https://github.com/Cre-eD).
+- [x] I followed [Naghme98](https://github.com/Naghme98).
+- [x] I followed [pierrepicaud](https://github.com/pierrepicaud).
+- [x] I followed at least three classmates.
 
 ## Bonus — Branch protection and required signing
 
 **Status: configuration and remote rejection evidence pending.**
 
-Required policy on the fork's `main`: require signed commits, require a pull request before merging, and require linear history. Enforce the policy for administrators as well so that an owner cannot bypass the rejection test.
+I still need to configure my fork's `main` to require signed commits, pull requests before merging and linear history, with bypassing disabled for administrators.
 
-**Pending screenshot:** capture the actual enabled rules as `submissions/evidence/lab1/branch-protection.png` and embed it here.
+**Evidence still to add:** a screenshot of my enabled branch protection rules.
 
-**Pending rejection evidence:** record the exact output of a real unsigned push to protected `main`, including the `remote: error:` lines. A local signing failure, DNS failure or authentication error does not demonstrate branch protection.
+**Rejection test still to run:** I need to attempt an unsigned push to protected `main` and record the exact server rejection, including the `remote: error:` lines.
 
 ### Knight Capital reflection
 
-The [SEC's Knight Capital order](https://www.sec.gov/files/litigation/admin/2013/34-70694.pdf) describes an inconsistent deployment in which one of eight servers did not receive the new code. Requiring reviewed pull requests and signed commits on a production deployment branch could have improved traceability and created a review checkpoint before deployment. Linear history would have made the sequence of approved changes easier to audit, but neither signatures nor branch protection would have ensured that every server received the same artifact. Automated deployment verification, staged rollouts, monitoring and a tested rollback mechanism would still have been necessary to reduce the risk of a similar incident.
+The [SEC's Knight Capital order](https://www.sec.gov/files/litigation/admin/2013/34-70694.pdf) describes an inconsistent deployment in which one of eight servers did not receive the new code. I think requiring reviewed pull requests and signed commits on the production deployment branch could have improved traceability and created a review checkpoint before deployment. Linear history would have made the sequence of approved changes easier to audit, but neither signatures nor branch protection would have ensured that every server received the same artifact. Automated deployment verification, staged rollouts, monitoring and a tested rollback mechanism would still have been necessary to reduce the risk of a similar incident.
 
 ## Submission readiness
 
@@ -239,7 +241,7 @@ The [SEC's Knight Capital order](https://www.sec.gov/files/litigation/admin/2013
 - [x] Live curl evidence captured (4 seed notes → 5 after POST).
 - [ ] GitHub Verified screenshot included.
 - [ ] Published template and auto-population evidence included.
-- [x] Stars and all six required follows confirmed by the student.
+- [x] I completed the required stars and followed the professor, both TAs and at least three classmates.
 - [ ] Bonus rules screenshot and genuine rejection output included.
 - [ ] Actual upstream PR URL recorded and PR checklist completed.
 - [ ] PR URL submitted through Moodle before the deadline.
