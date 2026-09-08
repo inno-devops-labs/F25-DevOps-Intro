@@ -3,7 +3,7 @@
 Student: Arina ([@sonder314](https://github.com/sonder314))  
 Repository: [sonder314/DevOps-Intro](https://github.com/sonder314/DevOps-Intro)  
 Branch: `feature/lab1`  
-Status: **Upstream PR opened; final PR checklist and Moodle submission remain to be confirmed.**
+Status: **Completed: I checked the upstream PR and submitted its URL through Moodle.**
 
 ## Task 1 — QuickNotes and SSH commit signing
 
@@ -200,7 +200,7 @@ I committed the required template on local `main` at `579f5c9` and included it i
 - [x] Template pushed to the fork's `main` before PR creation.
 - [x] Template auto-population captured in a real screenshot.
 - [x] I opened the submission PR in the course repository.
-- [ ] PR checklist completed and every contributed commit shows Verified.
+- [x] PR checklist completed and every contributed commit shows Verified.
 
 **PR URL:** [inno-devops-labs/DevOps-Intro#1506](https://github.com/inno-devops-labs/DevOps-Intro/pull/1506).
 
@@ -262,5 +262,5 @@ The [SEC's Knight Capital order](https://www.sec.gov/files/litigation/admin/2013
 - [x] I completed the required stars and followed the professor, both TAs and at least three classmates.
 - [x] Bonus rules screenshot and genuine rejection output included.
 - [x] Actual upstream PR URL recorded.
-- [ ] Final PR checklist and newest commit Verified badge checked.
-- [ ] PR URL submitted through Moodle before the deadline.
+- [x] Final PR checklist and newest commit Verified badge checked.
+- [x] PR URL submitted through Moodle.
