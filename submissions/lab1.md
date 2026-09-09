@@ -73,11 +73,12 @@ Template sections: Goal, Changes, Testing, Checklist (title clarity, signed comm
 
 ### Lab PR
 
-PR will be opened after this submission update:
+Opened: [`Telman3000:feature/lab1` -> `inno-devops-labs/DevOps-Intro:main`](https://github.com/inno-devops-labs/DevOps-Intro/pull/1515)
 
-`Telman3000:feature/lab1` → `inno-devops-labs/DevOps-Intro:main`
+- PR URL: https://github.com/inno-devops-labs/DevOps-Intro/pull/1515
+- Description filled with Goal / Changes / Testing / Checklist (template sections; filled manually because cross-fork PRs load the base-repo template)
 
-*(After opening: paste PR URL here and confirm the description came from the template.)*
+![PR create form with template sections filled](screenshots/pr-template-filled.png)
 
 ---
 
