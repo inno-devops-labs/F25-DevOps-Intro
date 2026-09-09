@@ -56,3 +56,7 @@ Date:   Wed Sep 9 17:54:26 2026 +0300
 
 ## Summary
 Signed commits help ensure that commit was created by the intended developer and not by someone else. This is important for ensuring the seccurity of the software supply chain  as trusted repositories can become targets for attackers/hackers. The xz-utils case demonstrated how dangerous compromised or malicious changes can be in widely used open‑source software
+
+## GitHub Community
+
+Adding repositories to favorites helps preserve useful open‑source projects and also increases their visibility in the community. Subscribing to developers allows me to stay informed about their work, learn about new projects, and build connections for future collaboration
