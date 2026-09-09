@@ -52,9 +52,70 @@ Date:   Wed Sep 9 23:24:04 2026 +0300
 **Verified badge on GitHub:**
 https://github.com/Telman3000/DevOps-Intro/commit/e9262733e3bcc6994989db44caf0688c5b5546e2
 
-<img width="2220" height="1433" alt="image" src="https://github.com/user-attachments/assets/06766690-5562-46e0-a064-61c53aba8e26" />
-
+<img width="2220" height="1433" alt="Verified badge" src="https://github.com/user-attachments/assets/06766690-5562-46e0-a064-61c53aba8e26" />
 
 ### Why signed commits matter
 
 Anyone can set an arbitrary `user.name` / `user.email` in Git, so unsigned history is unauthenticated. The March 2024 xz-utils incident showed how a long-running social-engineering attack on a maintainer nearly planted a backdoor in a critical Linux dependency used by SSH. Signed commits (SSH signing since Git 2.34) cryptographically bind a commit to a key you control, so reviewers can trust provenance instead of only trusting the displayed author string.
+
+---
+
+## Task 2 — PR template + first PR
+
+### PR template on `main`
+
+Added `.github/pull_request_template.md` to the fork default branch (`main`) so new PRs auto-populate structured sections.
+
+- File: https://github.com/Telman3000/DevOps-Intro/blob/main/.github/pull_request_template.md
+- Commit: `f5d463e` — `docs: add PR template` (signed)
+
+Template sections: Goal, Changes, Testing, Checklist (title clarity, signed commits, `submissions/labN.md` updated).
+
+### Lab PR
+
+PR will be opened after this submission update:
+
+`Telman3000:feature/lab1` → `inno-devops-labs/DevOps-Intro:main`
+
+*(After opening: paste PR URL here and confirm the description came from the template.)*
+
+---
+
+## Task 3 — GitHub community engagement
+
+### Stars
+
+- Starred course repo `inno-devops-labs/DevOps-Intro`
+- Starred `simple-container-com/api`
+
+![Starred course repository](screenshots/star-course-repo.png)
+
+![Starred simple-container-com/api](screenshots/star-simple-container-api.png)
+
+### Follows — professor and TAs
+
+- [@Cre-eD](https://github.com/Cre-eD) (professor)
+- [@Naghme98](https://github.com/Naghme98) (TA)
+- [@pierre-picaud](https://github.com/pierre-picaud) (TA)
+
+![Follow Cre-eD](screenshots/follow-Cre-eD.png)
+
+![Follow Naghme98](screenshots/follow-Naghme98.png)
+
+![Follow pierre-picaud](screenshots/follow-pierre-picaud.png)
+
+### Follows — classmates
+
+- [@Nik-ari-ai](https://github.com/Nik-ari-ai)
+- [@NikolayTaran](https://github.com/NikolayTaran)
+- [@uSs3ewa](https://github.com/uSs3ewa)
+
+![Follow Nik-ari-ai](screenshots/follow-Nik-ari-ai.png)
+
+![Follow NikolayTaran](screenshots/follow-NikolayTaran.png)
+
+![Follow uSs3ewa](screenshots/follow-uSs3ewa.png)
+
+### GitHub Community
+
+Starring repositories bookmarks useful projects, signals support to maintainers, and helps others discover trusted tools. Following classmates, TAs, and the professor keeps you aware of shared work and builds the professional network that collaborative DevOps practice depends on.
