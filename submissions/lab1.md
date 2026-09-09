@@ -120,3 +120,46 @@ Opened: [`Telman3000:feature/lab1` -> `inno-devops-labs/DevOps-Intro:main`](http
 ### GitHub Community
 
 Starring repositories bookmarks useful projects, signals support to maintainers, and helps others discover trusted tools. Following classmates, TAs, and the professor keeps you aware of shared work and builds the professional network that collaborative DevOps practice depends on.
+
+---
+
+## Bonus — Branch protection and required signed commits
+
+### B.1 Branch protection ruleset on `main`
+
+Configured an Active ruleset named `main protection` targeting `main` with:
+
+- Require linear history
+- Require signed commits
+- Require a pull request before merging
+- (also) Restrict deletions, Block force pushes
+
+![Active ruleset targeting main](screenshots/branch-ruleset-active.png)
+
+![Required rules: linear history, signed commits, PR before merge](screenshots/branch-rules-required.png)
+
+### B.2 Unsigned push rejection
+
+Attempted an unsigned empty commit on `main` and pushed. Remote rejected it:
+
+```text
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: Review all repository rules at https://github.com/Telman3000/DevOps-Intro/rules?ref=refs%2Fheads%2Fmain
+remote:
+remote: - Changes must be made through a pull request.
+remote:
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+remote:
+remote:   3615eb3722a91c7fee0374e090f601ea65b4e268
+remote:
+To github.com:Telman3000/DevOps-Intro.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'github.com:Telman3000/DevOps-Intro.git'
+```
+
+Local unsigned commit was discarded with `git reset --hard origin/main`.
+
+### B.3 Reflection — Knight Capital
+
+On August 1, 2012, Knight Capital manually deployed order-routing software to production; one of eight servers kept stale code that reactivated a dead feature flag and flooded the market with bad orders, losing about $440 million in 45 minutes. Branch protection that requires pull requests would have forced the change through review instead of an ad-hoc push to the production-equivalent branch. Required signed commits would have made it harder for an unverified or impersonated change to land on that branch unnoticed. Linear history would have kept the deploy path clearer to audit after the fact — exactly the kind of guardrail that turns a dangerous manual deploy day into a controlled, reviewable release.
