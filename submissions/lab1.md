@@ -60,3 +60,29 @@ Signed commits help ensure that commit was created by the intended developer and
 ## GitHub Community
 
 Adding repositories to favorites helps preserve useful open‑source projects and also increases their visibility in the community. Subscribing to developers allows me to stay informed about their work, learn about new projects, and build connections for future collaboration
+
+## Bonus Task — Branch Protection
+
+### Branch protection rules
+
+![Branch protection rules](images/Pasted.png)
+
+The `main` branch is protected with:
+- Require a pull request before merging
+- Require signed commits
+- Require linear history
+
+### Unsigned push rejection
+
+```text
+remote: error: GH006: Protected branch update failed for refs/heads/main.
+remote:
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+remote:
+remote: - Changes must be made through a pull request.
+To github.com:Kriss221/DevOps-Intro.git
+ ! [remote rejected] main -> main (protected branch hook declined)
+error: failed to push some refs to 'github.com:Kriss221/DevOps-Intro.git'
+
+If Knight Capital used branch protection and required signing commits in the deployment working branch, direct unedited changes could be blocked before they reach the production environment. Requiring pull requests would add a review stage, and signed commits would increase accountability and traceability. These measures could reduce the risk of deploying unintended or unverified changes. They would not guarantee that all deployment errors would be prevented, but they would significantly complicate the introduction of unsafe direct changes.
