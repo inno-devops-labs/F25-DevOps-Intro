@@ -52,7 +52,8 @@ Date:   Wed Sep 9 23:24:04 2026 +0300
 **Verified badge on GitHub:**
 https://github.com/Telman3000/DevOps-Intro/commit/e9262733e3bcc6994989db44caf0688c5b5546e2
 
-*(Paste a screenshot of the green Verified badge here.)*
+<img width="2220" height="1433" alt="image" src="https://github.com/user-attachments/assets/06766690-5562-46e0-a064-61c53aba8e26" />
+
 
 ### Why signed commits matter
 
