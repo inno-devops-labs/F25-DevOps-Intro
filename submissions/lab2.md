@@ -84,3 +84,24 @@ The branch was pushed using:
 git push --force-with-lease origin feature/lab2
 
 The rebase approach keeps the project history linear, while a merge preserves the original branch structure and creates a merge commit. Rebase can make history easier to read, but it rewrites commit history, so force-with-lease is needed when pushing a rebased branch.
+
+## Bonus — Git bisect
+
+The optional bisect task was completed on the `bug/bisect-me` fixture.
+
+### Bisect log
+
+git bisect start
+# bad: [f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493] docs(app): mention go test invocation
+git bisect bad f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493
+# good: [0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7] chore(app): document versioning scheme (bisect fixture baseline)
+git bisect good 0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7
+# bad: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+git bisect bad f285ede8611e55ac0a7d01100891c0cc775e0709
+# good: [cb89bb9ee2ee5010b166061447eaca3ae0da2378] docs(store): comment the load() decode step
+git bisect good cb89bb9ee2ee5010b166061447eaca3ae0da2378
+# first bad commit: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+
+### Result
+
+The first bad commit was f285ede8611e55ac0a7d01100891c0cc775e0709, with the message "refactor(store): simplify nextID restoration in load()". At this commit, `go test ./...` failed because `nextID` was not restored correctly: got 1, want 2. The next tested commit, cb89bb9ee2ee5010b166061447eaca3ae0da2378, passed both `go test ./...` and `go build ./...`, confirming the boundary between good and bad commits. Git bisect uses binary search, so the number of commits that need to be tested is reduced approximately by half at each step, requiring about log2(N) steps for N candidate commits.
