@@ -73,3 +73,9 @@ Date:   Thu Sep 10 21:59:32 2026 +0300
 In March 2024, someone using the name "Jia Tan" spent about two years building trust as a maintainer of xz-utils, a compression tool used in most Linux systems. They quietly added a hidden backdoor that could have let attackers skip SSH login checks on huge numbers of servers. It was only found by chance, when a developer noticed logins were running a little slower than normal — not because anyone reviewing the code caught it. Signed commits would not have stopped a trusted maintainer from adding bad code, but they do prove who actually made each commit, which makes it much harder for an attacker to fake being someone else or hide behind a false identity.
 
 ![Verified badge](verified-badge.png)
+
+## Task 3 — GitHub Community Engagement
+
+Starred `inno-devops-labs/DevOps-Intro` and `simple-container-com/api`. Followed the professor (@Cre-eD), both TAs (@Naghme98, @pierrepicaud), and 3 classmates.
+
+Starring matters in open source because it's how people bookmark and signal interest in a project — it gives maintainers a rough read on how many people care about what they're building, and it helps other developers discover tools that are actually being used rather than sitting unnoticed. Following other developers matters for team projects and professional growth because it keeps you aware of what teammates and peers are actually working on, makes it easier to find collaborators for future projects, and builds a visible professional network beyond just the people in your immediate team.
