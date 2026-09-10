@@ -113,3 +113,5 @@ main
 
 **Interpretation:** `.git/` contains Git's repository metadata, references, logs, and object database. `HEAD` points to the current `feature/lab1` branch, and the `objects` directory stores Git objects addressed by SHA.
 
+## Task 1.3
+
