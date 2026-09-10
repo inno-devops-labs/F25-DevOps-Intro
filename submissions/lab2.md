@@ -2,6 +2,8 @@ important work
 more important work
 
 ### 1
+
+```console
 (.venv) kriss@kabanchik:~/VSProjects/DevOps-Intro$ git rev-parse HEAD
 c9e87e05b2f60878c9f9337b18b4a6e43033fd0b
 (.venv) kriss@kabanchik:~/VSProjects/DevOps-Intro$ git cat-file -t HEAD
@@ -199,6 +201,7 @@ feature  main
 (.venv) kriss@kabanchik:~/VSProjects/DevOps-Intro$ find .git/objects -type f | wc -l
 55
 (.venv) kriss@kabanchik:~/VSProjects/DevOps-Intro$
+```
 
 ### 1.2 Git internal structure
 
@@ -237,6 +240,7 @@ git bisect bad f285ede8611e55ac0a7d01100891c0cc775e0709
 # good: [cb89bb9ee2ee5010b166061447eaca3ae0da2378] docs(store): comment the load() decode step
 git bisect good cb89bb9ee2ee5010b166061447eaca3ae0da2378
 # first bad commit: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+```
 
 The first bad commit was:
 
@@ -252,3 +256,4 @@ Git bisect is efficient because it uses binary search instead of checking every 
 
 ```bash
 git switch feature/lab2
+```
