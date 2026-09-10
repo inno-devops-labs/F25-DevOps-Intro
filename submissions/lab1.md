@@ -98,7 +98,7 @@ https://github.com/NikolayTaran/DevOps-Intro/blob/main/.github/pull_request_temp
 
 Pull request to the course repository:
 
-https://github.com/inno-dev-ops-labs/DevOps-Intro/pull/1516
+https://github.com/inno-devops-labs/DevOps-Intro/pull/1516
 
 The PR description uses the template sections, with all checklist items filled:
 
@@ -110,7 +110,7 @@ The PR description uses the template sections, with all checklist items filled:
 
 Starred:
 
-- [inno-dev-ops-labs/DevOps-Intro](https://github.com/inno-dev-ops-labs/DevOps-Intro) — the course repository
+- [inno-devops-labs/DevOps-Intro](https://github.com/inno-devops-labs/DevOps-Intro) — the course repository
 - [simple-container-com/api](https://github.com/simple-container-com/api) — a promising open-source container management tool
 
 Following:
@@ -141,16 +141,25 @@ $ git -c commit.gpgsign=false commit -s --allow-empty -m "test: unsigned commit 
 $ git push origin main
 ```
 
-Your branch is up to date with 'origin/main'.
-[main ca107cd] test: unsigned commit (should fail)
+```bash
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 226 bytes | 226.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: Review all repository rules at https://github.com/NikolayTaran/DevOps-Intro/rules?ref=refs%2Fheads%2Fmain
+remote: 
+remote: - Changes must be made through a pull request.
+remote: 
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+remote: 
+remote:   8f5d4dc4d018a29582c85ae7a279503cc62aa124
+remote: 
 To github.com:NikolayTaran/DevOps-Intro.git
- ! [rejected]        main -> main (fetch first)
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
 error: failed to push some refs to 'github.com:NikolayTaran/DevOps-Intro.git'
-hint: Updates were rejected because the remote contains work that you do not
-hint: have locally. This is usually caused by another repository pushing to
-hint: the same ref. If you want to integrate the remote changes, use
-hint: 'git pull' before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
 
 ### Reflection: Knight Capital with branch protection
 
