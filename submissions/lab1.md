@@ -105,3 +105,32 @@ As for me - a lot of start means that other coders already used project and foun
 
 ## How following developers helps in team projects and professional growth
 As for me, I follow person to be noticed of his new projects or to find him easily to go back to his profile and contact him. Of cource it is important to growth -- if I can join his team in the future, or call him to hackathon.
+
+
+## Branch Protection & Required Signed Commits
+![Screenshoted unverified signatures.](image2.png)
+
+PS C:\Users\tihon\ui-cources\DevOps-Intro> git push origin              
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 231 bytes | 115.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: Review all repository rules at https://github.com/tikhonmakeev/DevOps-Intro/rules?ref=refs%2Fheads%2Fmain
+remote: 
+remote: - Changes must be made through a pull request.
+remote: 
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+remote: 
+remote:   f0ce362543087fd58d68f479a6cbd65bd0d7c26b
+remote: 
+To github.com:tikhonmakeev/DevOps-Intro.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'github.com:tikhonmakeev/DevOps-Intro.git'
+
+
+## what would Knight Capital's deploy day have looked like with branch protection + required signing on the prod deploy branch?
+As I remember, in case of Knight Capital the problem was in deploy runbook and human factor when manually update code on servers -- I`m not sure the issue was in unverified code or signing commits. 
+
+But I can say, that if rules were fine -- feature that was going to be released, was reviewed in PR before it has been merged to main. Also I wish they sign commits -- it is important for security reasons -- no backdoor in code, that maybe somebody suggested to developer on Stack Overflow.
