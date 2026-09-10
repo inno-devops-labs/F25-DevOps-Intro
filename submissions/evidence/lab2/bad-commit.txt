@@ -1,0 +1,12 @@
+commit f285ede8611e55ac0a7d01100891c0cc775e0709
+Author:     Dmitrii Creed <creeed22@gmail.com>
+AuthorDate: Fri Jun 5 13:36:56 2026 +0400
+Commit:     Dmitrii Creed <creeed22@gmail.com>
+CommitDate: Fri Jun 5 13:36:56 2026 +0400
+
+    refactor(store): simplify nextID restoration in load()
+
+    Signed-off-by: Dmitrii Creed <creeed22@gmail.com>
+
+ app/store.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)

@@ -1,0 +1,103 @@
+$ git rev-parse HEAD
+579f5c9cc6f9bb2accda8a57985c5706ec8e82f1
+
+$ git cat-file -t HEAD
+commit
+
+$ git cat-file -p HEAD
+tree 4e8941f4762188e39dde75dbbc42c9b8b0a2f920
+parent 9f41b7deb32343a831b5e47c61533fbc7c0ce67d
+author Arina <uzersamsung873@gmail.com> 1788863043 +0300
+committer Arina <uzersamsung873@gmail.com> 1788865002 +0300
+gpgsig -----BEGIN SSH SIGNATURE-----
+ U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgPfrLDWS/4N3gsZoccOTj1fA1nu
+ e4UhooWZgBcw0azDkAAAADZ2l0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5
+ AAAAQH78vyptABIQzZiAXQfVuLuwqsFga0NbLC8C0UfBlTCm9ZlozfyoiDTLyyMUh/Kux6
+ TaFSjakpolxbmJqxCf2Qc=
+ -----END SSH SIGNATURE-----
+
+docs: add PR template
+
+Signed-off-by: Arina <uzersamsung873@gmail.com>
+
+$ git rev-parse HEAD^{tree}
+4e8941f4762188e39dde75dbbc42c9b8b0a2f920
+
+$ git cat-file -p 4e8941f4762188e39dde75dbbc42c9b8b0a2f920
+040000 tree 1d07791eee3c3dd0955a02402b05b3a357816d8d	.github
+100644 blob 1c0a1e94b7bbdd951f456cda51af6b8484cc3cee	.gitignore
+100644 blob d10c04c6e7e0014f4fe883599c11747c15012d4e	README.md
+040000 tree 7d0898a908e274ea809722844cdbd836f3b1c05a	app
+040000 tree f4f047dd07b128eda5f899dfdaaf193f0291eaa2	labs
+040000 tree c0ac2d55cf4335df659b347df3d19d0594a06b6c	lectures
+
+$ git rev-parse HEAD:.gitignore
+1c0a1e94b7bbdd951f456cda51af6b8484cc3cee
+
+$ git cat-file -t 1c0a1e94b7bbdd951f456cda51af6b8484cc3cee
+blob
+
+$ git cat-file -p 1c0a1e94b7bbdd951f456cda51af6b8484cc3cee
+# ⚠️  KEEP THIS FILE MINIMAL.
+#
+# This .gitignore is inherited by every student fork. Anything listed here
+# is something a student CANNOT `git add` without `-f`. So this file must
+# ONLY contain:
+#   (a) instructor-only paths (refs/), and
+#   (b) machine-generated junk that NOBODY should ever commit.
+#
+# Do NOT add lab DELIVERABLES here (scan reports, SBOMs, go.sum, k8s
+# manifests, CI workflows, Dockerfiles, playbooks, dashboards, …). Students
+# are told to commit those in their submission PRs — ignoring them upstream
+# silently breaks the lab. When in doubt, leave it OUT of this file.
+
+# ── Instructor-only ─────────────────────────────────────────────
+# Reference submissions (dry-run worked examples). Never pushed upstream;
+# students never see these. This is the one path that is intentionally hidden.
+refs/
+
+# ── Machine-generated junk (no one commits these) ───────────────
+# Compiled binaries / local runtime state
+app/quicknotes
+app/data/
+/quicknotes
+*.exe
+
+# Vagrant runtime state (Lab 5) — the Vagrantfile IS committed; .vagrant/ is not
+.vagrant/
+
+# Nix build symlinks (Lab 11) — flake.nix + flake.lock ARE committed; result is not
+result
+result-*
+
+# Terraform state — MUST never be committed (can contain secrets)
+*.tfstate
+*.tfstate.backup
+.terraform/
+
+# Python virtualenvs / caches
+.venv/
+__pycache__/
+*.pyc
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Local agent config (not part of the course)
+.claude/
+
+# NOTE: deliberately NOT ignored, because students commit them as lab evidence:
+#   submissions/labN.md        (lab reports)
+#   .github/workflows/*.yml    (Lab 3 CI)
+#   Dockerfile, compose.yaml   (Lab 6)
+#   ansible/                   (Lab 7)
+#   monitoring/                (Lab 8)
+#   *.sbom.cdx.json, zap-*.html/json, trivy-*.txt   (Lab 9 scan evidence)
+#   flake.nix, flake.lock      (Lab 11)
+#   wasm/main.go, spin.toml, go.sum   (Lab 12)

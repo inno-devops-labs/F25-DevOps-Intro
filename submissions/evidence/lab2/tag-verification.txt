@@ -1,0 +1,8 @@
+v0.1.0-lab2-arina tag commit
+Good "git" signature for uzersamsung873@gmail.com with ED25519 key SHA256:RhLO1q1uCo2ao0SZqhu1c77Gq/mG6sUkLS/fdDMqXQA
+object 579f5c9cc6f9bb2accda8a57985c5706ec8e82f1
+type commit
+tag v0.1.0-lab2-arina
+tagger Arina <uzersamsung873@gmail.com> 1789048521 +0300
+
+Lab 2 milestone — version control deep dive
