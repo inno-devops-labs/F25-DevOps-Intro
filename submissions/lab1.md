@@ -75,3 +75,38 @@ Date:   Thu Sep 10 18:29:53 2026 +0300
 ### Why is it matter to sign commits?
 
 Signed commits matter because they cryptographically prove the author's identity, unlike the plain Author field which anyone can forge by writing someone else's name and email. In March 2024, the `xz-utils` backdoor incident exploited exactly this gap: an attacker posing as a helpful maintainer under the nickname "Jia Tan" spent years building trust, eventually gained commit rights, and slipped a backdoor into `liblzma` that nearly shipped in Debian and Fedora. If the project had enforced mandatory commit signing like we configured in this lab, any commit made under a different identity would have shown up as "Unverified" — making the impersonation visible long before the malicious code reached any distribution.
+
+
+## Task 2
+
+Pull request created:
+
+![img_1.png](img_1.png)
+
+Every commit shows **Verified**: 
+
+![img_2.png](img_2.png)
+
+## Task 3
+
+I starred course repository, starred the `simple-container-com/api` project — a promising open-source tool for container management, followed Professor and TAs, followed 4 classmates: @Salamer2, @AbdullohML, @amiranabiullina, @aniksel
+
+### GitHub Community
+
+**Why starring repositories matters in open source.**
+Stars function as personal bookmarks for useful projects I want to revisit,
+as a trust signal for other developers (a high star count shows community
+validation), and as motivation for maintainers who gauge interest by them.
+They also appear on my profile and form a public snapshot of my technical
+interests.
+
+**How following developers helps in team projects and professional growth.**
+Following other developers gives me visibility into what they are building,
+which tools they use, and what problems they care about — a natural way to
+discover new ideas and stay current with the industry. On a team this helps
+me quickly find the right person for a given problem, and professionally it
+builds a network beyond the classroom that supports future collaborations
+and job opportunities.
+
+
+
