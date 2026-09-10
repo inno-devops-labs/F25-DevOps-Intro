@@ -96,3 +96,12 @@ Date:   Thu Sep 10 23:47:03 2026 +0300
 
 ## Why it matters
 As I remember, story was something like "project merged bad commits with backdoor because trusted famous collaborator in community". So signed commits saves us from issue we have in git -- everybody can chose his username and email of commit, git never checks it. We need to check authority -- so we sign every commit (on public repos must have)
+
+
+## Why starring repositories matters in open source
+In open source it can be hard to find "An official repo" of needed project -- the only way sometimes is to find their site that links to github. Also we don`t have time to look throw codebase everytime to see is it good or not. 
+
+As for me - a lot of start means that other coders already used project and found it usefull and well-written. It saves time and highlight new rising projects
+
+## How following developers helps in team projects and professional growth
+As for me, I follow person to be noticed of his new projects or to find him easily to go back to his profile and contact him. Of cource it is important to growth -- if I can join his team in the future, or call him to hackathon.
