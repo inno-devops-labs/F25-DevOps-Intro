@@ -172,3 +172,68 @@ No conflicts occurred. `--force-with-lease` was used instead of plain `--force` 
 ### Merge vs. rebase — when I'd choose each
 
 I'd rebase when the branch is still mine and not yet shared — cleaning up my own commit history (like squashing "wip" commits, or catching up with a moved `main`) before opening a PR, so the history stays linear and easy to read. I'd merge instead once a branch has been pushed and other people might already be building on top of it, or once it represents a real point-in-time integration worth preserving (like merging a finished feature into `main`) — rebasing a branch other people have already based work on rewrites its history and can break their local copies, so at that point merge is the safer, more honest option.
+
+## Bonus Task — Bisect a Real Bug
+
+### Setup
+
+```
+$ git fetch upstream
+$ git switch -c bisect-quickn upstream/bug/bisect-me
+$ git bisect start
+$ git bisect bad HEAD
+$ git bisect good v0.0.1
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+```
+
+### Automated run
+
+```
+$ git bisect run sh -c 'cd app && go test ./... && go build ./...'
+--- FAIL: TestStore_PersistsAcrossReload (0.00s)
+    store_test.go:78: nextID not restored: got 1, want 2
+FAIL
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[cb89bb9ee2ee5010b166061447eaca3ae0da2378] docs(store): comment the load() decode step
+running 'sh' '-c' 'cd app && go test ./... && go build ./...'
+ok  quicknotes 0.449s
+f285ede8611e55ac0a7d01100891c0cc775e0709 is the first bad commit
+
+commit f285ede8611e55ac0a7d01100891c0cc775e0709
+Author: Dmitrii Creed <creeed22@gmail.com>
+Date:   Fri Jun 5 13:36:56 2026 +0400
+
+    refactor(store): simplify nextID restoration in load()
+
+    Signed-off-by: Dmitrii Creed <creeed22@gmail.com>
+
+ app/store.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+bisect found first bad commit
+```
+
+### Offending commit
+
+**`f285ede8611e55ac0a7d01100891c0cc775e0709`** — `refactor(store): simplify nextID restoration in load()`. This change to `app/store.go` broke `TestStore_PersistsAcrossReload`: after reloading stored notes, the next auto-incremented note ID wasn't being restored correctly (test expected `2`, got `1`), meaning a fresh note created after a reload could collide with or reuse an existing note's ID.
+
+### Full bisect log
+
+```
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493] docs(app): mention go test invocation
+git bisect bad f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493
+# status: waiting for good commit(s), bad commit known
+# good: [0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7] chore(app): document versioning scheme (bisect fixture baseline)
+git bisect good 0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7
+# bad: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+git bisect bad f285ede8611e55ac0a7d01100891c0cc775e0709
+# good: [cb89bb9ee2ee5010b166061447eaca3ae0da2378] docs(store): comment the load() decode step
+git bisect good cb89bb9ee2ee5010b166061447eaca3ae0da2378
+# first bad commit: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+```
+
+### Why bisect finds it in log₂(N) steps
+
+Bisect treats the commit range between a known-good and known-bad commit as a sorted sequence (sorted by "does the bug exist yet") and does binary search over it rather than testing every commit one by one. Each test — build + run the test suite at the midpoint commit — throws away half of the remaining candidates: if that midpoint is good, the bug was introduced later, so everything before it is ruled out; if it's bad, everything after it is ruled out. Halving the search space every step is exactly what gives binary search its log₂(N) complexity: for N commits between good and bad, only about log₂(N) tests are needed to pin down the exact one, instead of up to N tests with a linear walk. In this case the range was small (only a handful of commits), so it converged in essentially one automated step — but the same halving approach scales fine even across a range of thousands of commits, which is the real value of bisect over manually `git log`-ing and guessing.
