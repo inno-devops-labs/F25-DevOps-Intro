@@ -217,3 +217,38 @@ After creating two commits on feature/lab2, I intentionally ran git reset --hard
 ### 2.3 Tag Verification and Rebase
 
 I created an annotated and signed release tag and verified it using `git tag -v "v0.1.0-lab2-${USER}"`. The verification output was: `object c9e87e05b2f60878c9f9337b18b4a6e43033fd0b`, `type commit`, `tag v0.1.0-lab2-kriss`, `tagger kriss <kristinsoll221@gmail.com> 1789034040 +0300`, followed by the message `Lab 2 milestone — version control deep dive` and `Good "git" signature for k.soloveva@innopolis.university with ED25519 key SHA256:U8gMwP7jZA2a0xvvr82zZnQrDYqHcYPaF+WVWnRGndM`. Before the rebase, the branch history from `git log --oneline --graph --decorate -8` was: `* 18e26f0 (HEAD -> feature/lab2) wip(lab2): more progress`, `* 416dc63 wip(lab2): start`, `* c9e87e0 (tag: v0.1.0-lab2-kriss) docs: add PR template`, `* 9f41b7d (upstream/main) docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs`, `* 8de962e docs(lab11): fix nixpkgs pin vs go.mod collision; add network fallback pitfalls`, `* bfa345b docs(lab3): matrix renames required checks — warn + ci-ok gate pattern; set honest cache expectations`, `* 356419b docs(lab1,lab2): clarify GitHub auth vs signing SSH key roles; add publickey-denied pitfalls`, and `* 66bbd4d docs(lab1): align Task 3 GitHub Community engagement with other courses`. I then ran `git fetch origin` and `git rebase origin/main`, and Git reported `Successfully rebased and updated refs/heads/feature/lab2.` After the rebase, the branch history became: `* 79ad37e (HEAD -> feature/lab2) wip(lab2): more progress`, `* bb43389 wip(lab2): start`, `* 21a6041 (origin/main, origin/HEAD, main) docs: upstream moved while you worked`, `* c9e87e0 (tag: v0.1.0-lab2-kriss) docs: add PR template`, `* 9f41b7d (upstream/main) docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs`, `* 8de962e docs(lab11): fix nixpkgs pin vs go.mod collision; add network fallback pitfalls`, `* bfa345b docs(lab3): matrix renames required checks — warn + ci-ok gate pattern; set honest cache expectations`, and `* 356419b docs(lab1,lab2): clarify GitHub auth vs signing SSH key roles; add publickey-denied pitfalls`. The rebase replayed the two Lab 2 commits on top of the updated `main`, so their SHAs changed from `416dc63` and `18e26f0` to `bb43389` and `79ad37e`. I would choose rebase when working on my own feature branch because it keeps the history clean and linear by replaying my commits on top of the latest `main`. I would choose merge when working with shared branches because it preserves the original history and does not rewrite existing commits. In general, rebase is useful for cleaning up feature work, while merge is safer when the branch history has already been shared with other developers.
+
+### Bonus Task — Git Bisect
+
+I used `git bisect` to find the commit that introduced the QuickNotes bug. The known bad state was `upstream/bug/bisect-me`, while the known good state was the `v0.0.1` tag. At each step I ran `go build ./...` and `go test ./...` and marked the tested commit as either good or bad.
+
+The full bisect log was:
+
+```text
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493] docs(app): mention go test invocation
+git bisect bad f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493
+# status: waiting for good commit(s), bad commit known
+# good: [0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7] chore(app): document versioning scheme (bisect fixture baseline)
+git bisect good 0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7
+# bad: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+git bisect bad f285ede8611e55ac0a7d01100891c0cc775e0709
+# good: [cb89bb9ee2ee5010b166061447eaca3ae0da2378] docs(store): comment the load() decode step
+git bisect good cb89bb9ee2ee5010b166061447eaca3ae0da2378
+# first bad commit: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+
+The first bad commit was:
+
+f285ede8611e55ac0a7d01100891c0cc775e0709 — refactor(store): simplify nextID restoration in load()
+
+On this commit, go build ./... succeeded, but go test ./... failed in TestStore_PersistsAcrossReload with nextID not restored: got 1, want 2. The previous tested commit cb89bb9 passed both the build and the tests, confirming that f285ede was the first commit that introduced the bug.
+
+I also automated the process using git bisect run sh -c 'cd app && go test ./... && go build ./...', and Git identified the same commit as the first bad commit.
+
+Git bisect is efficient because it uses binary search instead of checking every commit one by one. Each test eliminates approximately half of the remaining commits, so for N candidate commits it needs about log₂(N) steps. For example, instead of checking many commits sequentially, only a small number of tests is required to narrow the range down to the first bad commit. This makes git bisect especially useful for locating regressions in repositories with long commit histories.
+
+
+
+```bash
+git switch feature/lab2
