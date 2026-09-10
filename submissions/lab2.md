@@ -3,6 +3,8 @@
 **Student:** NikolayTaran (na.taranvrn@gmail.com)
 **Fork:** https://github.com/NikolayTaran/DevOps-Intro
 **Branch:** `feature/lab2`
+**Tag:** `v0.1.0-lab2-NikolayTaran`
+**PR:** https://github.com/inno-devops-labs/DevOps-Intro/pull/NUMBER
 
 ---
 
@@ -10,7 +12,7 @@
 
 ### 1.1: Explore your repo's plumbing
 
-One full chain `HEAD` → tree → blob → file contents, explored on `main` at `9f41b7d` (synced with `upstream/main`):
+One full chain `HEAD` → tree → blob → file contents, explored on `main` at `9f41b7d` (aligned with `upstream/main`):
 
 ```
 $ git rev-parse HEAD
@@ -45,96 +47,50 @@ docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
 Signed-off-by: Dmitrii Creed <creeed22@gmail.com>
 
 $ git cat-file -p dc5bed5bbbbe3384cd66ce31edafc7afd1a77399
-100644 blob 1c0a1e94b7bbdd951f456cda51af6b8484cc3cee	.gitignore
-100644 blob d10c04c6e7e0014f4fe883599c11747c15012d4e	README.md
-040000 tree 7d0898a908e274ea809722844cdbd836f3b1c05a	app
-040000 tree f4f047dd07b128eda5f899dfdaaf193f0291eaa2	labs
-040000 tree c0ac2d55cf4335df659b347df3d19d0594a06b6c	lectures
+100644 blob 1c0a1e94b7bbdd951f456cda51af6b8484cc3cee    .gitignore
+100644 blob d10c04c6e7e0014f4fe883599c11747c15012d4e    README.md
+040000 tree 7d0898a908e274ea809722844cdbd836f3b1c05a    app
+040000 tree f4f047dd07b128eda5f899dfdaaf193f0291eaa2    labs
+040000 tree c0ac2d55cf4335df659b347df3d19d0594a06b6c    lectures
 
-$ git cat-file -p 1c0a1e94b7bbdd951f456cda51af6b8484cc3cee
-# ⚠️  KEEP THIS FILE MINIMAL.
-#
-# This .gitignore is inherited by every student fork. Anything listed here
-# is something a student CANNOT `git add` without `-f`. So this file must
-# ONLY contain:
-#   (a) instructor-only paths (refs/), and
-#   (b) machine-generated junk that NOBODY should ever commit.
-#
-# Do NOT add lab DELIVERABLES here (scan reports, SBOMs, go.sum, k8s
-# manifests, CI workflows, Dockerfiles, playbooks, dashboards, …). Students
-# are told to commit those in their submission PRs — ignoring them upstream
-# silently breaks the lab. When in doubt, leave it OUT of this file.
+$ git cat-file -p d10c04c6e7e0014f4fe883599c11747c15012d4e
+# DevOps Intro — Modern DevOps Practices Through One Project
 
-# ── Instructor-only ─────────────────────────────────────────────
-# Reference submissions (dry-run worked examples). Never pushed upstream;
-# students never see these. This is the one path that is intentionally hidden.
-refs/
+[![Course](https://img.shields.io/badge/Course-DevOps%20Intro-blue)](#course-roadmap)
+[![Project](https://img.shields.io/badge/Project-QuickNotes%20(Go)-success)](#the-project-quicknotes)
+[![Duration](https://img.shields.io/badge/Duration-10%20Weeks-lightgrey)](#course-roadmap)
+[![Grading](https://img.shields.io/badge/Grading-70--14--5--30--30-orange)](#grading)
 
-# ── Machine-generated junk (no one commits these) ───────────────
-# Compiled binaries / local runtime state
-app/quicknotes
-app/data/
-/quicknotes
-*.exe
+A 10-week practical introduction to DevOps at Innopolis University. You will package, ship, observe, harden, and deploy **one** Go service — QuickNotes — across every lab. The discipline you learn here is the spine of modern production engineering.
 
-# Vagrant runtime state (Lab 5) — the Vagrantfile IS committed; .vagrant/ is not
-.vagrant/
+> 💬 *"If it hurts, do it more often."* — Jez Humble
 
-# Nix build symlinks (Lab 11) — flake.nix + flake.lock ARE committed; result is not
-result
-result-*
-
-# Terraform state — MUST never be committed (can contain secrets)
-*.tfstate
-*.tfstate.backup
-.terraform/
-
-# Python virtualenvs / caches
-.venv/
-__pycache__/
-*.pyc
-
-# Editor / IDE
-.vscode/
-.idea/
-*.swp
-
-# OS noise
-.DS_Store
-Thumbs.db
-
-# Local agent config (not part of the course)
-.claude/
-
-# NOTE: deliberately NOT ignored, because students commit them as lab evidence:
-#   submissions/labN.md        (lab reports)
-#   .github/workflows/*.yml    (Lab 3 CI)
-#   Dockerfile, compose.yaml   (Lab 6)
-#   ansible/                   (Lab 7)
-#   monitoring/                (Lab 8)
-#   *.sbom.cdx.json, zap-*.html/json, trivy-*.txt   (Lab 9 scan evidence)
-#   flake.nix, flake.lock      (Lab 11)
-#   wasm/main.go, spin.toml, go.sum   (Lab 12)
+… (the blob is the entire README.md — ~290 more lines of roadmap/grading; truncated here)
 ```
+
+So the chain is: the commit `9f41b7d…` (`HEAD`) points at the tree `dc5bed5…` — one snapshot of every path in the repository — the tree points at blob `d10c04c…` for `README.md`, and printing that blob yields the actual file content. Every object is addressed by the SHA-1 of its own bytes, so identical content anywhere in history deduplicates to the same hash.
 
 ### 1.2: Look inside `.git/`
 
+Captured on `main` right after aligning it with `upstream/main` (hence `ORIG_HEAD`), before the Task 1.3 commits:
+
 ```
 $ ls -la .git/
-total 53
-drwxr-xr-x 1 Inno 197121   0 Sep 10 12:33 .
-drwxr-xr-x 1 Inno 197121   0 Sep 10 12:33 ..
-drwxr-xr-x 1 Inno 197121   0 Sep 10 12:33 branches
--rw-r--r-- 1 Inno 197121  41 Sep 10 12:33 HEAD
--rw-r--r-- 1 Inno 197121 421 Sep 10 12:33 config
--rw-r--r-- 1 Inno 197121  73 Sep 10 12:33 description
-drwxr-xr-x 1 Inno 197121   0 Sep 10 12:33 hooks
--rw-r--r-- 1 Inno 197121 3055 Sep 10 12:33 index
-drwxr-xr-x 1 Inno 197121   0 Sep 10 12:33 info
-drwxr-xr-x 1 Inno 197121   0 Sep 10 12:33 logs
-drwxr-xr-x 1 Inno 197121   0 Sep 10 12:33 objects
--rw-r--r-- 1 Inno 197121 487 Sep 10 12:33 packed-refs
-drwxr-xr-x 1 Inno 197121   0 Sep 10 12:33 refs
+total 29
+drwxr-xr-x 1 Inno 197121    0 Sep 10 12:54 ./
+drwxr-xr-x 1 Inno 197121    0 Sep 10 12:29 ../
+-rw-r--r-- 1 Inno 197121  463 Sep 10 12:30 config
+-rw-r--r-- 1 Inno 197121   73 Sep 10 12:29 description
+-rw-r--r-- 1 Inno 197121  229 Sep 10 12:50 FETCH_HEAD
+-rw-r--r-- 1 Inno 197121   21 Sep 10 12:50 HEAD
+drwxr-xr-x 1 Inno 197121    0 Sep 10 12:29 hooks/
+-rw-r--r-- 1 Inno 197121 3055 Sep 10 12:54 index
+drwxr-xr-x 1 Inno 197121    0 Sep 10 12:29 info/
+drwxr-xr-x 1 Inno 197121    0 Sep 10 12:29 logs/
+drwxr-xr-x 1 Inno 197121    0 Sep 10 12:50 objects/
+-rw-r--r-- 1 Inno 197121   41 Sep 10 12:54 ORIG_HEAD
+-rw-r--r-- 1 Inno 197121  186 Sep 10 12:29 packed-refs
+drwxr-xr-x 1 Inno 197121    0 Sep 10 12:29 refs/
 
 $ cat .git/HEAD
 ref: refs/heads/main
@@ -143,25 +99,37 @@ $ ls .git/refs/heads/
 main
 
 $ ls .git/objects/ | head
-info
-pack
+0a/
+0c/
+0e/
+0f/
+13/
+1a/
+3a/
+40/
+7a/
+7e/
 
 $ find .git/objects -type f | wc -l
-6
+25
 ```
 
 Interpretation:
 
-- `.git/HEAD` is a 41-byte plain text file containing `ref: refs/heads/main` — HEAD is nothing more than a pointer to a branch name, and a branch itself is just a file under `refs/heads/` holding one SHA.
-- `refs/heads/` lists my local branches (`main`). Remote-tracking refs (`origin/*`, `upstream/*`) are not loose files here — they live in `packed-refs`, which is why that file exists.
-- `objects/` contains no two-character loose-object directories — only `info` and `pack`: after the initial clone (and the later `git fetch upstream`) every commit/tree/blob arrived in **packfiles**, so `find` counts only 6 files: two packs with their `.pack`/`.idx` (+ `.rev`) companions plus a commit-graph. Objects created by my own later commits (Task 1.3) would appear as loose files under `xx/` directories until the next `git gc` packs them.
+- `.git/HEAD` is a 21-byte plain-text file holding the symbolic ref `ref: refs/heads/main` — HEAD is nothing more than a pointer to a branch *name*, and the branch itself is one tiny file under `refs/heads/` (here just `main`) holding a 40-character SHA.
+- `FETCH_HEAD` and `ORIG_HEAD` are traces of this session's operations: the refs brought by the last `git fetch upstream`, and where HEAD sat before the `git reset --hard` that aligned `main` with `upstream/main`.
+- Remote-tracking refs (`origin/*`, `upstream/*`) and the tag are not loose files — they live in `packed-refs` (186 bytes).
+- `objects/` shows both storage forms side by side: two-character directories (`0a/`, `0c/`, … — `head` truncated the listing at ten entries) holding **loose** objects, plus `pack/` and `info/`. The loose objects appeared with `git fetch upstream`: the fetch delivered only 24 objects — below `transfer.unpackLimit` (100 by default) — so instead of storing a tiny new pack, git exploded the fetched objects into individual zlib-compressed files, one per object, path = first 2 SHA chars as directory + remaining 38 as filename. `find .git/objects -type f | wc -l` counts 25 files: the loose objects plus the clone's original packfile set. Objects created by my own Task 1.3 commits would also be born loose; the next `git gc` would pack them.
 
 ### 1.3: Simulate disaster + recover
+
+Two commits of "important work" on the new branch — plus a remote backup and a SHA snapshot taken *before* the experiment (the spec's own advice: capture the SHA first). The `(y/n)` prompts are OneDrive holding locks on directories git tries to delete; answering `y` retries, `n` moves on:
 
 ```
 $ git switch -c feature/lab2
 Switched to a new branch 'feature/lab2'
 
+$ mkdir -p submissions
 $ echo "important work" > submissions/lab2.md
 $ git add submissions/lab2.md
 $ git commit -S -s -m "wip(lab2): start"
@@ -171,27 +139,60 @@ $ git commit -S -s -m "wip(lab2): start"
 
 $ echo "more important work" >> submissions/lab2.md
 $ git commit -S -s -am "wip(lab2): more progress"
+warning: in the working copy of 'submissions/lab2.md', LF will be replaced by CRLF the next time Git touches it
 [feature/lab2 b3a5c52] wip(lab2): more progress
  1 file changed, 1 insertion(+)
 
-# now do something stupid
+$ git push -u origin feature/lab2
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (8/8), 928 bytes | 464.00 KiB/s, done.
+Total 8 (delta 3), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (3/3), completed with 1 local object.
+remote:
+remote: Create a pull request for 'feature/lab2' on GitHub by visiting:
+remote:      https://github.com/NikolayTaran/DevOps-Intro/pull/new/feature/lab2
+remote:
+To https://github.com/NikolayTaran/DevOps-Intro
+ * [new branch]      feature/lab2 -> feature/lab2
+branch 'feature/lab2' set up to track 'origin/feature/lab2'.
+
+$ git log --oneline -2
+b3a5c52 (HEAD -> feature/lab2, origin/feature/lab2) wip(lab2): more progress
+bcd70c1 wip(lab2): start
+```
+
+Now the "stupid" part — which I managed to run **twice** (I re-pasted the disaster block after the first reset had already landed, so the branch slid four commits back in total):
+
+```
 $ git reset --hard HEAD~2
+Deletion of directory 'submissions' failed. Should I try again? (y/n) y
+Deletion of directory 'submissions' failed. Should I try again? (y/n) n
 HEAD is now at 9f41b7d docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
+
+$ git reset --hard HEAD~2
+HEAD is now at bfa345b docs(lab3): matrix renames required checks — warn + ci-ok gate pattern; set honest cache expectations
 
 $ git status
 On branch feature/lab2
-Your branch is behind 'origin/feature/lab2' by 2 commits, and can be fast-forwarded.
+Your branch is behind 'origin/feature/lab2' by 4 commits, and can be fast-forwarded.
   (use "git pull" to update your local branch)
 
 nothing to commit, working tree clean
 
 $ git log --oneline -5
-9f41b7d (HEAD -> feature/lab2) docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
+bfa345b (HEAD -> feature/lab2) docs(lab3): matrix renames required checks — warn + ci-ok gate pattern; set honest cache expectations
 356419b docs(lab1,lab2): clarify GitHub auth vs signing SSH key roles; add publickey-denied pitfalls
 66bbd4d docs(lab1): align Task 3 GitHub Community engagement with other courses
 170000c Merge pull request #907 from inno-devops-labs/s26-refactor
 d50436c (upstream/s26-refactor) fix(lab12,gitignore): Spin SDK (WAGI removed in Spin 3.x); minimal student-safe gitignore
+```
 
+Both wip commits are gone from the branch — but the reflog still remembers every movement of HEAD:
+
+```
 $ git reflog
 bfa345b (HEAD -> feature/lab2) HEAD@{0}: reset: moving to HEAD~2
 9f41b7d (upstream/main, upstream/HEAD, origin/main, origin/HEAD, main) HEAD@{1}: reset: moving to HEAD~2
@@ -204,9 +205,19 @@ bcd70c1 HEAD@{3}: commit: wip(lab2): start
 180ac76 HEAD@{8}: clone: from https://github.com/NikolayTaran/DevOps-Intro
 ```
 
-Restore the most recent commit (`b3a5c52` — `wip(lab2): more progress`, picked from `git reflog`):
+Recovery. The reflog lists the lost commits newest-first: `b3a5c52` (`HEAD@{2}`) is the most recent one. My first attempt grabbed the wrong SHA — `bcd70c1`, the *older* wip commit (status then showed "behind by 1") — so I re-pointed the branch at `b3a5c52`:
 
 ```
+$ git reset --hard bcd70c1
+HEAD is now at bcd70c1 wip(lab2): start
+
+$ git status
+On branch feature/lab2
+Your branch is behind 'origin/feature/lab2' by 1 commit, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+
+nothing to commit, working tree clean
+
 $ git reset --hard b3a5c52
 HEAD is now at b3a5c52 wip(lab2): more progress
 
@@ -215,6 +226,11 @@ On branch feature/lab2
 Your branch is up to date with 'origin/feature/lab2'.
 
 nothing to commit, working tree clean
+
+$ git log --oneline -3
+b3a5c52 (HEAD -> feature/lab2, origin/feature/lab2) wip(lab2): more progress
+bcd70c1 wip(lab2): start
+9f41b7d (upstream/main, upstream/HEAD, origin/main, origin/HEAD, main) docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
 ```
 
 **What would happen if `git gc` had run between the bad reset and the recovery?**
@@ -230,6 +246,7 @@ Between the bad reset and the recovery the two wip commits were unreachable from
 ```
 $ git switch main
 Switched to branch 'main'
+Your branch is up to date with 'origin/main'.
 
 $ git pull --ff-only upstream main
 From https://github.com/inno-devops-labs/DevOps-Intro
@@ -239,7 +256,10 @@ Already up to date.
 $ git tag -a -s "v0.1.0-lab2-NikolayTaran" -m "Lab 2 milestone — version control deep dive"
 
 $ git push origin "v0.1.0-lab2-NikolayTaran"
-Total 0 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 420 bytes | 420.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
 To https://github.com/NikolayTaran/DevOps-Intro
  * [new tag]         v0.1.0-lab2-NikolayTaran -> v0.1.0-lab2-NikolayTaran
 ```
@@ -257,10 +277,10 @@ tag v0.1.0-lab2-NikolayTaran
 tagger NikolayTaran <na.taranvrn@gmail.com> 1789039109 +0300
 
 Lab 2 milestone — version control deep dive
-Good "git" signature for "NikolayTaran <na.taranvrn@gmail.com>" with ED25519 key SHA256:QNJ5E8s9e+rg+yHMosroC2B5grjYOGvBiNeoaj9WN94
+Good "git" signature for na.taranvrn@gmail.com with ED25519 key SHA256:v0q6vLEo/9mCeHerKSiK6jWk7HuDvDwqbGkz9mPJpyw
 ```
 
-`objecttype` is `tag` (annotated) and `*objecttype` is `commit` (it points at a commit); `git tag -v` shows a **Good** signature made with my ED25519 SSH key.
+`objecttype` is `tag` (annotated) and `*objecttype` is `commit` (it points at a commit); `git tag -v` shows a **Good** signature made with my ED25519 SSH signing key.
 
 ### 2.2: Rebase + force-with-lease
 
@@ -285,41 +305,164 @@ Your branch is up to date with 'origin/feature/lab2'.
 $ git fetch origin
 
 $ git rebase origin/main
+Deletion of directory 'submissions' failed. Should I try again? (y/n) y
+Deletion of directory 'submissions' failed. Should I try again? (y/n) n
 Successfully rebased and updated refs/heads/feature/lab2.
 
+$ git status
+On branch feature/lab2
+Your branch and 'origin/feature/lab2' have diverged,
+and have 3 and 2 different commits each, respectively.
+  (use "git pull" if you want to integrate the remote branch with yours)
+
+nothing to commit, working tree clean
+
 $ git push --force-with-lease origin feature/lab2
-Enumerating objects: 2, done.
-Counting objects: 100% (2/2), done.
-Delta compression using up to 16 threads
-Compressing objects: 100% (2/2), done.
-Writing objects: 100% (2/2), 947 bytes | 947.00 KiB/s, done.
-Total 2 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Enumerating objects: 9, done.
+Counting objects: 100% (9/9), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (8/8), 928 bytes | 464.00 KiB/s, done.
+Total 8 (delta 3), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (3/3), completed with 1 local object.
 To https://github.com/NikolayTaran/DevOps-Intro
  + b3a5c52...c58e685 feature/lab2 -> feature/lab2 (forced update)
 ```
 
+The diverged status is exactly why the plain push is impossible: after the rebase my branch carries 3 commits `origin/feature/lab2` doesn't have (the replayed pair + `0bcae19`), while the remote still has the 2 original wip commits — so the rewritten history has to replace it, via `--force-with-lease` (which would still refuse if someone else had moved the remote branch in the meantime).
+
 ### 2.3: Document
 
-Branch state **before** the rebase (my two wip commits sit on the *old* base `9f41b7d`; `main` has already moved to `0bcae19`, which is not an ancestor here):
+Branch state **before** the rebase — my two wip commits sit on the *old* base `9f41b7d`; `main` has already moved to `0bcae19`, which is not an ancestor here:
 
 ```
 $ git log --oneline --graph -5
 * b3a5c52 (HEAD -> feature/lab2, origin/feature/lab2) wip(lab2): more progress
 * bcd70c1 wip(lab2): start
 * 9f41b7d (tag: v0.1.0-lab2-NikolayTaran, upstream/main, upstream/HEAD) docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
+* 8de962e docs(lab11): fix nixpkgs pin vs go.mod collision; add network fallback pitfalls
+* bfa345b docs(lab3): matrix renames required checks — warn + ci-ok gate pattern; set honest cache expectations
+```
+
+Branch state **after** the rebase — the same two commits replayed on top of the new `main` (note the rewritten SHAs):
+
+```
+$ git log --oneline --graph -8
+* c58e685 (HEAD -> feature/lab2, origin/feature/lab2) wip(lab2): more progress
+* 5c50293 wip(lab2): start
+* 0bcae19 (origin/main, origin/HEAD, main) docs: upstream moved while you worked
+* 9f41b7d (tag: v0.1.0-lab2-NikolayTaran, upstream/main, upstream/HEAD) docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
+* 8de962e docs(lab11): fix nixpkgs pin vs go.mod collision; add network fallback pitfalls
+* bfa345b docs(lab3): matrix renames required checks — warn + ci-ok gate pattern; set honest cache expectations
 * 356419b docs(lab1,lab2): clarify GitHub auth vs signing SSH key roles; add publickey-denied pitfalls
 * 66bbd4d docs(lab1): align Task 3 GitHub Community engagement with other courses
 ```
 
-Branch state **after** the rebase (the same two commits replayed on top of the new `main`; note the rewritten SHAs):
-
-```
-$ git log --oneline --graph -5
-* c58e685 (HEAD -> feature/lab2, origin/feature/lab2) wip(lab2): more progress
-* 5c50293 wip(lab2): start
-* 0bcae19 (origin/main, main) docs: upstream moved while you worked
-* 9f41b7d (tag: v0.1.0-lab2-NikolayTaran, upstream/main, upstream/HEAD) docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
-* 8de962e docs(lab11): fix nixpkgs pin vs go.mod collision; add network fallback pitfalls
-```
-
 **When I'd choose merge vs rebase:** I rebase a private, short-lived branch like this one to keep history linear — after the rebase my two wip commits sit directly on top of the new `main`, so the PR diff shows exactly my changes and no merge commit. But rebase rewrites commit SHAs (mine went from `bcd70c1`/`b3a5c52` to `5c50293`/`c58e685`), which is why it is only safe for branches nobody else builds on, and why updating the remote copy requires `--force-with-lease`. For shared or already-reviewed branches I merge instead: it preserves the original SHAs and records the moment of integration at the cost of a merge commit. Rule of thumb: **rebase private, merge public.**
+
+---
+
+## Bonus — Bisect a Real Bug (+2 pts)
+
+### B.1: Set up bisect
+
+The broken branch and the known-good tag arrived with the upstream fetch at the start of the session:
+
+```
+$ git fetch upstream
+remote: Enumerating objects: 32, done.
+remote: Counting objects: 100% (32/32), done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 24 (delta 21), reused 21 (delta 18), pack-reused 0 (from 0)
+Unpacking objects: 100% (24/24), 3.19 KiB | 32.00 KiB/s, done.
+From https://github.com/inno-devops-labs/DevOps-Intro
+ * [new branch]      bug/bisect-me -> upstream/bug/bisect-me
+ * [new branch]      main          -> upstream/main
+ * [new branch]      release/f25   -> upstream/release/f25
+ * [new branch]      s26           -> upstream/s26
+ * [new branch]      s26-refactor  -> upstream/s26-refactor
+ * [new tag]         v0.0.1        -> v0.0.1
+```
+
+Marking the endpoints — the current tip is broken, `v0.0.1` is the known-good baseline. After `good`, git checks out the middle of the suspect range:
+
+```
+$ git switch -c bisect-quickn upstream/bug/bisect-me
+branch 'bisect-quickn' set up to track 'upstream/bug/bisect-me'.
+Switched to a new branch 'bisect-quickn'
+
+$ git bisect start
+status: waiting for both good and bad commits
+
+$ git bisect bad HEAD
+status: waiting for good commit(s), bad commit known
+
+$ git bisect good v0.0.1
+Bisecting: 1 revision left to test after this (roughly 1 step)
+[f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+```
+
+### B.2: Automate it
+
+```
+$ git bisect run sh -c 'cd app && go test ./... && go build ./...'
+running 'sh' '-c' 'cd app && go test ./... && go build ./...'
+--- FAIL: TestStore_PersistsAcrossReload (0.00s)
+    store_test.go:78: nextID not restored: got 1, want 2
+FAIL
+FAIL	quicknotes	0.312s
+FAIL
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+[cb89bb9ee2ee5010b166061447eaca3ae0da2378] docs(store): comment the load() decode step
+running 'sh' '-c' 'cd app && go test ./... && go build ./...'
+ok  	quicknotes	0.187s
+f285ede8611e55ac0a7d01100891c0cc775e0709 is the first bad commit
+commit f285ede8611e55ac0a7d01100891c0cc775e0709
+Author: Dmitrii Creed <creeed22@gmail.com>
+Date:   Fri Jun 5 13:36:56 2026 +0400
+
+    refactor(store): simplify nextID restoration in load()
+
+    Signed-off-by: Dmitrii Creed <creeed22@gmail.com>
+
+ app/store.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+bisect found first bad commit
+```
+
+### B.3: Document
+
+The full bisect log (captured before `git bisect reset`):
+
+```
+$ git bisect log
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493] docs(app): mention go test invocation
+git bisect bad f0c9243b7c80ebb930a1ce7048a1d65b4c2ac493
+# status: waiting for good commit(s), bad commit known
+# good: [0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7] chore(app): document versioning scheme (bisect fixture baseline)
+git bisect good 0ec87b808ae6a257a98ecea4a3c8d38a7f2c5ac7
+# bad: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+git bisect bad f285ede8611e55ac0a7d01100891c0cc775e0709
+# good: [cb89bb9ee2ee5010b166061447eaca3ae0da2378] docs(store): comment the load() decode step
+git bisect good cb89bb9ee2ee5010b166061447eaca3ae0da2378
+# first bad commit: [f285ede8611e55ac0a7d01100891c0cc775e0709] refactor(store): simplify nextID restoration in load()
+```
+
+Resetting the working tree and returning to the report branch:
+
+```
+$ git bisect reset
+Previous HEAD position was cb89bb9 docs(store): comment the load() decode step
+Switched to branch 'bisect-quickn'
+Your branch is up to date with 'upstream/bug/bisect-me'.
+
+$ git switch feature/lab2
+Switched to branch 'feature/lab2'
+Your branch is up to date with 'origin/feature/lab2'.
+```
+
+**The offending commit:** `f285ede8611e55ac0a7d01100891c0cc775e0709` — *refactor(store): simplify nextID restoration in load()*. It changed `if n.ID >= s.nextID` to `if n.ID > s.nextID` in `app/store.go`, so when `load()` re-hydrates persisted notes, an ID equal to the current `nextID` no longer bumps it — after a reload the next `Create` reuses ID 1 and collides with the existing note. That is exactly what `TestStore_PersistsAcrossReload` catches: `nextID not restored: got 1, want 2`. The other three commits in the range are documentation-only, so the build stays green and only this one test fails.
+
+**How bisect finds the culprit in log₂(N) steps:** With the endpoints marked (`bad` = the broken tip `f0c9243`, `good` = `v0.0.1`), the suspect range held 4 candidate commits. `git bisect` checks out the commit closest to the middle of the range and lets a single test run discard half of the candidates at once — good ⇒ that commit and everything before it is good, bad ⇒ everything after it is bad. Halving repeats, so N candidates cost about log₂(N) test runs: 4 → 2 (exactly what the log above shows — two `running …` invocations, at `f285ede` and then `cb89bb9`), 1024 → 10, a million → 20, while a linear scan could need all N. The only assumption is monotonicity — every commit after the true culprit is also broken, every commit before it is fine — which holds here because the bug is a single one-line change inherited by every descendant.
