@@ -139,4 +139,92 @@ HEAD is now at 402c9f3 docs(lab2): add git internals notes
 
 If `git gc` had run before recovery, Git could have pruned the unreachable commits created by the reset. In that case, the reflog entry might still exist, but the commit objects could have been deleted, making recovery impossible through the reflog alone.
 
+## Task 2 — Tag a Release & Rebase a Feature
+
+### 2.1: Annotated, signed release tag
+
+```text
+v0.0.1 QuickNotes v0.0.1 — known-good baseline for the Lab 2 bisect exercise
+v0.1.0-lab2-vorid Lab 2 release
+
+object 4fafb3866c4e47f608dcf8f704c8ff24b7c51de5
+type commit
+tag v0.1.0-lab2-vorid
+tagger AyazN <voridanaya@gmail.com> 1789083005 +0300
+
+Lab 2 release
+Good "git" signature for voridanaya@gmail.com with ED25519 key SHA256:NfNJWE1NIuw6ZnpMCLF+RXruNuQSg3VsvRMVAI41MNc
+```
+
+The signed annotated tag was pushed to `origin`.
+
+### 2.2: Rebase + force-with-lease
+
+#### Before rebase
+
+```text
+* 1069bfe (main) chore: simulate upstream movement
+| * bc042db (HEAD -> feature/lab2) docs(lab2): document reflog recovery
+| * 402c9f3 docs(lab2): add git internals notes
+| * 5f8e2ba docs(lab2): add git object inspection
+|/
+| * c833384 (origin/feature/lab1, feature/lab1) docs(lab1): finish submission
+| * b1da062 docs(lab1): finish submission
+| * 83ea442 docs(lab1): finish submission
+```
+
+#### Rebase
+
+```text
+Successfully rebased and updated refs/heads/feature/lab2.
+```
+
+#### After rebase
+
+```text
+* 60a790b (HEAD -> feature/lab2) docs(lab2): document reflog recovery
+* 18b5507 docs(lab2): add git internals notes
+* ec14f2e docs(lab2): add git object inspection
+* 84fd2fc (origin/main, origin/HEAD, main) chore: simulate upstream movement
+* 9a0cb1d chore: simulate upstream movement
+* e7ae82a test: unsigned commit
+* 4fafb38 (tag: v0.1.0-lab2-vorid) docs: add PR template
+```
+
+The rebased branch was pushed using:
+
+```text
+git push --force-with-lease origin feature/lab2
+```
+
+Merge is preferable when preserving the exact existing branch history is important or when collaborating on a shared branch. Rebase is preferable for a private feature branch when a clean, linear history is desired before merging.
+
+## Bonus: Git Bisect
+
+```text
+git bisect start
+git bisect bad upstream/bug/bisect-me
+git bisect good v0.0.1
+```
+
+Automated bisect:
+
+```text
+git bisect run sh -c 'cd app && go test ./... && go build ./...'
+```
+
+Result:
+
+```text
+f285ede8611e55ac0a7d01100891c0cc775e0709 is the first 'bad' commit
+commit f285ede8611e55ac0a7d01100891c0cc775e0709
+Author: Dmitrii Creed <creeed22@gmail.com>
+
+    refactor(store): simplify nextID restoration in load()
+
+ app/store.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+```
+
+The bisect identified `f285ede` as the first bad commit. It required 2 test steps, consistent with `log₂(N)` for the small commit range.
 
