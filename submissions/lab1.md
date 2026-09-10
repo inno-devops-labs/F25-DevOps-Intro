@@ -41,30 +41,12 @@ Date:   Fri Sep 11 00:34:32 2026 +0300
 
 Signed commits matter because they provide cryptographic proof that a commit was created by a trusted developer and has not been altered. The March 2024 xz-utils incident showed how a compromised contributor and malicious code can enter a trusted software supply chain, highlighting the importance of verifying who is responsible for changes. Signed commits make it harder for attackers to impersonate developers and help maintain trust in the project's code history.
 
-## Task 2 — Pull Request Template
-
-The pull request template was added to `.github/pull_request_template.md` on the fork's `main` branch before opening the Lab 1 pull request.
-
-The template contains:
-
-* PR goal
-* Changes
-* Testing
-* Checklist for title, signed commits, and submission file
-
 ## Task 3 — Community Engagement
 
-### Stars
+### GitHub Community
 
-* Starred `inno-devops-labs/DevOps-Intro`
-* Starred `simple-container-com/api`
+Starring repositories helps show appreciation for open-source projects and helps developers discover and support useful projects. Following developers makes it easier to learn from their work, stay connected with teammates and the wider community, and support professional growth.
 
-### Following
-
-* Followed `@Cre-eD`
-* Followed `@Naghme98`
-* Followed `@pierrepicaud`
-* Followed at least 3 classmates
 
 ## Bonus — Branch Protection
 
