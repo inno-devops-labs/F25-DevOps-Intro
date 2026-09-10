@@ -120,3 +120,13 @@ The commit also appears as **Verified** on GitHub:
 ### Why Signed Commits Matter
 
 Signed commits help verify that a commit was actually created by the expected developer and was not impersonated by another person. The xz-utils incident discussed in Lecture 1 showed how dangerous software supply-chain attacks can be, especially when malicious changes reach widely used infrastructure. Commit signing adds another layer of trust by making the authorship of changes verifiable.
+
+## Task 3 — GitHub Community
+
+Starring repositories makes useful open-source projects easier to find again and also helps increase their visibility in the developer community. Following developers helps me discover their work, stay aware of projects my classmates and colleagues contribute to, and makes future collaboration easier.
+
+### Branch Protection Rules
+
+The `main` branch is protected with required pull requests, signed commits, and linear history.
+
+![Branch protection rules](images/branch-protection.jpg)
