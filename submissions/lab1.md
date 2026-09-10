@@ -110,8 +110,9 @@ error: failed to push some refs to 'https://github.com/4rni4ka/DevOps-Intro.git'
 ```
 
 The rejected local commit was removed with `git reset --hard origin/main`, and
-global commit signing remains enabled. A screenshot of the protection settings
-page will be added after interactive GitHub web authorization is completed.
+global commit signing remains enabled.
+
+![Branch protection settings for main](evidence/lab1-branch-protection.png)
 
 At Knight Capital, a protected production branch would have forced the change
 through a reviewable pull request instead of allowing an ad-hoc direct update.
