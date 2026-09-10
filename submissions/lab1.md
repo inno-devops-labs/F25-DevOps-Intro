@@ -51,8 +51,10 @@ how much damage a patient supply-chain attacker can cause; verified provenance
 does not replace review, but it gives reviewers and release systems a stronger
 signal about who authorized each change.
 
-> Screenshot evidence of GitHub's **Verified** badge will be added after the
-> existing authentication key is also registered as an SSH signing key.
+GitHub reports the commits as `verified: true` with reason `valid`, and the
+public commit page displays the **Verified** badge:
+
+![Verified commit badge](evidence/lab1-verified.png)
 
 ## Task 2 — Pull request template
 
