@@ -1,0 +1,53 @@
+$ ls -la .git/
+total 72
+drwxrwxr-x  9 arina arina 4096 Sep  8 14:39 .
+drwxrwxr-x  8 arina arina 4096 Sep  8 14:39 ..
+-rw-rw-r--  1 arina arina  104 Sep  8 14:37 COMMIT_EDITMSG
+-rw-rw-r--  1 arina arina   93 Sep  8 14:24 FETCH_HEAD
+-rw-rw-r--  1 arina arina   29 Sep  8 14:39 HEAD
+-rw-rw-r--  1 arina arina   41 Sep  8 13:56 ORIG_HEAD
+-rw-rw-r--  1 arina arina  318 Sep  8 14:16 allowed_signers
+-rw-rw-r--  1 arina arina  908 Sep  8 14:16 config
+-rw-rw-r--  1 arina arina   73 Sep  7 14:08 description
+drwxrwxr-x  2 arina arina 4096 Sep  8 14:33 gk
+drwxrwxr-x  2 arina arina 4096 Sep  7 14:08 hooks
+-rw-rw-r--  1 arina arina 3183 Sep  8 14:39 index
+drwxrwxr-x  2 arina arina 4096 Sep  7 14:08 info
+drwxrwxr-x  3 arina arina 4096 Sep  7 14:08 logs
+drwxrwxr-x 81 arina arina 4096 Sep  8 14:37 objects
+-rw-rw-r--  1 arina arina  112 Sep  7 14:08 packed-refs
+drwxrwxr-x  5 arina arina 4096 Sep  7 14:08 refs
+drwxrwxr-x  3 arina arina 4096 Sep  8 14:39 worktrees
+
+$ cat .git/HEAD
+ref: refs/heads/feature/lab2
+
+$ ls .git/refs/heads/
+backup
+feature
+main
+
+$ ls .git/objects/ | head
+02
+03
+04
+0a
+0c
+0e
+0f
+13
+18
+1a
+
+$ find .git/objects -type f | wc -l
+92
+
+$ git count-objects -v
+count: 87
+size: 672
+in-pack: 220
+packs: 1
+size-pack: 547
+prune-packable: 0
+garbage: 0
+size-garbage: 0

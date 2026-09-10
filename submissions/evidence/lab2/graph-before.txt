@@ -1,0 +1,6 @@
+* 97b2dae (origin/main, origin/HEAD) docs: clarify PR testing evidence for Lab 2 (#1)
+| * 8e97c28 (HEAD -> feature/lab2, origin/feature/lab2) wip(lab2): more progress
+| * 9b17313 wip(lab2): start
+|/
+* 579f5c9 (tag: v0.1.0-lab2-arina, main) docs: add PR template
+o 9f41b7d (upstream/main, upstream/HEAD) docs(lab7): make seed.json shipping explicit; require bonus artifacts, not logs
