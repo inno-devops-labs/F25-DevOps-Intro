@@ -72,3 +72,47 @@ Stars are useful both as bookmarks and as public discovery signals that help
 worthwhile open-source projects gain visibility. Following developers makes it
 easier to notice teammates' work, learn from their projects, and maintain
 professional connections beyond a single course.
+
+## Bonus — Branch protection
+
+The fork's `main` branch has the following enforced settings:
+
+```json
+{
+  "enforce_admins": {"enabled": true},
+  "required_linear_history": {"enabled": true},
+  "required_pull_request_reviews": {"required_approving_review_count": 0},
+  "required_signatures": {"enabled": true}
+}
+```
+
+An unsigned empty commit was created locally and rejected by GitHub:
+
+```console
+$ git commit --no-gpg-sign -s --allow-empty -m "test: unsigned commit (should fail)"
+[main 98133e1] test: unsigned commit (should fail)
+
+$ git push origin main
+remote: error: GH006: Protected branch update failed for refs/heads/main.
+remote:
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+remote:
+remote:   98133e1f0f8003f3aa19815063ed2d7e42edb118
+remote:
+remote: - Changes must be made through a pull request.
+! [remote rejected] main -> main (protected branch hook declined)
+error: failed to push some refs to 'https://github.com/4rni4ka/DevOps-Intro.git'
+```
+
+The rejected local commit was removed with `git reset --hard origin/main`, and
+global commit signing remains enabled. A screenshot of the protection settings
+page will be added after interactive GitHub web authorization is completed.
+
+At Knight Capital, a protected production branch would have forced the change
+through a reviewable pull request instead of allowing an ad-hoc direct update.
+Required signatures would have established who authorized each production
+change, while linear history would have made the deployed sequence easier to
+audit. These controls would not by themselves detect dormant code on one of the
+servers, but they could have stopped or slowed the uncontrolled rollout long
+enough for review and verification.
