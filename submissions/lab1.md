@@ -98,7 +98,7 @@ https://github.com/NikolayTaran/DevOps-Intro/blob/main/.github/pull_request_temp
 
 Pull request to the course repository:
 
-https://github.com/inno-dev-ops-labs/DevOps-Intro/pull/NUMBER
+https://github.com/inno-dev-ops-labs/DevOps-Intro/pull/1516
 
 The PR description uses the template sections, with all checklist items filled:
 
