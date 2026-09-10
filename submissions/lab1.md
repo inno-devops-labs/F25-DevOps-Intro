@@ -69,8 +69,8 @@ commits and `git log --show-signature`.
 
 The course repository and `simple-container-com/api` are starred. GitHub API
 checks also confirm that the account follows `Cre-eD`, `Naghme98`, and
-`pierrepicaud`. The three required classmates will be recorded here once their
-GitHub usernames are known.
+`pierrepicaud`. The account also follows three classmates: `MikeNovikoff`,
+`N-ov`, and `kvakz`.
 
 Stars are useful both as bookmarks and as public discovery signals that help
 worthwhile open-source projects gain visibility. Following developers makes it
