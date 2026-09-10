@@ -79,8 +79,6 @@ Added `.github/pull_request_template.md` on `main`, committed and pushed (commit
 
 ## Task 3 — GitHub Community
 
-TBD
+Starred `inno-devops-labs/DevOps-Intro` and `simple-container-com/api`. Followed the professor (@Cre-eD), both TAs (@Naghme98, @pierrepicaud), and 3 classmates.
 
-## Bonus — Branch Protection
-
-TBD
+Starring a repository signals interest and makes it easy to find again later, and it also gives maintainers a visible signal of how many people find their project useful - a small but real form of community feedback. Following other developers helps in team projects because it keeps their activity visible in your feed, making it easier to stay aware of what teammates are working on, spot useful repos they create, and build the kind of ongoing professional network that matters when job-hunting or collaborating across projects later.
