@@ -41,6 +41,17 @@ Date:   Fri Sep 11 00:34:32 2026 +0300
 
 Signed commits matter because they provide cryptographic proof that a commit was created by a trusted developer and has not been altered. The March 2024 xz-utils incident showed how a compromised contributor and malicious code can enter a trusted software supply chain, highlighting the importance of verifying who is responsible for changes. Signed commits make it harder for attackers to impersonate developers and help maintain trust in the project's code history.
 
+Task 2 — Pull Request Template
+
+The pull request template was added to .github/pull_request_template.md on the fork's main branch before opening the Lab 1 pull request.
+
+The template contains:
+
+PR goal
+Changes
+Testing
+Checklist for title, signed commits, and submission file
+
 ## Task 3 — Community Engagement
 
 ### GitHub Community
@@ -59,15 +70,30 @@ Branch protection/rules were enabled on the fork's `main` branch with:
 ### Unsigned push test
 
 ```text
-PASTE THE ACTUAL ERROR OUTPUT FROM:
-
-git push origin main
+Enumerating objects: 1, done.
+Counting objects: 100% (1/1), done.
+Writing objects: 100% (1/1), 190 bytes | 190.00 KiB/s, done.
+Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: Review all repository rules at https://github.com/AyazN/DevOps-Intro/rules?ref=refs%2Fheads%2Fmain
+remote:
+remote: - Changes must be made through a pull request.
+remote:
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+remote:
+remote:   3efbb095869a778ce7e07f9588551dce84efab2f
+remote:
+To github.com:AyazN/DevOps-Intro.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'github.com:AyazN/DevOps-Intro.git'
 ```
 
 ### Screenshot
 
-Add a screenshot showing the branch protection/rules configuration.
+![branch protection](screenshots/branch-protection.png)
 
 ### Reflection
 
-The branch protection rules prevent changes from being pushed directly without satisfying the repository's requirements. Requiring signed commits helps verify who authored a commit and protects the integrity of the project history. Requiring pull requests ensures that changes go through review before they are merged. Requiring linear history keeps the Git history easier to understand and maintain.
+If Knight Capital had used branch protection and required signing on the production deployment branch, the faulty code would not have been able to reach production through an unreviewed direct push. A pull request requirement would have created an opportunity for another developer to review and catch the deployment problem before it went live. Required signing would also have provided stronger assurance about who authorized each change and made it harder to impersonate a trusted developer. Together, these controls could have added important safeguards and potentially reduced the impact of the deployment failure.
+
