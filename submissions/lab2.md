@@ -51,6 +51,9 @@ subtrees and blobs; the README blob stores the actual file bytes.
 
 ### Inside `.git`
 
+The repository was inspected on Windows; the final command below is the
+PowerShell equivalent that counts only loose object files.
+
 ```console
 $ ls -la .git/
 hooks/  info/  logs/  objects/  refs/
@@ -65,8 +68,10 @@ feature/  main
 $ ls .git/objects/ | head
 0a  0c  0e  0f  13  1a  1d  27  38  3a
 
-$ find .git/objects -type f | wc -l
-34 loose objects
+$ (Get-ChildItem -Recurse -File .git/objects |
+    Where-Object { $_.Directory.Name -match '^[0-9a-f]{2}$' -and
+                   $_.Name -match '^[0-9a-f]{38}$' }).Count
+34
 ```
 
 `HEAD` is a symbolic reference to the checked-out branch. Branch files under
