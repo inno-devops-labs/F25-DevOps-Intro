@@ -74,6 +74,14 @@ In March 2024, someone using the name "Jia Tan" spent about two years building t
 
 ![Verified badge](verified-badge.png)
 
+## Task 2 — Pull Request Template & First PR
+
+Added `.github/pull_request_template.md` to the fork's `main` branch (commit `docs: add PR template`, pushed before opening the lab PR, per the bootstrap requirement). Opened the lab PR from `feature/lab1` to `inno-devops-labs/DevOps-Intro`'s `main`:
+
+- PR: https://github.com/inno-devops-labs/DevOps-Intro/pull/1529
+
+Note: since GitHub resolves a pull request's template from the **base repository's** default branch, and the base repository here is the upstream course repo (not my fork), the description did not auto-populate on the actual submission PR — the upstream `main` doesn't (and can't, since I don't have write access there) contain the template. I filled in the template's sections manually in the PR description, and the template file itself is verifiable on my fork's `main` branch. All checklist items in the PR description are ticked.
+
 ## Task 3 — GitHub Community Engagement
 
 Starred `inno-devops-labs/DevOps-Intro` and `simple-container-com/api`. Followed the professor (@Cre-eD), both TAs (@Naghme98, @pierrepicaud), and 3 classmates.
