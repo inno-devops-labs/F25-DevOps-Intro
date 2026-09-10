@@ -87,3 +87,44 @@ Note: since GitHub resolves a pull request's template from the **base repository
 Starred `inno-devops-labs/DevOps-Intro` and `simple-container-com/api`. Followed the professor (@Cre-eD), both TAs (@Naghme98, @pierrepicaud), and 3 classmates.
 
 Starring matters in open source because it's how people bookmark and signal interest in a project — it gives maintainers a rough read on how many people care about what they're building, and it helps other developers discover tools that are actually being used rather than sitting unnoticed. Following other developers matters for team projects and professional growth because it keeps you aware of what teammates and peers are actually working on, makes it easier to find collaborators for future projects, and builds a visible professional network beyond just the people in your immediate team.
+
+## Bonus Task — Branch Protection & Required Signed Commits
+
+Created a ruleset (`main-protection`) on the fork's `main` branch, set to **Active**, targeting `main`, with:
+- Require signed commits
+- Require a pull request before merging
+- Require linear history
+
+![Branch protection rules](branch-protection.png)
+
+### Trying to break it
+
+```bash
+git switch main
+git commit --no-gpg-sign -s --allow-empty -m "test: unsigned commit (should fail)"
+git push origin main
+```
+
+Rejection message:
+
+```
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+remote: Review all repository rules at https://github.com/illmmmiira/DevOps-Intro/rules?ref=refs%2Fheads%2Fmain
+remote: 
+remote: - Changes must be made through a pull request.
+remote: 
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+remote: 
+remote:   a7a1ba09660dfe680ad32466b759993ce38f0b6c
+remote: 
+To github.com:illmmmiira/DevOps-Intro.git
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
+error: failed to push some refs to 'github.com:illmmmiira/DevOps-Intro.git'
+```
+
+Both rules fired at once: the commit was unsigned, and it was also a direct push to `main` rather than going through a PR. The local unsigned commit was discarded afterward with `git reset --hard origin/main`, and normal signed pushes continue to work as before.
+
+### Reflection
+
+Knight Capital's 2012 incident happened because a deploy script pushed old, dormant test code straight to production on one of eight servers, with no review step and no way to tell that server's state had diverged from the rest — the company lost roughly $440 million in 45 minutes before anyone could diagnose it. Branch protection requiring a pull request before merging would have forced that deploy change through a review step where a second person could catch a stale or mismatched build before it reached production, rather than letting one person's local push go straight live. Requiring signed commits wouldn't have stopped a mistake by an authorized engineer, but on a production deploy branch it does guarantee every change is traceable to a specific person and machine, which matters a lot once you're trying to reconstruct what happened during an incident. Together, the two rules turn "one bad push takes down the system" into "a bad change has to pass through a visible, attributable process first" — exactly the kind of guardrail a high-stakes deploy branch needs.
