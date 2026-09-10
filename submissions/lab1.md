@@ -63,6 +63,8 @@ The template is committed on the fork's `main` branch at
 three-item checklist. This submission and the template were tested with signed
 commits and `git log --show-signature`.
 
+![PR description populated with template sections](evidence/lab1-pr-template.png)
+
 ## Task 3 — GitHub Community
 
 The course repository and `simple-container-com/api` are starred. GitHub API
