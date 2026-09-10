@@ -141,7 +141,16 @@ $ git -c commit.gpgsign=false commit -s --allow-empty -m "test: unsigned commit 
 $ git push origin main
 ```
 
-<<<PASTE THE REJECTED PUSH OUTPUT HERE — the lines with `remote: error:` and `! [remote rejected]`>>>
+Your branch is up to date with 'origin/main'.
+[main ca107cd] test: unsigned commit (should fail)
+To github.com:NikolayTaran/DevOps-Intro.git
+ ! [rejected]        main -> main (fetch first)
+error: failed to push some refs to 'github.com:NikolayTaran/DevOps-Intro.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 ### Reflection: Knight Capital with branch protection
 
