@@ -113,5 +113,30 @@ main
 
 **Interpretation:** `.git/` contains Git's repository metadata, references, logs, and object database. `HEAD` points to the current `feature/lab1` branch, and the `objects` directory stores Git objects addressed by SHA.
 
-## Task 1.3
+## 1.3: Reflog and Recovery
+
+### `git reflog`
+
+```text
+4fafb38 (HEAD -> feature/lab2, main) HEAD@{0}: reset: moving to HEAD~2
+402c9f3 HEAD@{1}: commit: docs(lab2): add git internals notes
+5f8e2ba HEAD@{2}: commit: docs(lab2): add git object inspection
+4fafb38 (HEAD -> feature/lab2, main) HEAD@{3}: checkout: moving from main to feature/lab2
+4fafb38 (HEAD -> feature/lab2, main) HEAD@{4}: checkout: moving from feature/lab1 to main
+```
+
+### Recovery
+
+```text
+git reset --hard 402c9f3
+```
+
+Output:
+
+```text
+HEAD is now at 402c9f3 docs(lab2): add git internals notes
+```
+
+If `git gc` had run before recovery, Git could have pruned the unreachable commits created by the reset. In that case, the reflog entry might still exist, but the commit objects could have been deleted, making recovery impossible through the reflog alone.
+
 
