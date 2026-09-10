@@ -4,7 +4,7 @@
 **Fork:** https://github.com/NikolayTaran/DevOps-Intro
 **Branch:** `feature/lab2`
 **Tag:** `v0.1.0-lab2-NikolayTaran`
-**PR:** https://github.com/inno-devops-labs/DevOps-Intro/pull/NUMBER
+**PR:** https://github.com/inno-devops-labs/DevOps-Intro/pull/1521
 
 ---
 
