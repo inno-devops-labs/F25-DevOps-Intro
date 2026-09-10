@@ -119,14 +119,44 @@ The commit also appears as **Verified** on GitHub:
 
 ### Why Signed Commits Matter
 
-Signed commits help verify that a commit was actually created by the expected developer and was not impersonated by another person. The xz-utils incident discussed in Lecture 1 showed how dangerous software supply-chain attacks can be, especially when malicious changes reach widely used infrastructure. Commit signing adds another layer of trust by making the authorship of changes verifiable.
+Signed commits help verify that a commit was actually created by the expected developer and was not impersonated by another person. The xz-utils March 2024 incident referenced in Lecture 1 shows why trust and verification are important in the software supply chain. Commit signing adds another layer of protection by making the authorship of changes verifiable.
+
+## Task 2 — Pull Request Template & First PR
+
+A pull request template was added to `.github/pull_request_template.md` on the `main` branch.
+
+The template contains the Goal, Changes, Testing, and Checklist sections and will be used when opening the Lab 1 pull request.
 
 ## Task 3 — GitHub Community
 
 Starring repositories makes useful open-source projects easier to find again and also helps increase their visibility in the developer community. Following developers helps me discover their work, stay aware of projects my classmates and colleagues contribute to, and makes future collaboration easier.
+
+## Bonus Task — Branch Protection & Required Signed Commits
 
 ### Branch Protection Rules
 
 The `main` branch is protected with required pull requests, signed commits, and linear history.
 
 ![Branch protection rules](images/branch-protection.jpg)
+
+### Unsigned Push Rejection
+
+The branch protection rule successfully rejected an unsigned commit pushed directly to `main`.
+
+```text
+remote: error: GH006: Protected branch update failed for refs/heads/main.
+
+remote: - Commits must have verified signatures.
+remote:   Found 1 violation:
+
+remote:   06559b79be63a22afe0dd1bd7507b357be2b6f20
+
+remote: - Changes must be made through a pull request.
+
+! [remote rejected] main -> main (protected branch hook declined)
+error: failed to push some refs to 'github.com:ttrlen/DevOps-Intro.git'
+```
+
+### Reflection
+
+With branch protection enabled, direct changes to the production branch could have been prevented. Requiring pull requests would have introduced an additional review step before deployment, while required signed commits would make the author of each change verifiable. Linear history would also make it easier to track exactly which changes reached production. These controls could have reduced the risk of an unreviewed or unintended change being deployed.
