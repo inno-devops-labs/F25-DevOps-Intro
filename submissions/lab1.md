@@ -34,3 +34,25 @@ The PR template is not auto-populated when opening a pull request to the upstrea
 ## GitHub Community
 
 Starring repositories helps open-source projects gain visibility and also makes useful projects easier to find later. Following developers helps you stay aware of their work, learn from their projects, and build connections that can be useful for teamwork and professional growth.
+
+## Bonus Task — Branch Protection & Required Signed Commits
+
+### Branch Protection Rules
+
+![Branch rules requiring signed commits, pull requests, and linear history](images/7.png)
+
+![Active ruleset with an empty bypass list](images/8.png)
+
+### Unsigned Push Rejection
+
+![Unsigned push rejected by the repository rules](images/9.png)
+
+```text
+remote: error: GH013: Repository rule violations found for refs/heads/main.
+```
+
+The captured output reports both that changes must go through a pull request and that commits must have verified signatures.
+
+### Reflection
+
+With branch protection and required signing on the production deploy branch, Knight Capital's team would have needed to submit signed commits through a pull request before merging. This would have given the team a chance to review the changes and made their source easier to verify. If production deployments only used that protected branch, these rules could have reduced the risk of unreviewed changes reaching production. They would still have needed deployment checks, monitoring, and a rollback plan, because a signed commit does not guarantee safe code or a correct deployment.
