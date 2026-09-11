@@ -60,12 +60,9 @@ func TestCreateNote_RoundTrip(t *testing.T) {
 		"title": "first",
 		"body":  "hello",
 	})
-	/* if rec.Code != http.StatusCreated {
+	if rec.Code != http.StatusCreated {
 		t.Fatalf("expected 201, got %d: %s", rec.Code, rec.Body.String())
-	} */
-	if rec.Code != http.StatusOK {
-		t.Fatalf("expected 200, got %d: %s", rec.Code, rec.Body.String())
-	}
+	} 
 	var n Note
 	if err := json.NewDecoder(rec.Body).Decode(&n); err != nil {
 		t.Fatalf("decode: %v", err)
