@@ -30,3 +30,7 @@ Signed commits help verify the identity of the person who created a commit and i
 ![PR template behavior](images/6.png)
 
 The PR template is not auto-populated when opening a pull request to the upstream course repository. In my own fork, the template works correctly and is auto-populated as expected.
+
+## GitHub Community
+
+Starring repositories helps open-source projects gain visibility and also makes useful projects easier to find later. Following developers helps you stay aware of their work, learn from their projects, and build connections that can be useful for teamwork and professional growth.
