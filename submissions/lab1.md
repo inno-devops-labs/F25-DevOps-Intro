@@ -118,7 +118,14 @@ QuickNotes was started locally with `go run .`.
 ### Signed commit check
 
 ```text
-PASTE git log --show-signature -1 OUTPUT HERE
+commit 9a77c177743ed37028f7a324e7e4bda63b98c5a5 (HEAD -> feature/lab1)
+Good "git" signature for rustamotatarian@gmail.com with ED25519 key SHA256:DCCGV8IMH/OoC2E1ZzKwwHSUCMVOBZ+DnFJJGr8esx4
+Author: Valdezzar <rustamotatarian@gmail.com>
+Date:   Fri Sep 11 09:43:39 2026 +0300
+
+    docs(lab1): start submission
+
+    Signed-off-by: Valdezzar <rustamotatarian@gmail.com>
 ```
 
 ### Why signed commits matter
