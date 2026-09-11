@@ -25,5 +25,5 @@ Signed commits help verify that a commit was created by the expected developer.
 The March 2024 xz-utils incident showed the risks of compromising trusted open-source software and its supply chain, so commit signing is an important security measure for verifying authorship and maintaining traceability.
 
 
-## Task 2
-
+## Github Community Features
+Starring repositories useful for useful open-source projects boosting, shows community interest. Following developers helps me to discover interesting soft, stay connected with potential teammates or team leaders.
