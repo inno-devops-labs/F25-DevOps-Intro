@@ -1,0 +1,26 @@
+=== lab4-trace.txt — tcpdump -r lab4-trace.pcap (POST /notes on lo) ===
+
+--- packet summary (TCP flags) ---
+21:09:55.148446 IP 127.0.0.1.32772 > 127.0.0.1.8080: Flags [S], seq 1881556903, win 65495, options [mss 65495,sackOK,TS val 1111217776 ecr 0,nop,wscale 10], length 0
+21:09:55.148549 IP 127.0.0.1.8080 > 127.0.0.1.32772: Flags [S.], seq 1467844725, ack 1881556904, win 65483, options [mss 65495,sackOK,TS val 1280773709 ecr 1111217776,nop,wscale 10], length 0
+21:09:55.148559 IP 127.0.0.1.32772 > 127.0.0.1.8080: Flags [.], ack 1, win 64, options [nop,nop,TS val 1111217776 ecr 1280773709], length 0
+21:09:55.148625 IP 127.0.0.1.32772 > 127.0.0.1.8080: Flags [P.], seq 1:175, ack 1, win 64, options [nop,nop,TS val 1111217776 ecr 1280773709], length 174: HTTP: POST /notes HTTP/1.1
+21:09:55.148628 IP 127.0.0.1.8080 > 127.0.0.1.32772: Flags [.], ack 175, win 64, options [nop,nop,TS val 1280773709 ecr 1111217776], length 0
+21:09:55.151995 IP 127.0.0.1.8080 > 127.0.0.1.32772: Flags [P.], seq 1:207, ack 175, win 64, options [nop,nop,TS val 1280773713 ecr 1111217776], length 206: HTTP: HTTP/1.1 201 Created
+21:09:55.152015 IP 127.0.0.1.32772 > 127.0.0.1.8080: Flags [.], ack 207, win 64, options [nop,nop,TS val 1111217780 ecr 1280773713], length 0
+21:09:55.152190 IP 127.0.0.1.32772 > 127.0.0.1.8080: Flags [F.], seq 175, ack 207, win 64, options [nop,nop,TS val 1111217780 ecr 1280773713], length 0
+21:09:55.152342 IP 127.0.0.1.8080 > 127.0.0.1.32772: Flags [F.], seq 207, ack 176, win 64, options [nop,nop,TS val 1280773713 ecr 1111217780], length 0
+21:09:55.152362 IP 127.0.0.1.32772 > 127.0.0.1.8080: Flags [.], ack 208, win 64, options [nop,nop,TS val 1111217780 ecr 1280773713], length 0
+
+--- HTTP request + response payload ---
+21:09:55.148625 IP 127.0.0.1.32772 > 127.0.0.1.8080: Flags [P.], seq 1:175, ack 1, win 64, options [nop,nop,TS val 1111217776 ecr 1280773709], length 174: HTTP: POST /notes HTTP/1.1
+B;.pLW.MPOST /notes HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Content-Length: 39
+{"title":"trace me","body":"in flight"}
+21:09:55.151995 IP 127.0.0.1.8080 > 127.0.0.1.32772: Flags [P.], seq 1:207, ack 175, win 64, options [nop,nop,TS val 1280773713 ecr 1111217776], length 206: HTTP: HTTP/1.1 201 Created
+LW.QB;.pHTTP/1.1 201 Created
+Content-Type: application/json
+Content-Length: 93
+{"id":5,"title":"trace me","body":"in flight","created_at":"2026-09-10T21:09:55.151264629Z"}
