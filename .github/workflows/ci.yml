@@ -14,8 +14,15 @@ permissions:
 
 jobs:
   vet:
-    name: Vet
+    name: Vet / Go ${{ matrix.go }}
     runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - "1.23"
+          - "1.24"
 
     steps:
       - name: Checkout repository
@@ -24,7 +31,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32  # v5.0.2
         with:
-          go-version: "1.23"
+          go-version: ${{ matrix.go }}
           cache: true
           cache-dependency-path: app/go.mod
 
@@ -33,8 +40,15 @@ jobs:
         run: go vet ./...
 
   test:
-    name: Test
+    name: Test / Go ${{ matrix.go }}
     runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        go:
+          - "1.23"
+          - "1.24"
 
     steps:
       - name: Checkout repository
@@ -43,7 +57,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32  # v5.0.2
         with:
-          go-version: "1.23"
+          go-version: ${{ matrix.go }}
           cache: true
           cache-dependency-path: app/go.mod
 
@@ -71,3 +85,17 @@ jobs:
         with:
           version: v2.5.0
           working-directory: app
+
+  ci-ok:
+    name: CI OK
+    if: always()
+    needs:
+      - vet
+      - test
+      - lint
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Verify all CI jobs passed
+        run: |
+          test "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" = "false"
