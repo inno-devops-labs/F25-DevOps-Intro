@@ -215,55 +215,185 @@ Explicit job dependencies allow a job to depend only on specific earlier jobs in
 
 ## Dependency Cache
 
-TODO: add cache implementation and evidence.
+Go caching was enabled through `actions/setup-go`.
 
-### Cache Evidence
+The configuration uses:
 
-Cold run:
-
-```text
-TODO
+```yaml
+with:
+  go-version: "1.23"
+  cache: true
+  cache-dependency-path: app/go.mod
 ```
 
-Warm run:
+The project does not contain a `go.sum` file, so `app/go.mod` is used as the dependency input for the cache key.
+
+The cache covers the Go module cache and Go build cache.
+
+During one of the CI runs, GitHub successfully configured Go but the cache service returned an error:
 
 ```text
-TODO
+Successfully set up Go version 1.23
+
+Warning: Failed to restore: Cache service responded with 400
+Cache is not found
 ```
 
-Cache-hit evidence:
+The workflow itself still completed successfully. This error came from the GitHub cache service and did not cause the CI pipeline to fail.
 
-```text
-TODO
-```
+Cache CI run:
+https://github.com/rslwqr/DevOps-Intro/actions/runs/34686099362
+
+---
 
 ## Go Version Matrix
 
-TODO: document the Go 1.23 / 1.24 matrix.
-
-Matrix checks:
+The `Vet` and `Test` jobs run against two Go versions:
 
 ```text
-TODO
+Go 1.23
+Go 1.24
 ```
+
+The matrix uses:
+
+```yaml
+strategy:
+  fail-fast: false
+  matrix:
+    go:
+      - "1.23"
+      - "1.24"
+```
+
+Using `fail-fast: false` means that if one matrix job fails, GitHub still allows the other matrix jobs to finish. This gives more complete information about compatibility with both Go versions.
+
+The resulting checks are:
+
+```text
+Vet / Go 1.23
+Vet / Go 1.24
+Test / Go 1.23
+Test / Go 1.24
+Lint
+CI OK
+```
+
+The matrix completed successfully on both Go versions.
+
+Matrix CI run:
+https://github.com/rslwqr/DevOps-Intro/actions/runs/34686296947
+
+---
+
+## Stable Required Check
+
+After introducing the matrix, the names of the individual `Vet` and `Test` checks depend on the Go version.
+
+To keep branch protection stable, an aggregate job was added:
+
+```yaml
+ci-ok:
+  name: CI OK
+  if: always()
+  needs:
+    - vet
+    - test
+    - lint
+  runs-on: ubuntu-24.04
+
+  steps:
+    - name: Verify all CI jobs passed
+      run: |
+        test "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" = "false"
+```
+
+`CI OK` depends on `vet`, `test`, and `lint`.
+
+The `if: always()` condition makes sure that the aggregation job still runs even when one of its dependencies fails. It can therefore report the final state of the complete pipeline.
+
+Branch protection was updated to require only:
+
+```text
+CI OK
+```
+
+Evidence:
+
+![CI OK branch protection](lab3-assets/branch-protection-ci-ok.png)
+
+---
 
 ## Path Filters
 
-TODO: document path filtering and the docs-only PR experiment.
+Path filters were added so that the CI pipeline only runs when application code or the CI configuration changes.
 
-Docs-only PR result:
+The workflow contains:
 
-```text
-TODO
+```yaml
+paths:
+  - "app/**"
+  - ".github/workflows/ci.yml"
 ```
 
-## Required Check Gate
+The same filtering is applied to pushes and pull requests.
 
-TODO: document the stable aggregate required check after introducing the matrix/path filters.
+Therefore changes to files such as `README.md` or files under `submissions/` do not start the complete CI pipeline.
+
+### Docs-only Test
+
+To verify the filter, I created a temporary branch:
+
+```text
+test/docs-only
+```
+
+and changed only `README.md`.
+
+A pull request was created from:
+
+```text
+test/docs-only -> feature/lab3
+```
+
+The pull request contained one changed file.
+
+GitHub reported:
+
+```text
+Checks: 0
+There are no checks for this commit
+```
+
+This confirms that the documentation-only change did not trigger the CI workflow
+Path-filter CI run:
+
+```text
+
+https://github.com/rslwqr/DevOps-Intro/actions/runs/34686663067
+
+```
+
+Evidence:
+
+![Docs-only CI skip](lab3-assets/docs-only-skip.png)
+
+---
 
 ## Timing Measurements
 
-Baseline CI measurements:
+### Baseline
+
+The original pipeline used:
+
+```text
+Go 1.23 only
+Vet + Test + Lint
+No matrix
+No path filtering
+```
+
+Current collected baseline measurement:
 
 ```text
 Run 1: 38 s
@@ -277,29 +407,109 @@ Baseline median:
 TODO
 ```
 
-Optimized CI measurements:
+### Cache
+
+A CI run after enabling the Go cache completed in:
 
 ```text
-Run 1: TODO
+41 s
+```
+
+The GitHub cache service returned an HTTP 400 error during cache restore, so this run cannot yet be treated as a successful warm-cache measurement.
+
+Additional measurements:
+
+```text
+Run 1: 41 s
 Run 2: TODO
 Run 3: TODO
 ```
 
-Optimized median:
+Median:
 
 ```text
 TODO
 ```
 
-Improvement:
+### Cache + Matrix
+
+The first successful matrix pipeline completed in approximately:
+
+```text
+45 s
+```
+
+A later run with the matrix and path filters completed in approximately:
+
+```text
+44 s
+```
+
+Additional measurements are required before calculating the final median.
+
+```text
+Run 1: 45 s
+Run 2: 44 s
+Run 3: TODO
+```
+
+Median:
 
 ```text
 TODO
 ```
 
-## Task 2 Reflection
+---
 
-TODO: summarize the effect of caching, matrix testing, path filters, and the stable required check.
+## Task 2 Design Questions
+
+### f) Why cache dependency inputs instead of build outputs?
+
+The cache key should depend on files that describe the dependencies of the project, such as `go.mod` or `go.sum`.
+
+When these files change, the dependency set may also change and GitHub can generate a new cache entry.
+
+Caching arbitrary final build outputs would be less reliable because they may depend on source code, compiler versions, operating system details, or other environment state.
+
+Using dependency inputs makes cache invalidation more predictable.
+
+### g) What is the difference between `fail-fast: false` and `fail-fast: true`?
+
+With `fail-fast: true`, GitHub can cancel the remaining matrix jobs after one matrix job fails.
+
+With:
+
+```yaml
+fail-fast: false
+```
+
+all matrix combinations are allowed to finish even if one fails.
+
+For this lab, `false` is useful because it shows whether the project works independently on Go 1.23 and Go 1.24 and gives more complete diagnostic information.
+
+### h) What is cache poisoning and how does GitHub reduce the risk?
+
+Cache poisoning happens when an attacker manages to place malicious or incorrect data into a cache that is later restored by another trusted workflow.
+
+GitHub limits cache access between branches and workflow contexts so that untrusted pull requests cannot freely overwrite every cache used by protected branches.
+
+Cache keys should also be derived from trusted dependency inputs, and workflows from untrusted pull requests should receive minimal permissions.
+
+The principle of least privilege and careful cache-key design reduce the impact of a compromised or malicious workflow.
+
+---
+
+## Task 2 Summary
+
+The CI pipeline now:
+
+- caches Go module and build data through `actions/setup-go`;
+- tests Go 1.23 and Go 1.24;
+- keeps all matrix jobs running with `fail-fast: false`;
+- uses `CI OK` as a stable aggregate branch-protection check;
+- skips the pipeline for documentation-only changes using path filters.
+
+The timing measurements will be completed after collecting enough runs to calculate meaningful medians.
 
 ---
 
