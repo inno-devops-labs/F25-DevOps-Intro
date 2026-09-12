@@ -382,84 +382,61 @@ Evidence:
 
 ## Timing Measurements
 
+Three workflow runs were measured for each configuration. The median was used instead of a single run to reduce the influence of normal runner-to-runner variation.
+
+| Configuration | Run 1 | Run 2 | Run 3 | Median |
+|---|---:|---:|---:|---:|
+| Baseline | 38 s | 46 s | 37 s | 38 s |
+| Cache enabled | 45 s | 45 s | 38 s | 45 s |
+| Cache + matrix | 45 s | 44 s | 47 s | 45 s |
+
 ### Baseline
 
-The original pipeline used:
+The baseline pipeline used Go 1.23 with separate `Vet`, `Test`, and `Lint` jobs, before the Task 2 matrix and path-filter optimizations.
+
+Median wall-clock time:
 
 ```text
-Go 1.23 only
-Vet + Test + Lint
-No matrix
-No path filtering
-```
-
-Current collected baseline measurement:
-
-```text
-Run 1: 38 s
-Run 2: TODO
-Run 3: TODO
-```
-
-Baseline median:
-
-```text
-TODO
+38 s
 ```
 
 ### Cache
 
-A CI run after enabling the Go cache completed in:
-
-```text
-41 s
-```
-
-The GitHub cache service returned an HTTP 400 error during cache restore, so this run cannot yet be treated as a successful warm-cache measurement.
-
-Additional measurements:
-
-```text
-Run 1: 41 s
-Run 2: TODO
-Run 3: TODO
-```
-
-Median:
-
-```text
-TODO
-```
-
-### Cache + Matrix
-
-The first successful matrix pipeline completed in approximately:
+After enabling the Go module and build cache, the measured median was:
 
 ```text
 45 s
 ```
 
-A later run with the matrix and path filters completed in approximately:
+Caching did not improve the measured wall-clock time in this experiment. QuickNotes has almost no external Go dependencies, so there is little dependency-download work to avoid.
+
+Additionally, during the measurements GitHub's cache service repeatedly returned errors such as:
 
 ```text
-44 s
+Warning: Failed to restore: Cache service responded with 400
+Cache is not found
 ```
 
-Additional measurements are required before calculating the final median.
+and:
 
 ```text
-Run 1: 45 s
-Run 2: 44 s
-Run 3: TODO
+Warning: Failed to save:
+Our services aren't available right now
 ```
 
-Median:
+Therefore a reliable warm-cache hit could not be measured during these runs.
+
+### Cache + Matrix
+
+After adding Go 1.23 and Go 1.24 to the `Vet` and `Test` matrices, the median wall-clock time was:
 
 ```text
-TODO
+45 s
 ```
 
----
+The matrix approximately doubled the number of vet/test executions without approximately doubling the wall-clock time because the matrix jobs run in parallel.
+
+The main wall-clock cost is therefore runner/setup overhead rather than the QuickNotes vet and test commands themselves.
 
 ## Task 2 Design Questions
 
@@ -513,44 +490,87 @@ The timing measurements will be completed after collecting enough runs to calcul
 
 ---
 
-# Bonus — Performance
+# Bonus — CI Performance Investigation
 
-TODO: complete and document the bonus performance task.
+## B.1 Step Timing Profile
 
-## Before
+I profiled the individual steps of the CI pipeline to understand where the workflow spends most of its time.
 
-```text
-TODO
+For `Test / Go 1.23`, the job took approximately 32 seconds:
+
+| Step | Time |
+|---|---:|
+| Runner/job setup | 2 s |
+| Checkout | 1 s |
+| Go setup | 7 s |
+| Tests | 18 s |
+| Cache/post-job cleanup | ~1 s |
+
+For `Lint`, the job took approximately 26 seconds:
+
+| Step | Time |
+|---|---:|
+| Runner/job setup | 2 s |
+| Checkout | 1 s |
+| Go setup | 6 s |
+| golangci-lint | 13 s |
+| Cache/post-job cleanup | ~1 s |
+
+The profiling showed that checkout is already very cheap. Most of the useful execution time is spent running tests and the linter, while Go setup also contributes noticeable overhead.
+
+GitHub's cache service also returned intermittent errors during post-job cleanup, which introduced additional variability into the measurements.
+
+## B.2 Additional Optimizations
+
+I applied three additional CI optimizations.
+
+### 1. Disable unnecessary VCS build metadata
+
+I added:
+
+```yaml
+env:
+  GOFLAGS: -buildvcs=false
 ```
 
-## After
+The CI pipeline does not need Go VCS metadata, so this avoids unnecessary VCS metadata processing during Go commands.
 
-```text
-TODO
+### 2. Sparse checkout
+
+Each checkout step was changed to:
+
+```yaml
+with:
+  sparse-checkout: app
 ```
 
-## Measurement
+The CI jobs operate only on the QuickNotes application, so they do not need the rest of the course repository.
 
-```text
-TODO
+### 3. Cancel superseded workflow runs
+
+I added:
+
+```yaml
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 ```
 
-## Explanation
+When a new commit is pushed to the same branch, an older in-progress CI run can be cancelled. This does not necessarily reduce the latency of one workflow run, but it avoids spending runner time on obsolete commits.
 
-TODO.
+## B.3 Before and After Measurements
 
----
+The optimized workflow was executed three times.
 
-# Pull Request
+| Configuration | Run 1 | Run 2 | Run 3 | Median |
+|---|---:|---:|---:|---:|
+| Before bonus optimizations | 45 s | 44 s | 47 s | 45 s |
+| After bonus optimizations | 45 s | 50 s | 47 s | 47 s |
 
-Draft pull request:
+The additional optimizations did not reduce the measured wall-clock time. The median changed from 45 seconds to 47 seconds.
 
-```text
-https://github.com/inno-devops-labs/DevOps-Intro/pull/1553
-```
+This difference is small and is consistent with normal GitHub-hosted runner variability. Sparse checkout has little effect because checkout already took approximately one second, and `GOFLAGS=-buildvcs=false` has little impact on such a small Go project. The concurrency optimization saves CI resources when multiple commits are pushed, rather than making an individual run faster.
 
-Final pull request status:
+## B.4 Bottleneck Analysis
 
-```text
-TODO
-```
+The measurements show that repository checkout is not a significant bottleneck for this project. The largest useful steps are the race-enabled tests and `golangci-lint`, while Go environment setup also takes several seconds in every independent job. Because QuickNotes has almost no external dependencies, dependency caching provides little opportunity for improvement. During the experiment, GitHub's cache service also returned intermittent restore/save errors, adding noise to the timings. The matrix does not approximately double wall-clock time because its jobs execute in parallel. For this small project, most remaining latency comes from command execution, runner/setup overhead, and normal variability of GitHub-hosted runners rather than repository size.
