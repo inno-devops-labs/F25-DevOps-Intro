@@ -5,9 +5,16 @@ on:
     branches:
       - main
       - feature/lab3
+    paths:
+      - "app/**"
+      - ".github/workflows/ci.yml"
+
   pull_request:
     branches:
       - main
+    paths:
+      - "app/**"
+      - ".github/workflows/ci.yml"
 
 permissions:
   contents: read
